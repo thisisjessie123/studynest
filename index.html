@@ -339,12 +339,6 @@ body {
     z-index: 2;
 }
 
-.feature-icon-emoji {
-    font-size: 1.8rem;
-    position: relative;
-    z-index: 2;
-}
-
 .feature-content h3 {
     font-size: 1.3rem;
     font-weight: 500;
@@ -390,7 +384,7 @@ body {
     align-items: center;
 }
 
-/* 圓形視覺樣式 - 移除所有 !important */
+/* 圓形視覺樣式 */
 .circle-visual {
     width: 200px;
     height: 200px;
@@ -421,13 +415,6 @@ body {
     height: 70%;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-    position: relative;
-    z-index: 2;
-}
-
-.circle-visual-emoji {
-    font-size: 3rem;
-    color: #d35400;
     position: relative;
     z-index: 2;
 }
@@ -1061,7 +1048,8 @@ scroll-margin-top: 60px;
 <div class="logo-section">
 <a href="#home" class="logo-link">
 <div class="logo">
-<div class="logo-fallback">SN</div>
+<img src="StudyNest Education.png" alt="StudyNest Education Logo" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+<div class="logo-fallback" style="display: none;">🏠</div>
 </div>
 </a>
 <div class="brand-name english">StudyNest Education</div>
@@ -1082,7 +1070,8 @@ scroll-margin-top: 60px;
 <section class="hero-section" id="home">
 <div class="hero-content">
 <div class="hero-logo">
-<div class="hero-logo-fallback">🏠</div>
+<img src="StudyNest Education.png" alt="StudyNest Education Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+<div class="hero-logo-fallback" style="display: none;">🏠</div>
 </div>
 <h1 class="hero-main-title english">StudyNest Education</h1>
 <p class="hero-chinese-title">
@@ -1113,7 +1102,7 @@ scroll-margin-top: 60px;
 <div class="feature-grid">
 <div class="feature-item">
 <div class="feature-icon">
-<div class="feature-icon-emoji">🏠</div>
+<img src="host.png" alt="住宿安排" onerror="this.style.display='none'; this.parentElement.innerHTML='🏠'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='1.8rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 <div class="feature-content">
 <h3>
@@ -1130,7 +1119,7 @@ scroll-margin-top: 60px;
 </div>
 <div class="feature-item">
 <div class="feature-icon">
-<div class="feature-icon-emoji">🛡️</div>
+<img src="guardian.png" alt="專業監護" onerror="this.style.display='none'; this.parentElement.innerHTML='🛡️'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='1.8rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 <div class="feature-content">
 <h3>
@@ -1147,7 +1136,7 @@ scroll-margin-top: 60px;
 </div>
 <div class="feature-item">
 <div class="feature-icon">
-<div class="feature-icon-emoji">🎓</div>
+<img src="study.png" alt="學業輔導" onerror="this.style.display='none'; this.parentElement.innerHTML='🎓'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='1.8rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 <div class="feature-content">
 <h3>
@@ -1164,7 +1153,7 @@ scroll-margin-top: 60px;
 </div>
 <div class="feature-item">
 <div class="feature-icon">
-<div class="feature-icon-emoji">🌟</div>
+<img src="living.png" alt="生活協調" onerror="this.style.display='none'; this.parentElement.innerHTML='🌟'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='1.8rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 <div class="feature-content">
 <h3>
@@ -1181,7 +1170,7 @@ scroll-margin-top: 60px;
 </div>
 <div class="feature-item">
 <div class="feature-icon">
-<div class="feature-icon-emoji">🌍</div>
+<img src="culture.png" alt="文化適應" onerror="this.style.display='none'; this.parentElement.innerHTML='🌍'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='1.8rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 <div class="feature-content">
 <h3>
@@ -1198,7 +1187,7 @@ scroll-margin-top: 60px;
 </div>
 <div class="feature-item">
 <div class="feature-icon">
-<div class="feature-icon-emoji">🤝</div>
+<img src="communicate.png" alt="家校溝通" onerror="this.style.display='none'; this.parentElement.innerHTML='🤝'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='1.8rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 <div class="feature-content">
 <h3>
@@ -1229,7 +1218,7 @@ scroll-margin-top: 60px;
 <div class="about-grid">
 <div class="about-visual">
 <div class="circle-visual">
-<div class="circle-visual-emoji">🏡</div>
+<img src="vision.png" alt="品牌理念" onerror="this.style.display='none'; this.parentElement.innerHTML='🏡'; this.parentElement.style.color='#d35400'; this.parentElement.style.fontSize='3rem'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.zIndex='2'; this.parentElement.style.position='relative';">
 </div>
 </div>
 <div class="about-content">
@@ -1761,7 +1750,127 @@ Icons by <a href="https://www.flaticon.com/" target="_blank">Flaticon</a>
 </div>
 
 <script>
+// Initialize image error handling
+function initializeImageErrorHandling() {
+    // Handle feature icons
+    var featureIcons = [
+        { selector: 'img[src="host.png"]', emoji: '🏠' },
+        { selector: 'img[src="guardian.png"]', emoji: '🛡️' },
+        { selector: 'img[src="study.png"]', emoji: '🎓' },
+        { selector: 'img[src="living.png"]', emoji: '🌟' },
+        { selector: 'img[src="culture.png"]', emoji: '🌍' },
+        { selector: 'img[src="communicate.png"]', emoji: '🤝' }
+    ];
+    
+    featureIcons.forEach(function(icon) {
+        try {
+            var img = document.querySelector(icon.selector);
+            if (img) {
+                img.onerror = function() {
+                    handleImageError(this, icon.emoji, false);
+                };
+            }
+        } catch (e) {
+            console.log('Error setting up feature icon handler:', e);
+        }
+    });
+    
+    // Handle vision and founding images
+    try {
+        var visionImg = document.querySelector('img[src="vision.png"]');
+        if (visionImg) {
+            visionImg.onerror = function() {
+                handleImageError(this, '🏡', true);
+            };
+        }
+    } catch (e) {
+        console.log('Error setting up vision image handler:', e);
+    }
+    
+    try {
+        var foundingImg = document.querySelector('img[src="founding.png"]');
+        if (foundingImg) {
+            foundingImg.onerror = function() {
+                handleImageError(this, '💝', true);
+            };
+        }
+    } catch (e) {
+        console.log('Error setting up founding image handler:', e);
+    }
+    
+    // Handle main logos
+    try {
+        var heroLogo = document.querySelector('.hero-logo img');
+        if (heroLogo) {
+            heroLogo.onerror = function() {
+                handleHeroLogoError(this);
+            };
+        }
+    } catch (e) {
+        console.log('Error setting up hero logo handler:', e);
+    }
+    
+    try {
+        var headerLogo = document.querySelector('.logo img');
+        if (headerLogo) {
+            headerLogo.onerror = function() {
+                handleHeaderLogoError(this);
+            };
+        }
+    } catch (e) {
+        console.log('Error setting up header logo handler:', e);
+    }
+}
+
+// Image error handling function
+function handleImageError(img, emoji, isLarge) {
+    try {
+        if (img && img.parentElement) {
+            img.style.display = 'none';
+            var parent = img.parentElement;
+            parent.innerHTML = emoji;
+            if (parent.style) {
+                parent.style.color = '#d35400';
+                parent.style.fontSize = isLarge ? '3rem' : '1.8rem';
+                parent.style.display = 'flex';
+                parent.style.alignItems = 'center';
+                parent.style.justifyContent = 'center';
+                parent.style.zIndex = '2';
+                parent.style.position = 'relative';
+            }
+        }
+    } catch (e) {
+        console.log('Image error handled safely:', e);
+    }
+}
+
+// Hero logo error handling function
+function handleHeroLogoError(img) {
+    try {
+        if (img && img.nextElementSibling && img.nextElementSibling.style) {
+            img.style.display = 'none';
+            img.nextElementSibling.style.display = 'block';
+        }
+    } catch (e) {
+        console.log('Hero logo error handled safely:', e);
+    }
+}
+
+// Header logo error handling function
+function handleHeaderLogoError(img) {
+    try {
+        if (img && img.nextElementSibling && img.nextElementSibling.style) {
+            img.style.display = 'none';
+            img.nextElementSibling.style.display = 'flex';
+        }
+    } catch (e) {
+        console.log('Header logo error handled safely:', e);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize image error handling for all images
+    initializeImageErrorHandling();
     // Language switching functionality
     var langButtons = document.querySelectorAll('.lang-btn');
     var content = document.querySelector('.content');
