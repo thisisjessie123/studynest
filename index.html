@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyNest Education 英倫學居</title>
+<meta name="description" content="StudyNest Education 英倫學居 - 專業英國學生監護服務，提供住宿安排、學業輔導、生活協調等全方位支持。學在英倫，心有所居。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Spartan:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+@media (max-width: 768px) {
+  nav a {
+    font-size: 14px;
+  }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #333;
+    background-color: #ffffff;
+}
+
+.english {
+    font-family: 'Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+}
+
+/* Header */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.lang-switcher {
+    position: absolute;
+    top: 0.5rem;
+    right: 2rem;
+    display: flex;
+    gap: 0.2rem;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-link {
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.logo-link:hover {
+    transform: scale(1.05);
+}
+
+.logo {
+    width: 90px;
+    height: 90px;
+    position: relative;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.logo-fallback {
+    width: 100%;
+    height: 100%;
+    background: #d35400;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.brand-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #333;
+    font-family: 'Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: #d35400;
+}
+
+.lang-btn {
+    padding: 0.3rem 0.5rem;
+    border: none;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 400;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.lang-btn.active {
+    background: #d35400;
+    color: white;
+    border-radius: 6px;
+}
+
+.lang-btn:hover:not(.active) {
+    background: #f0f0f0;
+}
+
+/* Main Content */
+.main-content {
+    margin-top: 110px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #2980b9 100%);
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    padding: 2rem 0;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.hero-logo {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 2rem;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+    backdrop-filter: brightness(1.3) blur(6px);
+    -webkit-backdrop-filter: brightness(1.3) blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.hero-logo::before {
+    display: none;
+}
+
+.hero-logo img {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+    display: block;
+    filter: 
+        drop-shadow(0 0 25px rgba(255, 255, 255, 0.4))
+        drop-shadow(0 8px 32px rgba(0,0,0,0.4)) 
+        drop-shadow(0 4px 16px rgba(0,0,0,0.2))
+        brightness(1.15)
+        contrast(1.15);
+    transition: transform 0.3s ease;
+}
+
+.hero-logo:hover img {
+    transform: scale(1.05);
+}
+
+.hero-logo-fallback {
+    font-size: 4rem;
+    color: white;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.hero-main-title {
+    font-size: 4rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.hero-chinese-title {
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.hero-slogan {
+    font-size: 1.4rem;
+    color: #d35400;
+    margin-bottom: 3rem;
+    font-weight: 400;
+}
+
+.hero-cta-button {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background: #d35400;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.hero-cta-button:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Section Styles */
+.section {
+    padding: 5rem 0;
+}
+
+.section-white {
+    background: #ffffff;
+}
+
+.section-light {
+    background: #e1e7ed;
+}
+
+.section-soft-blue {
+    background: linear-gradient(135deg, #f2f6fa 0%, #e6eef6 100%);
+    border-top: 1px solid rgba(52, 73, 94, 0.05);
+    border-bottom: 1px solid rgba(52, 73, 94, 0.05);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Services Section - 移除所有 !important */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 3rem;
+    margin: 3rem 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #d35400 0%, #e67e22 25%, #3498db 75%, #2980b9 100%);
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.feature-icon::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.feature-icon img {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    position: relative;
+    z-index: 2;
+}
+
+.feature-icon-emoji {
+    font-size: 1.8rem;
+    position: relative;
+    z-index: 2;
+}
+
+.feature-content h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.feature-content p {
+    color: #666;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* About Section */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-grid.reverse {
+    grid-template-columns: 3fr 1fr;
+}
+
+.about-content h2 {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.about-content p {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.about-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 圓形視覺樣式 - 移除所有 !important */
+.circle-visual {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 25%, #3498db 75%, #2980b9 100%);
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.circle-visual::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.circle-visual img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    position: relative;
+    z-index: 2;
+}
+
+.circle-visual-emoji {
+    font-size: 3rem;
+    color: #d35400;
+    position: relative;
+    z-index: 2;
+}
+
+/* Contact Section */
+.contact-section {
+    background: #ffffff;
+    text-align: center;
+}
+
+.contact-intro {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Contact Form */
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #f8f9fa;
+    padding: 3rem 2rem;
+    border-radius: 15px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #d35400;
+}
+
+.form-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: #d35400;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.contact-info {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.show-packages-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: #d35400;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.show-packages-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Service Packages Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 2% auto;
+    padding: 0;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #2980b9 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px 15px 0 0;
+    position: relative;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+}
+
+.close-modal:hover {
+    opacity: 0.7;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.packages-intro {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #666;
+    line-height: 1.8;
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.package-card {
+    border: 2px solid #f0f0f0;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.package-card:hover {
+    border-color: #d35400;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.package-header {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.package-header.core {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+.package-header.comprehensive {
+    background: linear-gradient(135deg, #d35400, #c0392b);
+    color: white;
+}
+
+.package-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.package-price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    display: none;
+}
+
+.package-price-period {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    display: none;
+}
+
+.package-features {
+    padding: 2rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feature-check {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.comparison-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.comparison-table .service-category {
+    background: #e8f4fd;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.comparison-table .check {
+    color: #27ae60;
+    font-weight: bold;
+    text-align: center;
+}
+
+.comparison-table .cross {
+    color: #e74c3c;
+    font-weight: bold;
+    text-align: center;
+}
+
+.additional-info {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+}
+
+.additional-info h3 {
+    color: #d35400;
+    margin-bottom: 1rem;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #2980b9 100%);
+    color: white;
+    padding: 3rem 0 1rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.footer-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: white;
+}
+
+.footer-section p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.footer-brand {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.footer-brand .english {
+    font-family: 'Spartan', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+}
+
+.footer-slogan {
+    color: #d35400;
+    font-weight: 400;
+}
+
+.footer-email {
+    color: #d35400;
+    font-weight: 500;
+}
+
+.footer-services {
+    color: #d35400;
+    font-weight: 400;
+}
+
+.footer-slogan-en {
+    line-height: 1.4;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0.25rem 0;
+    opacity: 0.7;
+}
+
+.flaticon-credit {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    opacity: 1;
+    line-height: 1.4;
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+}
+
+.flaticon-credit a {
+    color: #d35400;
+    text-decoration: none;
+    opacity: 1;
+    transition: all 0.3s ease;
+    font-weight: 400;
+}
+
+.flaticon-credit a:hover {
+    opacity: 1;
+    text-decoration: underline;
+    color: #e67e22;
+}
+
+/* Language switching */
+.content[data-lang="en"] .chinese {
+    display: none;
+}
+
+.content[data-lang="en"] .hero-main-title {
+    display: none;
+}
+
+.content[data-lang="en"] .brand-name {
+    display: none;
+}
+
+.content[data-lang="zh-tw"] .english,
+.content[data-lang="zh-tw"] .simplified {
+    display: none;
+}
+
+.content[data-lang="zh-cn"] .english,
+.content[data-lang="zh-cn"] .traditional {
+    display: none;
+}
+
+/* Loading and Error States */
+.form-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    display: none;
+}
+
+.form-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.form-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 0.1rem;
+        padding: 0 1rem;
+    }
+    
+    .nav-menu {
+        gap: 0.3rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 13px;
+        max-width: 100%;
+    }
+    
+    .lang-btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.75rem;
+    }
+    
+    .logo-section {
+        gap: 0.5rem;
+    }
+    
+    .lang-switcher {
+        margin-left: 0.5rem;
+    }
+    
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
+    }
+
+    .hero-logo {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-logo img {
+        width: 80%;
+        height: 80%;
+    }
+    
+    .brand-name,
+    .slogan {
+        text-align: center;
+    }
+    
+    .hero-main-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-chinese-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .feature-item {
+        flex-direction: row;
+        text-align: center;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .feature-icon::before {
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+    
+    .about-grid,
+    .about-grid.reverse {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .circle-visual {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .circle-visual::before {
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+    
+    .circle-visual img {
+        width: 65%;
+        height: 65%;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-form {
+        padding: 2rem 1.5rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 1% auto;
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .packages-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+    
+    .comparison-table {
+        font-size: 0.9rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.5rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+/* 手機版 */
+@media (max-width: 768px) {
+  section {
+    scroll-margin-top: 120px;
+  }
+}
+
+section {
+scroll-margin-top: 60px;
+}
+</style>
+</head>
+<body>
+<div class="content" data-lang="zh-tw">
+<header class="header">
+<div class="lang-switcher">
+<button class="lang-btn active" data-lang="zh-tw">繁</button>
+<button class="lang-btn" data-lang="zh-cn">简</button>
+<button class="lang-btn" data-lang="en">EN</button>
+</div>
+<div class="nav-container">
+<div class="logo-section">
+<a href="#home" class="logo-link">
+<div class="logo">
+<div class="logo-fallback">SN</div>
+</div>
+</a>
+<div class="brand-name english">StudyNest Education</div>
+</div>
+
+<nav>
+<ul class="nav-menu">
+<li><a class="traditional chinese" href="#services">專業守護</a><a class="simplified chinese" href="#services">专业守护</a><a class="english" href="#services">Student Care</a></li>
+<li><a class="traditional chinese" href="#about">品牌理念</a><a class="simplified chinese" href="#about">品牌理念</a><a class="english" href="#about">Our Vision</a></li>
+<li><a class="traditional chinese" href="#founder">創辦初心</a><a class="simplified chinese" href="#founder">创办初心</a><a class="english" href="#founder">Founder Story</a></li>
+<li><a class="traditional chinese" href="#contact">聯繫我們</a><a class="simplified chinese" href="#contact">联系我们</a><a class="english" href="#contact">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main class="main-content">
+<section class="hero-section" id="home">
+<div class="hero-content">
+<div class="hero-logo">
+<div class="hero-logo-fallback">🏠</div>
+</div>
+<h1 class="hero-main-title english">StudyNest Education</h1>
+<p class="hero-chinese-title">
+<span class="traditional chinese">英倫學居</span>
+<span class="simplified chinese">英伦学居</span>
+<span class="english">StudyNest Education</span>
+</p>
+<p class="hero-slogan">
+<span class="traditional chinese">學在英倫，心有所居</span>
+<span class="simplified chinese">学在英伦，心有所居</span>
+<span class="english">Bringing Minds to Britain, and Hearts to Home</span>
+</p>
+<a class="hero-cta-button" href="#services">
+<span class="traditional chinese">開始您的英倫求學之旅</span>
+<span class="simplified chinese">开始您的英伦求学之旅</span>
+<span class="english">Start Your British Educational Journey</span>
+</a>
+</div>
+</section>
+
+<section class="section section-white" id="services">
+<div class="container">
+<h2 class="section-title">
+<span class="traditional chinese">專業守護</span>
+<span class="simplified chinese">专业守护</span>
+<span class="english">Student Care</span>
+</h2>
+<div class="feature-grid">
+<div class="feature-item">
+<div class="feature-icon">
+<div class="feature-icon-emoji">🏠</div>
+</div>
+<div class="feature-content">
+<h3>
+<span class="traditional chinese">住宿安排</span>
+<span class="simplified chinese">住宿安排</span>
+<span class="english">Accommodation Arrangements</span>
+</h3>
+<p>
+<span class="traditional chinese">我們精心挑選安全、舒適且充滿人情味的寄宿家庭與學生公寓，讓每位學生在一個溫馨有保障的環境中安心生活。這不僅是住宿，更是學生在異鄉的第二個家，讓他們能全心投入學習，真切感受英倫的生活氛圍。</span>
+<span class="simplified chinese">我们精心挑选安全、舒适且充满人情味的寄宿家庭与学生公寓，让每位学生在一个温馨有保障的环境中安心生活。这不仅是住宿，更是学生在异乡的第二个家，让他们能全心投入学习，真切感受英伦的生活氛围。</span>
+<span class="english">We carefully select safe, comfortable, and welcoming host families and student residences, creating a warm and secure environment where every student can feel at home away from home. This is more than just a place to stay — it's where they can focus on their studies and truly experience life in the UK.</span>
+</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<div class="feature-icon-emoji">🛡️</div>
+</div>
+<div class="feature-content">
+<h3>
+<span class="traditional chinese">專業監護</span>
+<span class="simplified chinese">专业监护</span>
+<span class="english">Professional Guardianship</span>
+</h3>
+<p>
+<span class="traditional chinese">我們視每位學生如家人一般，提供24/7雙語支援與細心照料，從生活瑣事到突發狀況都能及時應對。透過定期探訪與密切關懷，我們讓家長放心，也讓學生感受到真誠的陪伴與守護。</span>
+<span class="simplified chinese">我们视每位学生如家人一般，提供24/7双语支援与细心照料，从生活琐事到突发状况都能及时应对。透过定期探访与密切关怀，我们让家长放心，也让学生感受到真诚的陪伴与守护。</span>
+<span class="english">We treat every student like family, providing 24/7 bilingual support and attentive care. From daily life to unexpected situations, we're always ready to help. Through regular visits and close attention, we give parents peace of mind and students a genuine sense of companionship and protection.</span>
+</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<div class="feature-icon-emoji">🎓</div>
+</div>
+<div class="feature-content">
+<h3>
+<span class="traditional chinese">學業輔導</span>
+<span class="simplified chinese">学业辅导</span>
+<span class="english">Academic Guidance</span>
+</h3>
+<p>
+<span class="traditional chinese">我們陪伴學生走過每個重要學習階段，從選校、申請到學業輔導及升學規劃，都提供專業指導與個別化支援。幫助學生發掘潛力，打造符合夢想的求學路，讓學習充滿方向與動力。</span>
+<span class="simplified chinese">我们陪伴学生走过每个重要学习阶段，从选校、申请到学业辅导及升学规划，都提供专业指导与个别化支援。帮助学生发掘潜力，打造符合梦想的求学路，让学习充满方向与动力。</span>
+<span class="english">We support students through every important stage of their educational journey. From school selection and application to academic tutoring and progression planning, we offer expert advice and personalized support, helping students unlock their potential and pursue their dreams with confidence.</span>
+</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<div class="feature-icon-emoji">🌟</div>
+</div>
+<div class="feature-content">
+<h3>
+<span class="traditional chinese">生活協調</span>
+<span class="simplified chinese">生活协调</span>
+<span class="english">Life Coordination</span>
+</h3>
+<p>
+<span class="traditional chinese">生活中的大小事我們都細心協助，從開設銀行帳戶、電話卡購買，到假期寄宿與交通安排，我們確保學生在生活上的每一步都順暢無憂，讓他們能專注於學業與個人成長。</span>
+<span class="simplified chinese">生活中的大小事我们都细心协助，从开设银行账户、电话卡购买，到假期寄宿与交通安排，我们确保学生在生活上的每一步都顺畅无忧，让他们能专注于学业与个人成长。</span>
+<span class="english">We take care of the everyday details, from helping students open bank accounts and purchase local SIM cards to arranging holiday homestays and transportation. Our goal is to make life as smooth and worry-free as possible, allowing students to focus on their studies and personal growth.</span>
+</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<div class="feature-icon-emoji">🌍</div>
+</div>
+<div class="feature-content">
+<h3>
+<span class="traditional chinese">文化適應</span>
+<span class="simplified chinese">文化适应</span>
+<span class="english">Cultural Adaptation</span>
+</h3>
+<p>
+<span class="traditional chinese">我們透過多元活動及支持計劃，幫助學生順利融入英國的文化和社會環境。這不僅是學術的成就，更是文化的交流與自信的建立，讓學生在異國土地上自在成長，擁抱多元。</span>
+<span class="simplified chinese">我们透过多元活动及支持计划，帮助学生顺利融入英国的文化和社会环境。这不仅是学术的成就，更是文化的交流与自信的建立，让学生在异国土地上自在成长，拥抱多元。</span>
+<span class="english">Through a variety of activities and support programs, we help students integrate smoothly into British culture and society. This is not only about academic success, but also about cultural exchange and building confidence, enabling students to thrive comfortably in a new environment.</span>
+</p>
+</div>
+</div>
+<div class="feature-item">
+<div class="feature-icon">
+<div class="feature-icon-emoji">🤝</div>
+</div>
+<div class="feature-content">
+<h3>
+<span class="traditional chinese">家校溝通</span>
+<span class="simplified chinese">家校沟通</span>
+<span class="english">Home-School Communication</span>
+</h3>
+<p>
+<span class="traditional chinese">作為學生與家庭與學校之間的堅實橋樑，我們確保重要訊息準確及時地傳遞，協助家長了解孩子的在校表現與需求。通過良好的溝通與協作，共同支持學生健康快樂地成長。</span>
+<span class="simplified chinese">作为学生与家庭与学校之间的坚实桥梁，我们确保重要讯息准确及时地传递，协助家长了解孩子的在校表现与需求。通过良好的沟通与协作，共同支持学生健康快乐地成长。</span>
+<span class="english">As a reliable bridge between students, families, and schools, we ensure important information is communicated accurately and promptly. We assist parents in understanding their child's progress and needs, fostering strong collaboration to support the student's healthy and happy development.</span>
+</p>
+</div>
+</div>
+</div>
+<div style="text-align: center;">
+<button class="show-packages-btn" id="show-packages-btn">
+<span class="traditional chinese">查看詳細監護方案</span>
+<span class="simplified chinese">查看详细监护方案</span>
+<span class="english">View Detailed Guardianship Packages</span>
+</button>
+</div>
+</div>
+</section>
+
+<section class="section section-light" id="about">
+<div class="container">
+<div class="about-grid">
+<div class="about-visual">
+<div class="circle-visual">
+<div class="circle-visual-emoji">🏡</div>
+</div>
+</div>
+<div class="about-content">
+<h2>
+<span class="traditional chinese">品牌理念</span>
+<span class="simplified chinese">品牌理念</span>
+<span class="english">Our Vision</span>
+</h2>
+<p>
+<span class="traditional chinese">每一位選擇到英國讀書的學生，都是一段獨特旅程的開始。我們在這段旅程中，成為他們值得信賴的夥伴，從學業到生活，提供全方位的支持。</span>
+<span class="simplified chinese">每一位选择到英国读书的学生，都是一段独特旅程的开始。我们在这段旅程中，成为他们值得信赖的伙伴，从学业到生活，提供全方位的支持。</span>
+<span class="english">Every student who chooses to study in the UK is embarking on a unique journey. Throughout this journey, we become their trusted partner, offering comprehensive support both academically and personally.</span>
+</p>
+<p>
+<span class="traditional chinese">StudyNest Education 英倫學居由具有英國監護經驗、熟悉學校國際學生事務，並親身經歷留學生活的教育顧問創立。我們了解留學生的真實需求，也明白家長的顧慮，致力於用專業與溫度，為每一位學生打造安心的求學環境。</span>
+<span class="simplified chinese">StudyNest Education 英伦学居由具有英国监护经验、熟悉学校国际学生事务，并亲身经历留学生活的教育顾问创立。我们了解留学生的真实需求，也明白家长的顾虑，致力于用专业与温度，为每一位学生打造安心的求学环境。</span>
+<span class="english">StudyNest Education was founded by an education advisor with hands-on experience in UK student guardianship, a background in international student affairs at UK schools, and personal experience as an international student. We understand the real needs of students and the concerns of their families, and we are committed to providing professional and heartfelt care to create a safe and supportive learning environment for every student.</span>
+</p>
+<p>
+<span class="traditional chinese">我們的服務涵蓋監護安排、寄宿家庭挑選與協調、學業與生活支持等，讓學生在英國不只是順利求學，更能真正融入與成長。</span>
+<span class="simplified chinese">我们的服务涵盖监护安排、寄宿家庭挑选与协调、学业与生活支持等，让学生在英国不只是顺利求学，更能真正融入与成长。</span>
+<span class="english">Our services include guardianship arrangements, carefully selected homestay placements, and academic and daily life support, helping students not only succeed in their studies but also truly settle and grow in the UK.</span>
+</p>
+<p>
+<span class="traditional chinese"><strong>學在英倫，心有所居</strong> —— 這不僅是一句口號，更是我們所有服務的核心。我們相信，好的教育旅程，應該讓學生的心也能找到歸屬。我們希望，每一位來到英國的學生，不只是帶著夢想啟程，更能在這裡找到溫暖與歸屬。</span>
+<span class="simplified chinese"><strong>学在英伦，心有所居</strong> —— 这不仅是一句口号，更是我们所有服务的核心。我们相信，好的教育旅程，应该让学生的心也能找到归属。我们希望，每一位来到英国的学生，不只是带着梦想启程，更能在这里找到温暖与归属。</span>
+<span class="english"><strong>Bringing Minds to Britain, and Hearts to Home</strong> —isn't just our slogan—it's the heart of everything we do. We're here to ensure that every student who comes to the UK not only receives a great education, but also finds warmth, care, and a sense of belonging.</span>
+</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Founder's Story Section -->
+<section class="section section-soft-blue" id="founder">
+  <div class="container">
+    <div class="about-grid reverse">
+      <div class="about-content">
+        <h2>
+          <span class="traditional chinese">創辦初心</span>
+          <span class="simplified chinese">创办初心</span>
+          <span class="english">Founder Story</span>
+        </h2>
+        <p>
+          <span class="traditional chinese"><strong>創辦 StudyNest Education 的起點，來自一位母親的視角。</strong></span>
+<span class="simplified chinese"><strong>创办 StudyNest Education 的起点，来自一位母亲的视角。</strong></span>
+<span class="english"><strong>StudyNest Education was born from a mother's perspective.</strong></span>
+        </p>
+        <p>
+          <span class="traditional chinese">自隻身前往倫敦政經學院入學以來，定居英國已近二十年。這段時間裡，深入參與當地教育體系，並在英國學校國際學生部門工作，親自陪伴學生度過適應與成長的關鍵時刻。作為曾經的國際學生與母親，更能理解孩子在異地生活中的掙扎與家庭的期盼——每一段經歷都不斷深化了對「學生需要什麼樣的支持」這件事的思考。</span>
+          <span class="simplified chinese">自独身前往伦敦政经学院入学以来，定居英国已近二十年。这段时间里，深入参与当地教育体系，并在英国学校国际学生部门工作，亲自陪伴学生度过适应与成长的关键时刻。作为曾经的国际学生与母亲，更能理解孩子在异地生活中的挣扎与家庭的期盼——每一段经历都不断深化了对"学生需要什么样的支持"这件事的思考。</span>
+          <span class="english">Embarking as a naïve international student at LSE, nearly twenty years have unfolded—filled with challenges, growth, and unforgettable experiences in England. The experience across the UK education sector has not only deepened the understanding of the system but also shaped my commitment to supporting students and families with care and attentiveness. With the dual perspective of a former international student and a mother, comes a deep understanding of the challenges young people face abroad, along with the hopes and anxieties of their families. Every experience along the journey refines the solutions to one core question: how best to support our children.</span>
+        </p>
+        <p>
+          <span class="traditional chinese">隨著對於留學市場的了解不斷加深，市場中監護與中介服務品質的良莠不齊也愈加明顯。有些服務包裝華麗，卻缺乏真正的責任感與長期陪伴的承諾。身為母親，深刻理解家長在送孩子出國求學時的期待與牽掛，也明白學生在異國環境中面對的挑戰與孤單。而留學，不應該只是一項任務的完成，而是一段需要被理解、被細心照顧的成長旅程。</span>
+          <span class="simplified chinese">随着对于留学市场的了解不断加深，市场中监护与中介服务品质的良莠不齐也愈加明显。有些服务包装华丽，却缺乏真正的责任感与长期陪伴的承诺。身为母亲，深刻理解家长在送孩子出国求学时的期待与牵挂，也明白学生在异国环境中面对的挑战与孤单。而留学，不应该只是一项任务的完成，而是一段需要被理解、被细心照顾的成长旅程。</span>
+          <span class="english">With growing insight into the overseas education sector, it became evident that the standards of professionalism in guardianship and consultancy services differ greatly. Despite a glossy exterior, some providers lack authentic responsibility and long-term engagement. Being a mother brings a deep understanding of the aspirations and anxieties parents hold when sending their children abroad, and a heartfelt recognition of the challenges and loneliness children face when away from home. An overseas education goes far beyond completing a temporary assignment; it is a journey that requires understanding and careful nurturing.</span>
+        </p>
+        <p>
+          <span class="traditional chinese">正是這份信念，促使 StudyNest Education 誕生。我們希望建立一個兼具專業與溫度的團隊，不僅為學生提供實際的協助與守護，更能在情感上成為值得依靠的存在。讓每一位學生在求學的路上都不必孤單；讓每一位家長都能安心將孩子託付給我們。</span>
+          <span class="simplified chinese">正是这份信念，促使 StudyNest Education 诞生。我们希望建立一个兼具专业与温度的团队，不仅为学生提供实际的协助与守护，更能在情感上成为值得依靠的存在。让每一位学生在求学的路上都不必孤单；让每一位家长都能安心将孩子托付给我们。</span>
+          <span class="english">It is this belief that laid the foundation for StudyNest Education. Our aim is to build a team defined by both professionalism and warmth—providing practical support with nurturing guidance. Our aim is to build a team defined by both professionalism and warmth—providing practical support with nurturing guidance, which ensures that no student faces their educational journey alone and that every parent can place their trust in us with peace of mind.</span>
+        </p>
+        <p>
+          <span class="traditional chinese">在 StudyNest，我們相信，真正好的留學關懷，來自理解、責任與持續的陪伴。這份使命，來自一位母親的心，也將貫穿我們提供的每一項服務。</span>
+          <span class="simplified chinese">在 StudyNest，我们相信，真正好的留学关怀，来自理解、责任与持续的陪伴。这份使命，来自一位母亲的心，也将贯穿我们提供的每一项服务。</span>
+          <span class="english">At StudyNest, we believe meaningful support for international students grows from understanding, responsibility and ongoing commitment. This mission springs from a mother's love and lies at the heart of everything we do.</span>
+        </p>
+      </div>
+      <div class="about-visual">
+        <div class="circle-visual">
+          <div class="circle-visual-emoji">💝</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-white contact-section" id="contact">
+<div class="container">
+<h2 class="section-title">
+<span class="traditional chinese">聯繫我們</span>
+<span class="simplified chinese">联系我们</span>
+<span class="english">Contact</span>
+</h2>
+<p class="contact-intro">
+<span class="traditional chinese">準備開始您的英倫求學之旅嗎？我們很樂意為您提供專業的諮詢服務。</span>
+<span class="simplified chinese">准备开始您的英伦求学之旅吗？我们很乐意为您提供专业的咨询服务。</span>
+<span class="english">Ready to start your British educational journey? We're delighted to provide you with professional consultation services.</span>
+</p>
+<form class="contact-form" id="contact-form">
+<div class="form-row">
+<div class="form-group">
+<label for="name">
+<span class="traditional chinese">您的姓名</span>
+<span class="simplified chinese">您的姓名</span>
+<span class="english">Your Name</span>
+</label>
+<input id="name" name="name" required type="text"/>
+</div>
+<div class="form-group">
+<label for="email">
+<span class="traditional chinese">電子郵件</span>
+<span class="simplified chinese">电子邮件</span>
+<span class="english">Email Address</span>
+</label>
+<input id="email" name="email" required type="email"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="phone">
+<span class="traditional chinese">聯絡電話</span>
+<span class="simplified chinese">联络电话</span>
+<span class="english">Phone Number</span>
+</label>
+<input id="phone" name="phone" type="tel"/>
+</div>
+<div class="form-group">
+<label for="subject">
+<span class="traditional chinese">諮詢主題</span>
+<span class="simplified chinese">咨询主题</span>
+<span class="english">Subject</span>
+</label>
+<input id="subject" name="subject" required type="text"/>
+</div>
+</div>
+<div class="form-group">
+<label for="message">
+<span class="traditional chinese">請告訴我們您的需求...</span>
+<span class="simplified chinese">请告诉我们您的需求...</span>
+<span class="english">Please tell us about your requirements...</span>
+</label>
+<textarea id="message" name="message" required></textarea>
+</div>
+<button class="submit-button" type="submit">
+<span class="traditional chinese">發送諮詢</span>
+<span class="simplified chinese">发送咨询</span>
+<span class="english">Send Inquiry</span>
+</button>
+<div class="form-message" id="form-message"></div>
+</form>
+<div class="contact-info">
+<p>
+<span class="traditional chinese">或直接發送郵件至：</span>
+<span class="simplified chinese">或直接发送邮件至：</span>
+<span class="english">Or send email directly to:</span>
+</p>
+<p style="color: #d35400; font-weight: 500; margin-top: 0.5rem;">info@studynest.uk</p>
+</div>
+</div>
+</section>
+</main>
+
+<!-- Service Packages Modal -->
+<div class="modal" id="service-packages-modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>
+<span class="traditional chinese"> 監護方案介紹</span>
+<span class="simplified chinese"> 监护方案介绍</span>
+<span class="english"> Guardianship Packages</span>
+</h2>
+<button class="close-modal" aria-label="Close">×</button>
+</div>
+<div class="modal-body">
+<div class="packages-intro">
+<p style="margin-bottom: 1rem;">
+<span class="traditional chinese">在英國求學，是一段充滿挑戰與成長的旅程。</span>
+<span class="simplified chinese">在英国求学，是一段充满挑战与成长的旅程。</span>
+<span class="english">Studying in the UK brings both exciting opportunities and new challenges.</span>
+</p>
+<p style="margin-bottom: 1rem;">
+<span class="traditional chinese">我們深知每位學生和家庭的需求各不相同，</span>
+<span class="simplified chinese">我们深知每位学生和家庭的需求各不相同，</span>
+<span class="english">Every student and family has unique needs and circumstances.</span>
+</p>
+<p>
+<span class="traditional chinese">因此精心設計了兩款貼心的監護方案，為您和孩子提供最適合的支持。</span>
+<span class="simplified chinese">因此精心设计了两款贴心的监护方案，为您和孩子提供最适合的支持。</span>
+<span class="english">We've created two thoughtful guardianship plans to support your journey.</span>
+</p>
+</div>
+<div class="packages-grid">
+<div class="package-card">
+<div class="package-header core">
+<div class="package-title">
+<span class="traditional chinese"> 核心監護方案</span>
+<span class="simplified chinese"> 核心监护方案</span>
+<span class="english"> Core Guardianship Plan</span>
+</div>
+<div class="package-price">£349</div>
+<div class="package-price-period">
+<span class="traditional chinese">每學期</span>
+<span class="simplified chinese">每学期</span>
+<span class="english">per term</span>
+</div>
+</div>
+<div class="package-features">
+<p style="margin-bottom: 1.5rem; color: #666;">
+<span class="traditional chinese">以穩健的基礎服務，守護學生在異國的每一步，讓家長安心無憂。</span>
+<span class="simplified chinese">以稳健的基础服务，守护学生在异国的每一步，让家长安心无忧。</span>
+<span class="english">With solid foundation services, protecting every step of students in foreign countries, giving parents peace of mind.</span>
+</p>
+<ul class="feature-list">
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">24/7 雙語緊急電話支援</span><span class="simplified chinese">24/7 双语紧急电话支援</span><span class="english">24/7 bilingual emergency phone support</span></li>
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">緊急事件應變協調</span><span class="simplified chinese">紧急事件应变协调</span><span class="english">Emergency response coordination</span></li>
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">學生財務管理協助</span><span class="simplified chinese">学生财务管理协助</span><span class="english">Student financial management assistance</span></li>
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">簽證及官方文件協助</span><span class="simplified chinese">签证及官方文件协助</span><span class="english">Visa and official document assistance</span></li>
+</ul>
+</div>
+</div>
+<div class="package-card">
+<div class="package-header comprehensive">
+<div class="package-title">
+<span class="traditional chinese"> 全面監護方案</span>
+<span class="simplified chinese"> 全面监护方案</span>
+<span class="english"> Comprehensive Guardianship Plan</span>
+</div>
+<div class="package-price">£899</div>
+<div class="package-price-period">
+<span class="traditional chinese">每學期</span>
+<span class="simplified chinese">每学期</span>
+<span class="english">per term</span>
+</div>
+</div>
+<div class="package-features">
+<p style="margin-bottom: 1.5rem; color: #666;">
+<span class="traditional chinese">為追求全方位呵護的家庭量身打造，從行前準備到學業生活，悉心陪伴，成就精彩英倫生活。</span>
+<span class="simplified chinese">为追求全方位呵护的家庭量身打造，从行前准备到学业生活，悉心陪伴，成就精彩英伦生活。</span>
+<span class="english">Tailored for families seeking comprehensive care, from pre-departure preparation to academic life, thoughtful companionship to achieve a wonderful British life.</span>
+</p>
+<ul class="feature-list">
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">包含核心方案所有服務</span><span class="simplified chinese">包含核心方案所有服务</span><span class="english">Includes all Core Plan services</span></li>
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">行前指導與交通安排</span><span class="simplified chinese">行前指导与交通安排</span><span class="english">Pre-departure guidance & transport</span></li>
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">學術支持與升學諮詢</span><span class="simplified chinese">学术支持与升学咨询</span><span class="english">Academic support & university counseling</span></li>
+<li><span class="feature-check">✔️</span> <span class="traditional chinese">定期家長會談與學校溝通</span><span class="simplified chinese">定期家长会谈与学校沟通</span><span class="english">Regular parent meetings & school communication</span></li>
+</ul>
+</div>
+</div>
+</div>
+
+<table class="comparison-table">
+<thead>
+<tr>
+<th>
+<span class="traditional chinese">服務項目</span>
+<span class="simplified chinese">服务项目</span>
+<span class="english">Service Items</span>
+</th>
+<th>
+<span class="traditional chinese"> 核心方案</span>
+<span class="simplified chinese"> 核心方案</span>
+<span class="english"> Core Plan</span>
+</th>
+<th>
+<span class="traditional chinese"> 全面方案</span>
+<span class="simplified chinese"> 全面方案</span>
+<span class="english"> Comprehensive Plan</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="service-category">
+<td colspan="3">
+<span class="traditional chinese">🛫 抵英前服務</span>
+<span class="simplified chinese">🛫 抵英前服务</span>
+<span class="english">🛫 Pre-arrival Services</span>
+</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">提供監護人聯絡訊息給學校</span>
+<span class="simplified chinese">提供监护人联络讯息给学校</span>
+<span class="english">Provide guardian contact to school</span>
+</td>
+<td class="check">✔️</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">與學校指定聯絡人實際溝通與信息傳遞</span>
+<span class="simplified chinese">与学校指定联络人实际沟通与信息传递</span>
+<span class="english">Direct communication with school contacts</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">安排監護人緊急聯絡方式與應變流程說明</span>
+<span class="simplified chinese">安排监护人紧急联络方式与应变流程说明</span>
+<span class="english">Emergency contact & response procedures</span>
+</td>
+<td class="check">✔️</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">簽證及官方文件簽署協助</span>
+<span class="simplified chinese">签证及官方文件签署协助</span>
+<span class="english">Visa & official document assistance</span>
+</td>
+<td class="check">✔️</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">行前指導服務，協助學生與家長了解英國生活實務</span>
+<span class="simplified chinese">行前指导服务，协助学生与家长了解英国生活实务</span>
+<span class="english">Pre-departure guidance on UK life</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr class="service-category">
+<td colspan="3">
+<span class="traditional chinese">🏫 抵英後 & 學期中服務</span>
+<span class="simplified chinese">🏫 抵英后 & 学期中服务</span>
+<span class="english">🏫 Post-arrival & Term-time Services</span>
+</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">24/7 雙語緊急電話支援（中英雙語）</span>
+<span class="simplified chinese">24/7 双语紧急电话支援（中英双语）</span>
+<span class="english">24/7 bilingual emergency support</span>
+</td>
+<td class="check">✔️</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">緊急事件應變協調（所有費用由家長承擔）</span>
+<span class="simplified chinese">紧急事件应变协调（所有费用由家长承担）</span>
+<span class="english">Emergency response coordination</span>
+</td>
+<td class="check">✔️</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">協助家長管理學生財務，如定期零用金轉帳安排</span>
+<span class="simplified chinese">协助家长管理学生财务，如定期零用金转账安排</span>
+<span class="english">Student financial management assistance</span>
+</td>
+<td class="check">✔️</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">協助學生開設英國銀行帳戶</span>
+<span class="simplified chinese">协助学生开设英国银行账户</span>
+<span class="english">Assist with UK bank account opening</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">協助安排假期寄宿家庭及交通接送（DBS認證司機）</span>
+<span class="simplified chinese">协助安排假期寄宿家庭及交通接送（DBS认证司机）</span>
+<span class="english">Holiday homestay & transport arrangement</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">監護人陪同就醫與語言協助</span>
+<span class="simplified chinese">监护人陪同就医与语言协助</span>
+<span class="english">Guardian accompanies medical visits</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">根據需求安排學校或寄宿家庭拜訪</span>
+<span class="simplified chinese">根据需求安排学校或寄宿家庭拜访</span>
+<span class="english">School or homestay visits as needed</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">每學期與學生及家長進行一次線上會談</span>
+<span class="simplified chinese">每学期与学生及家长进行一次线上会谈</span>
+<span class="english">Termly online consultations</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">學術支持協調（選課諮詢、課外活動安排、家教安排）</span>
+<span class="simplified chinese">学术支持协调（选课咨询、课外活动安排、家教安排）</span>
+<span class="english">Academic support coordination</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">升學諮詢服務（包括 UCAS 指導、大學申請）</span>
+<span class="simplified chinese">升学咨询服务（包括 UCAS 指导、大学申请）</span>
+<span class="english">University counseling & UCAS guidance</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">監護人代家長參加家長會並提供報告</span>
+<span class="simplified chinese">监护人代家长参加家长会并提供报告</span>
+<span class="english">Guardian attends parent meetings</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+<tr>
+<td>
+<span class="traditional chinese">作為學生正式校方聯絡人，確保重要訊息不遺漏</span>
+<span class="simplified chinese">作为学生正式校方联络人，确保重要讯息不遗漏</span>
+<span class="english">Official school contact person</span>
+</td>
+<td class="cross">---</td>
+<td class="check">✔️</td>
+</tr>
+</tbody>
+</table>
+
+<div class="additional-info">
+<h3>
+<span class="traditional chinese">💰 費用說明</span>
+<span class="simplified chinese">💰 费用说明</span>
+<span class="english">💰 Fee Information</span>
+</h3>
+<p>
+<span class="traditional chinese">• 核心監護方案：£349 每學期 (£1,047 每年)<br/>
+• 全面監護方案：£899 每學期 (£2,697 每年)<br/>
+• 簽約時收取 £1,000 作為學生儲備零用金<br/>
+• 第三方費用（如醫療、交通等）由家長承擔</span>
+<span class="simplified chinese">• 核心监护方案：£349 每学期 (£1,047 每年)<br/>
+• 全面监护方案：£899 每学期 (£2,697 每年)<br/>
+• 签约时收取 £1,000 作为学生储备零用金<br/>
+• 第三方费用（如医疗、交通等）由家长承担</span>
+<span class="english">• Core Guardianship Plan: £349 per term (£1,047 per year)<br/>
+• Comprehensive Guardianship Plan: £899 per term (£2,697 per year)<br/>
+• £1,000 collected upon contract signing as student reserve allowance<br/>
+• Third-party costs (medical, transport, etc.) borne by parents</span>
+</p>
+</div>
+
+<div class="additional-info">
+<h3>
+<span class="traditional chinese">📋 重要提醒</span>
+<span class="simplified chinese">📋 重要提醒</span>
+<span class="english">📋 Important Notice</span>
+</h3>
+<p>
+<span class="traditional chinese">部分提供住宿學校不接受核心監護方案，請家長事先向所屬學校確認方案適用性。我們建議在選擇方案前，先與我們的專業團隊諮詢，以確保選擇最適合的服務方案。</span>
+<span class="simplified chinese">部分提供住宿学校不接受核心监护方案，请家长事先向所属学校确认方案适用性。我们建议在选择方案前，先与我们的专业团队咨询，以确保选择最适合的服务方案。</span>
+<span class="english">Some schools with boarding facilities do not accept the Core Guardianship Plan. Please confirm plan applicability with your school in advance. We recommend consulting with our professional team before selecting a plan to ensure the most suitable service package.</span>
+</p>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+<button class="show-packages-btn" onclick="closeModal()">
+<span class="traditional chinese">立即諮詢方案</span>
+<span class="simplified chinese">立即咨询方案</span>
+<span class="english">Inquire Now</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+<div class="container">
+<div class="footer-content">
+<div class="footer-section">
+<div class="footer-brand">
+<span class="traditional chinese">英倫學居</span>
+<span class="simplified chinese">英伦学居</span>
+<span class="english">StudyNest Education</span>
+</div>
+<p class="footer-slogan">
+<span class="traditional chinese">學在英倫，心有所居</span>
+<span class="simplified chinese">学在英伦，心有所居</span>
+<span class="english footer-slogan-en">Bringing Minds to Britain,<br/>and Hearts to Home</span>
+</p>
+</div>
+<div class="footer-section">
+<h3>
+<span class="traditional chinese">聯絡資訊</span>
+<span class="simplified chinese">联络资讯</span>
+<span class="english">Contact Info</span>
+</h3>
+<p class="footer-email">📧 info@studynest.uk</p>
+<p>📍 London, United Kingdom</p>
+</div>
+<div class="footer-section">
+<h3>
+<span class="traditional chinese">服務範圍</span>
+<span class="simplified chinese">服务范围</span>
+<span class="english">Service Areas</span>
+</h3>
+<p class="footer-services">
+<span class="traditional chinese">監護服務 • 住宿安排<br/>教育諮詢 • 文化適應<br/>全方位學生支持服務</span>
+<span class="simplified chinese">监护服务 • 住宿安排<br/>教育咨询 • 文化适应<br/>全方位学生支持服务</span>
+<span class="english">Guardianship Services • Accommodation<br/>Educational Consulting • Cultural Adaptation<br/>Comprehensive Student Support Services</span>
+</p>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 StudyNest Education. 
+<span class="traditional chinese">版權所有</span>
+<span class="simplified chinese">版权所有</span>
+<span class="english">All rights reserved</span>
+</p>
+<div class="flaticon-credit">
+Icons by <a href="https://www.flaticon.com/" target="_blank">Flaticon</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Language switching functionality
+    var langButtons = document.querySelectorAll('.lang-btn');
+    var content = document.querySelector('.content');
+    
+    langButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            langButtons.forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            this.classList.add('active');
+            
+            var lang = this.getAttribute('data-lang');
+            content.setAttribute('data-lang', lang);
+        });
+    });
+    
+    // Smooth scrolling for navigation links
+    var navLinks = document.querySelectorAll('a[href^="#"]');
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Active navigation highlighting on scroll
+    window.addEventListener('scroll', function() {
+        var sections = document.querySelectorAll('section[id]');
+        var navMenuLinks = document.querySelectorAll('.nav-menu a');
+        var logoLink = document.querySelector('.logo-link');
+        var current = '';
+        
+        sections.forEach(function(section) {
+            var sectionTop = section.offsetTop - 150;
+            if (window.scrollY >= sectionTop) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        // Remove active class from all nav links
+        navMenuLinks.forEach(function(link) {
+            link.classList.remove('active');
+        });
+        
+        // Handle logo active state for home section
+        if (logoLink) {
+            if (current === 'home') {
+                logoLink.style.opacity = '1';
+                logoLink.style.transform = 'scale(1.05)';
+            } else {
+                logoLink.style.opacity = '';
+                logoLink.style.transform = '';
+            }
+        }
+        
+        // Set active state for other sections
+        if (current !== 'home') {
+            navMenuLinks.forEach(function(link) {
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+    
+    // Helper functions
+    function showFormMessage(type, message) {
+        var formMessage = document.getElementById('form-message');
+        if (formMessage) {
+            formMessage.className = 'form-message ' + type;
+            formMessage.textContent = message;
+            formMessage.style.display = 'block';
+            
+            setTimeout(function() {
+                if (formMessage) {
+                    formMessage.style.display = 'none';
+                }
+            }, 5000);
+        }
+    }
+    
+    function resetSubmitButton(submitButton, originalText) {
+        setTimeout(function() {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }
+        }, 2000);
+    }
+    
+    // Enhanced form handling
+    var contactForm = document.getElementById('contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Disable submit button to prevent double submission
+            var submitButton = this.querySelector('.submit-button');
+            var originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="traditional chinese">發送中...</span><span class="simplified chinese">发送中...</span><span class="english">Sending...</span>';
+            
+            // Get form data
+            var formData = new FormData(this);
+            var name = formData.get('name').trim();
+            var email = formData.get('email').trim();
+            var phone = formData.get('phone').trim();
+            var subject = formData.get('subject').trim();
+            var message = formData.get('message').trim();
+            
+            // Basic validation
+            if (!name || !email || !subject || !message) {
+                showFormMessage('error', 'Please fill in all required fields. / 請填寫所有必填欄位。');
+                resetSubmitButton(submitButton, originalText);
+                return;
+            }
+            
+            // Email validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showFormMessage('error', 'Please enter a valid email address. / 請輸入有效的電子郵件地址。');
+                resetSubmitButton(submitButton, originalText);
+                return;
+            }
+            
+            // Create mailto link
+            var currentLang = content.getAttribute('data-lang');
+            var emailBody = '';
+            
+            if (currentLang === 'en') {
+                emailBody = 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + (phone || 'Not provided') + '\n\nMessage:\n' + message;
+            } else {
+                emailBody = '姓名: ' + name + '\n電子郵件: ' + email + '\n電話: ' + (phone || '未提供') + '\n\n訊息:\n' + message;
+            }
+            
+            var mailtoLink = 'mailto:info@studynest.uk?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(emailBody);
+            
+            try {
+                window.location.href = mailtoLink;
+                showFormMessage('success', 'Your email client will open to send the message. Thank you! / 您的郵件程式將會開啟以發送訊息。謝謝！');
+            } catch (error) {
+                showFormMessage('error', 'Unable to open email client. Please send email manually to info@studynest.uk / 無法開啟郵件程式，請手動發送郵件至 info@studynest.uk');
+            }
+            
+            resetSubmitButton(submitButton, originalText);
+        });
+    }
+    
+    // Modal functionality
+    var showPackagesBtn = document.getElementById('show-packages-btn');
+    var serviceModal = document.getElementById('service-packages-modal');
+    var closeModalBtn = document.querySelector('.close-modal');
+    
+    if (showPackagesBtn) {
+        showPackagesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (serviceModal) {
+                serviceModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+    
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            if (serviceModal) {
+                serviceModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+        if (e.target === serviceModal && serviceModal) {
+            serviceModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    // Handle escape key for modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && serviceModal && serviceModal.style.display === 'block') {
+            serviceModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+});
+
+// Function to close modal and scroll to contact section
+function closeModal() {
+    var serviceModal = document.getElementById('service-packages-modal');
+    if (serviceModal) {
+        serviceModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    var contactSection = document.querySelector('#contact');
+    if (contactSection) {
+        contactSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+</script>
+</body>
+</html>
