@@ -1317,7 +1317,7 @@ scroll-margin-top: 75px;
 <span class="simplified chinese">准备开始您的英伦求学之旅吗？我们很乐意为您提供专业的咨询服务。</span>
 <span class="english">Ready to start your British educational journey? We're delighted to provide you with professional consultation services.</span>
 </p>
-<form class="contact-form" id="contact-form" action="https://formspree.io/f/xgvzlaop" method="POST">
+<form class="contact-form" id="contact-form">
 <div class="form-row">
 <div class="form-group">
 <label for="name">
@@ -1987,7 +1987,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
-            
+            e.preventDefault();  
             // Disable submit button to prevent double submission
             var submitButton = this.querySelector('.submit-button');
             var originalText = submitButton.innerHTML;
@@ -2017,9 +2017,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-showFormMessage('success', 'Thank you! Your message has been sent. / 謝謝！您的訊息已發送。');
-            
-            resetSubmitButton(submitButton, originalText);
+// Submit to Formspree via AJAX
+fetch('https://formspree.io/f/xgvzlaop', {
+    method: 'POST',
+    body: formData,
+    headers: {
+        'Accept': 'application/json'
+    }
+}).then(function(response) {
+    if (response.ok) {
+        showFormMessage('success', 'Thank you! Your message has been sent. / 謝謝！您的訊息已發送。');
+        contactForm.reset(); // 清空表單
+    } else {
+        showFormMessage('error', 'Something went wrong. Please try again. / 發送失敗，請重試。');
+    }
+}).catch(function(error) {
+    showFormMessage('error', 'Something went wrong. Please try again. / 發送失敗，請重試。');
+}).finally(function() {
+    resetSubmitButton(submitButton, originalText);
+});
         });
     }
     
