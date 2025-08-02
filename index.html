@@ -1317,7 +1317,7 @@ scroll-margin-top: 75px;
 <span class="simplified chinese">准备开始您的英伦求学之旅吗？我们很乐意为您提供专业的咨询服务。</span>
 <span class="english">Ready to start your British educational journey? We're delighted to provide you with professional consultation services.</span>
 </p>
-<form class="contact-form" id="contact-form">
+<form class="contact-form" id="contact-form" action="https://formspree.io/f/xgvzlaop" method="POST">
 <div class="form-row">
 <div class="form-group">
 <label for="name">
@@ -1987,7 +1987,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
             
             // Disable submit button to prevent double submission
             var submitButton = this.querySelector('.submit-button');
@@ -2018,24 +2017,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Create mailto link
-            var currentLang = content.getAttribute('data-lang');
-            var emailBody = '';
-            
-            if (currentLang === 'en') {
-                emailBody = 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + (phone || 'Not provided') + '\n\nMessage:\n' + message;
-            } else {
-                emailBody = '姓名: ' + name + '\n電子郵件: ' + email + '\n電話: ' + (phone || '未提供') + '\n\n訊息:\n' + message;
-            }
-            
-            var mailtoLink = 'mailto:info@studynest.uk?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(emailBody);
-            
-            try {
-                window.location.href = mailtoLink;
-                showFormMessage('success', 'Your email client will open to send the message. Thank you! / 您的郵件程式將會開啟以發送訊息。謝謝！');
-            } catch (error) {
-                showFormMessage('error', 'Unable to open email client. Please send email manually to info@studynest.uk / 無法開啟郵件程式，請手動發送郵件至 info@studynest.uk');
-            }
+showFormMessage('success', 'Thank you! Your message has been sent. / 謝謝！您的訊息已發送。');
             
             resetSubmitButton(submitButton, originalText);
         });
