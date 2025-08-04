@@ -971,12 +971,6 @@ function generateContractNumber() {
     
     // 生成並下載PDF
     async generatePDF() {
-        try {
-            // 檢查外部庫
-            if (!checkLibraries()) {
-                alert('系統載入中，請稍後再試...\nSystem loading, please try again later...');
-                return;
-            }
             
             // 驗證表單
             const validation = this.validateForm();
@@ -1105,8 +1099,8 @@ function generateContractNumber() {
                 border: 1px solid #c3e6cb;
             `;
             successDiv.innerHTML = `
-                <div style="font-weight: bold;">✅ PDF合約下載成功！</div>
-                <div style="font-size: 12px; margin-top: 5px;">請將檔案回傳給StudyNest Education</div>
+                <div style="font-weight: bold;">✅ PDF Download Successful!</div>
+                <div style="font-size: 12px; margin-top: 5px;">Please kindly send back to StudyNest Education</div>
             `;
             document.body.appendChild(successDiv);
             
