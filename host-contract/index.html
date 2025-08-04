@@ -915,130 +915,43 @@ class ContractPDFGenerator {
         }
     }
     
-    // 驗證表單完整性
-    validateForm() {
-        const errors = [];
-        
-        try {
-            // 檢查必填欄位
-            const requiredFields = [
-                { id: 'parentName', name: '家長姓名' },
-                { id: 'parentAddress', name: '家長地址' },
-                { id: 'studentFirstName', name: '學生名字' },
-                { id: 'studentLastName', name: '學生姓氏' },
-                { id: 'studentDOB', name: '學生出生日期' },
-                { id: 'passportNo', name: '護照號碼' }
-            ];
-            
-            requiredFields.forEach(field => {
-                const element = document.getElementById(field.id);
-                if (!element) {
-                    console.warn(`必填欄位元素未找到: ${field.id}`);
-                    errors.push(`找不到欄位: ${field.name}`);
-                } else if (!element.value || !element.value.trim()) {
-                    errors.push(`請填寫 ${field.name}`);
-                }
-            });
-            
-            // 檢查性別選擇
-            const genderChecked = document.querySelector('input[name="gender"]:checked');
-            if (!genderChecked) {
-                errors.push('請選擇學生性別');
-            }
-            
-            // 檢查監護方案選擇
-            const planChecked = document.querySelector('input[name="guardianshipPlan"]:checked');
-            if (!planChecked) {
-                errors.push('請選擇監護方案');
-            }
-            
-            // 檢查必要的勾選項
-            const requiredCheckboxes = [
-                'declaration1', 'declaration2', 'declaration3', 
-                'declaration4', 'declaration5', 'declaration6', 'declaration7'
-            ];
-            
-            requiredCheckboxes.forEach(checkboxId => {
-                const checkbox = document.getElementById(checkboxId);
-                if (!checkbox) {
-                    console.warn(`勾選項目元素未找到: ${checkboxId}`);
-                    errors.push(`找不到勾選項目: ${checkboxId}`);
-                } else if (!checkbox.checked) {
-                    errors.push(`請勾選聲明項目: ${checkboxId}`);
-                }
-            });
-            
-            // 檢查簽名
-            if (this.signatures) {
-                let signatureErrors = [];
-                Object.keys(this.signatures).forEach(signatureId => {
-                    if (this.signatures[signatureId] && this.signatures[signatureId].isEmpty()) {
-                        const signatureName = signatureId.replace('Signature', '');
-                        signatureErrors.push(`請完成${signatureName}簽名`);
-                    }
-                });
-                
-                if (signatureErrors.length > 0) {
-                    errors.push(...signatureErrors);
-                }
-            } else {
-                errors.push('簽名功能尚未初始化');
-            }
-            
-        } catch (error) {
-            console.error('表單驗證時發生錯誤:', error);
-            errors.push('表單驗證過程中發生錯誤');
-        }
-        
-        return {
-            isValid: errors.length === 0,
-            errors: errors
-        };
-    }
+
     
     // 生成合約編號
-    generateContractNumber() {
-        try {
-            const firstNameEl = document.getElementById('studentFirstName');
-            const lastNameEl = document.getElementById('studentLastName');
-            const signingDateEl = document.getElementById('signingDate');
-            
-            if (!firstNameEl || !lastNameEl || !signingDateEl) {
-                console.warn('合約編號生成：必要元素未找到');
-                return 'SN-PENDING-COMPLETION';
-            }
-            
-            const firstName = firstNameEl.value?.trim() || '';
-            const lastName = lastNameEl.value?.trim() || '';
-            const signingDate = signingDateEl.value || '';
-            
-            if (firstName && lastName && signingDate) {
-                const firstInitial = firstName.charAt(0).toUpperCase();
-                const lastInitial = lastName.charAt(0).toUpperCase();
-                const dateFormatted = signingDate.replace(/-/g, '');
-                const randomNum = Math.floor(Math.random() * 900) + 100;
-                
-                const contractNumber = `SN-${firstInitial}${lastInitial}-${dateFormatted}-${randomNum}`;
-                
-                // 更新顯示
-                const contractNumberInput = document.getElementById('contractNumberInput');
-                if (contractNumberInput) {
-                    contractNumberInput.value = contractNumber;
-                    contractNumberInput.style.backgroundColor = '#e8f5e8';
-                    contractNumberInput.style.color = '#2d5a2d';
-                } else {
-                    console.warn('contractNumberInput 元素未找到');
-                }
-                
-                return contractNumber;
-            }
-            
-            return 'SN-PENDING-COMPLETION';
-        } catch (error) {
-            console.error('生成合約編號時發生錯誤:', error);
-            return 'SN-PENDING-COMPLETION';
+function generateContractNumber() {
+    try {
+        const hostNameEl = document.getElementById('parentName');
+
+        if (!hostNameEl) {
+            console.warn('合約編號生成：找不到 Host Family Representative 欄位');
+            return 'HOST-PENDING-COMPLETION';
         }
+
+        const hostNameRaw = hostNameEl.value?.trim() || '';
+
+        if (hostNameRaw) {
+            // 移除特殊字元與多餘空格，保證合約編號格式乾淨
+            const hostNameSanitized = hostNameRaw.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '');
+            const contractNumber = `HOST-${hostNameSanitized}-2025`;
+
+            const contractNumberInput = document.getElementById('contractNumberInput');
+            if (contractNumberInput) {
+                contractNumberInput.value = contractNumber;
+                contractNumberInput.style.backgroundColor = '#e8f5e8';
+                contractNumberInput.style.color = '#2d5a2d';
+            } else {
+                console.warn('contractNumberInput 元素未找到');
+            }
+
+            return contractNumber;
+        }
+
+        return 'HOST-PENDING-COMPLETION';
+    } catch (error) {
+        console.error('生成合約編號時發生錯誤:', error);
+        return 'HOST-PENDING-COMPLETION';
     }
+}
     
     // 生成並下載PDF
     async generatePDF() {
