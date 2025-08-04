@@ -1,1 +1,1653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyNest Education 监护服务合约</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Calibri', 'Noto Sans SC', sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        
+        .chinese-text, [lang="zh"] {
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', '微軟雅黑', sans-serif;
+        }
+        
+        .english-text, [lang="en"] {
+            font-family: 'Calibri', 'Times New Roman', serif;
+        }
+        
+        .contract-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .letterhead {
+            background: linear-gradient(135deg, #2c5282 0%, #2d3748 50%, #1a365d 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .letterhead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(237, 137, 54, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(56, 178, 172, 0.1) 0%, transparent 50%);
+            opacity: 0.6;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #a2a8bd 0%, #8792a8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            border-radius: 50%;
+        }
+        
+        .nest-logo {
+            width: 35px;
+            height: 35px;
+            position: relative;
+        }
+        
+        /* Create the nest bowl shape */
+        .nest-bowl {
+            width: 22px;
+            height: 12px;
+            border: 2px solid #ed8936;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .nest-bowl::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 2px;
+            background: #ed8936;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        
+        .nest-bowl::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 1px;
+            background: #ed8936;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        
+        /* Create the leaf */
+        .nest-leaf {
+            width: 6px;
+            height: 10px;
+            background: #38b2ac;
+            border-radius: 0 100% 0 100%;
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(15deg);
+        }
+        
+        /* Create the book */
+        .nest-book {
+            width: 18px;
+            height: 4px;
+            background: #2b6cb0;
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        
+        .nest-book::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 3px;
+            background: #3182ce;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        
+        .title-section {
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .letterhead h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            letter-spacing: 0.5px;
+            color: white;
+        }
+        
+        .letterhead .chinese-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        
+        .letterhead .contact-info {
+            margin-top: 10px;
+            font-size: 0.95em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+            text-align: center;
+        }
+        
+        .contact-info a {
+            color: #f6ad55;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info a:hover {
+            color: #ed8936;
+            text-shadow: 0 0 8px rgba(237, 137, 54, 0.5);
+        }
+        
+        .contract-content {
+            padding: 30px;
+        }
+        
+        .review-date {
+            text-align: right;
+            margin-bottom: 30px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        h1, h2, h3 {
+            color: #2d3748;
+            margin: 20px 0 15px 0;
+        }
+        
+        h1 {
+            font-size: 1.6em;
+            border-bottom: 3px solid #ed8936;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 1.3em;
+            color: #2c5282;
+        }
+        
+        h3 {
+            font-size: 1.1em;
+            color: #2d3748;
+        }
+        
+        .parties-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 2px solid #ddd;
+        }
+        
+        .parties-table td, .parties-table th {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        
+        .parties-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 6px 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            font-size: 13px;
+        }
+        
+        .checkbox-group:hover {
+            background: #e9ecef;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #667eea;
+        }
+        
+        .service-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            font-size: 12px;
+        }
+        
+        .service-table th, .service-table td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .service-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .service-table .check-mark {
+            text-align: center;
+            font-size: 1.2em;
+            color: #28a745;
+        }
+        
+        .signature-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #667eea;
+        }
+        
+        .signature-pad {
+            width: 100%;
+            height: 120px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
+            background: white;
+            cursor: crosshair;
+            display: block;
+            touch-action: none;
+        }
+        
+        .signature-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .final-actions {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px;
+            border-top: 3px solid #667eea;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .medical-form {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .fees-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .validation-error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .signature-status {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .signature-status.signed {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .signature-status.empty {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        @media print {
+            .final-actions {
+                display: none;
+            }
+            
+            .contract-container {
+                box-shadow: none;
+                margin: 0;
+            }
+            
+            body {
+                background: white;
+            }
+        }
+        
+        .elegant-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #2c5282;
+            text-align: center;
+            margin: 10px 0;
+            transform: rotate(-2deg);
+        }
+        
+        .chinese-text {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 400;
+        }
+</style>
+</head>
+<body>
+<div class="contract-container">
+<div class="letterhead">
+<div class="logo-container">
+<div class="logo" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.5);">
+<img alt="StudyNest Education Logo" src="StudyNest Education.png" style="width: 65px; height: 65px; object-fit: contain;"/>
+</div>
+<div class="title-section">
+<h1>StudyNest Education</h1>
+</div>
+</div>
+</div>
+<div class="contract-content">
+<div class="review-date">
+<strong>審閱日期 Review Date：2025年8月 August 2025</strong>
+</div>
+<h1 style="text-align: center;">监护服务合约<br/><span class="chinese-text">Guardianship Service Agreement</span></h1>
+<h2>Agreement Parties 合約雙方</h2>
+<table class="parties-table">
+<tr>
+<th style="width: 20%;">
+<div style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Party A:</strong></div>
+<div class="chinese-text"><strong>甲方：</strong></div>
+</div>
+</th>
+<td style="width: 40%;">
+<input class="input-field" id="parentName" placeholder="家長姓名拼音 Parent Name" required="" type="text"/>
+</td>
+<td style="width: 40%; font-size: 0.85em; line-height: 1.4;">
+<div>(hereinafter referred to as <strong>the Parent</strong>)</div>
+<div class="chinese-text">（以下简称「<strong>家长</strong>」）</div>
+</td>
+</tr>
+<tr>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Address:</strong></div>
+<div class="chinese-text"><strong>地址：</strong></div>
+</td>
+<td colspan="2">
+<textarea class="input-field" id="parentAddress" placeholder="请提供英文的完整住家地址 Please enter complete address" required="" rows="3"></textarea>
+</td>
+</tr>
+<tr>
+<th style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Party B:</strong></div>
+<div class="chinese-text"><strong>乙方：</strong></div>
+</th>
+<td><strong>StudyNest Education Limited</strong></td>
+<td style="font-size: 0.85em; line-height: 1.4;">
+<div>(hereinafter referred to as <strong>StudyNest</strong> or <strong>the Guardian</strong>)</div>
+<div class="chinese-text">（以下简称「<strong>英伦学居</strong>」或「<strong>监护人</strong>」）</div>
+</td>
+</tr>
+<tr>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Address:</strong></div>
+<div class="chinese-text"><strong>地址：</strong></div>
+</td>
+<td colspan="2"><strong>1 Boleyn Way, Barnet, EN5 5LH</strong></td>
+</tr>
+<tr>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Contract No.:</strong></div>
+<div class="chinese-text"><strong>合约编号：：</strong></div>
+</td>
+<td colspan="2">
+<input class="input-field" id="contractNumberInput" placeholder="Contract number will be auto-generated 资料填写完成后将自动生成合约编号" readonly="" style="background-color: #f8f9fa; color: #6c757d;" type="text"/>
+</td>
+</tr>
+<tr>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Date of Signing:</strong></div>
+<div class="chinese-text"><strong>签署日期：</strong></div>
+</td>
+<td colspan="2">
+<input class="input-field" id="signingDate" readonly="" required="" type="date"/>
+</td>
+</tr>
+</table>
+
+<h2>Background 背景說明</h2>
+<p>Party A's son/daughter is enrolled in an academic programme in the United Kingdom. As the student is under the legal age of majority, Party A hereby authorises Party B to act as the student's educational guardian within the UK, for the duration of this agreement, to help ensure the student's academic journey is carried out in a safe, healthy, and supportive environment.</p>
+<p class="chinese-text">甲方之子/女目前于英国修读学术课程。鉴于该学生尚未达到法定成年年龄，甲方特此授权乙方于本合约有效期间内，于英国境内担任学生之教育监护人，以协助确保学生能在安全、健康且有利的环境中顺利完成学业。</p>
+<p>Party B is operated by a team with extensive experience in providing guardianship services for international students. Party B agrees to accept this authorisation and to assume full legal responsibility as the student's appointed Educational Guardian throughout the student's studies in the UK. This agreement is made voluntarily and in good faith, through equal and friendly consultation between both parties.</p>
+<p class="chinese-text">乙方由具多年国际学生监护经验的团队经营，愿接受甲方授权，并于学生在英国学习期间担任其教育监护人，承担相应法律责任。双方本着平等、友好协商之原则，自愿订立本合约。</p>
+<h2>Term of Agreement 合约期间</h2>
+<table class="parties-table">
+<tr>
+<td style="width: 20%;"><strong>Start Date<br/>服务开始日</strong></td>
+<td>The date specified in the official confirmation email issued by StudyNest Education, provided that the full annual guardianship service fee has been paid.<br/><span class="chinese-text">以StudyNest Education发出的正式确认邮件中所载明之日期为准，且须已全额缴清当年度监护服务费。</span></td>
+</tr>
+<tr>
+<td><strong>Expiry Date<br/>服务终止日</strong></td>
+<td>The date on which the academic year ends, unless otherwise agreed in writing.<br/><span class="chinese-text">该学年课程结束之日，除非双方另有书面约定。</span></td>
+</tr>
+</table>
+<h2>Duties and Responsibilities of StudyNest 英伦学居的责任和义务</h2>
+<div style="padding-left: 20px;">
+<p><strong>a)</strong> StudyNest will at all times act in the best interests of the student.<br/><span class="chinese-text">英伦学居将始终以学生的最大利益为首要考量。</span></p>
+<p><strong>b)</strong> StudyNest shall serve as the Educational Guardian throughout the student's stay in the UK. Acting <em>in loco parentis</em>, StudyNest will exercise parental discretion when consent is required by the school for student participation in activities, within the scope defined by this agreement.<br/><span class="chinese-text">英伦学居将于学生在英国学习期间担任其教育监护人，依法行使“代理家长职责”（in loco parentis）。若学校需家长签署同意书以让学生参与特定活动，英伦学居将在本合约规定范围内，代为行使家长决策权。</span></p>
+<p><strong>c)</strong> StudyNest shall deliver guardianship services in accordance with the standards and best practices outlined in its Guardianship Scheme.<br/><span class="chinese-text">英伦学居将依据其监护服务计划所载标准及最佳实务，为学生提供监护服务。</span></p>
+<p><strong>d)</strong> StudyNest shall act in accordance with instructions from either parent, giving precedence to the parent who holds legal guardianship.<br/><span class="chinese-text">英伦学居将依据任一方家长之指示行事，并以具有法定监护权之家长意见为准。</span></p>
+<p><strong>e)</strong> StudyNest shall provide the Parents with a dedicated emergency contact phone number.<br/><span class="chinese-text">英伦学居将为家长提供专用的紧急联系电话。</span></p>
+<p><strong>f)</strong> In the event of a medical emergency where the Parents cannot be reached promptly, StudyNest will try every possible means to obtain parental consent for any severe or emergent medical treatment; however, if this is not possible, StudyNest may exercise its discretion and will endeavour to inform the Parents within 24 hours. StudyNest will assist in arranging medical care but shall not be liable for any medical expenses incurred.<br/><span class="chinese-text">若在紧急医疗情况下家长无法即时联系，英伦学居将尽力取得家长同意；如无法联系，英伦学居有权酌情行使决定权，并于24小时内通知家长。英伦学居将协助安排医疗服务，但不承担任何医疗费用。</span></p>
+
+<p><strong>g)</strong> StudyNest shall maintain regular contact with the Parents and provide updates regarding the student's academic performance and wellbeing. Upon receipt of school reports, StudyNest will provide timely translations to the Parents and relay any parental queries to the school.<br/><span class="chinese-text">英伦学居将与家长保持定期联系，并汇报学生之学业进展与生活状况。学校如发布学习报告，英伦学居将即时翻译提供给家长，并就家长提出之问题与学校联系。</span></p>
+<p><strong>h)</strong> StudyNest shall offer academic advice and support to the student when needed. If appropriate, customized tutoring may be arranged (additional charges apply and subject to availability).<br/><span class="chinese-text"> 如学生面临学术挑战，英伦学居将提供学业咨询与协助。如有需要，亦可安排个别课后辅导课程（须另行收费，并视资源情况而定）。</span></p>
+<p><strong>i)</strong> StudyNest shall represent and act on behalf of the Parents in communication with the school.<br/><span class="chinese-text">英伦学居将代表家长与学生所在学校进行联系与沟通。</span></p>
+<p><strong>j)</strong> StudyNest shall arrange the student's airport transfer to the school or homestay upon their first arrival in the UK and ensure a safe return transfer to the airport at the end of their stay. Transport between the school and homestay during holidays will also be arranged (transportation fees are not included in this agreement).<br/><span class="chinese-text">英伦学居将在学生首次抵达英国时，安排其前往学校或寄宿家庭之接送服务，并于其返国时提供送机安排。假期期间，英伦学居亦会安排学生往返学校与寄宿家庭之交通（交通费不包含于本合约内）。</span></p>
+<p><strong>k)</strong> StudyNest shall arrange appropriate homestay accommodation during UK school holidays. The cost of homestay accommodation is not included in this agreement and shall be charged separately.<br/><span class="chinese-text">英伦学居将在英国学校假期期间，为学生安排合适之寄宿家庭。寄宿住宿费用不包含于本合约内，需另行支付。</span></p>
+<p><strong>l)</strong> The specific details and scope of the guardianship services provided by StudyNest shall be as outlined in Appendix A attached to this agreement, which forms an integral part of this agreement.<br/><span class="chinese-text">英伦学居所提供监护服务的具体细项与范围，依本合约附件A所列明，该附件为本合约不可分割之部分。</span></p>
+<p><strong>m)</strong> StudyNest shall keep all personal and academic information of the student and Parents confidential and handle all data in compliance with relevant data protection laws. Information shall only be disclosed with consent or as required by law.<br/><span class="chinese-text">英伦学居将严格保密学生及家长的个人与学业信息，并依照相关资料保护法规进行处理，非经同意或法律要求不得外泄。</span></p>
+<p><strong>n)</strong> StudyNest will exercise reasonable care and diligence in providing guardianship services but shall not be held liable for events beyond its reasonable control, including but not limited to accidents, illnesses, or acts of third parties.<br/><span class="chinese-text">英伦学居将以合理的注意义务提供监护服务，但对于合理控制范围外之事件（包括但不限于意外、疾病、第三方行为）不承担责任。</span></p>
+<p><strong>o)</strong> In case of emergencies (other than medical), StudyNest will promptly notify the Parents and take necessary actions to ensure the safety and wellbeing of the student.<br/><span class="chinese-text">除医疗紧急状况外，发生其他紧急事件时，英伦学居将即时通知家长并采取必要措施，保障学生安全与福祉。</span></p>
+<p><strong>p)</strong> StudyNest reserves the right to amend or update the scope of guardianship services with prior notice to the Parents. Any significant changes will be communicated in writing. The Parents agree to cooperate with any reasonable changes to the guardianship services notified by StudyNest.<br/><span class="chinese-text">英伦学居保留变更监护服务范围的权利，并会事先通知家长。任何重大变动将以书面形式告知。家长同意配合英伦学居合理通知的监护服务变更。</span></p>
+</div>
+
+<h2>Duties and Responsibilities of the Parents 家长的责任义务</h2>
+<div style="padding-left: 20px;">
+<p><strong>a)</strong> The Parents shall provide StudyNest with all necessary information so that StudyNest may act fully and properly in the best interests of the student. Failure to give such information or to falsify such information may result in the student's expulsion from school, accommodation, and guardianship. The Parents shall take full responsibility for this consequence.<br/><span class="chinese-text">家长应向英伦学居提供所有必要信息，以便英伦学居充分且合理地维护学生的最大利益。未能提供此类信息或者信息存在造假，将可能导致学生被取消学籍、住宿安排和监护服务。家长必须承担由此产生的一切后果。</span></p>
+<p><strong>b)</strong> The Parents shall notify StudyNest within 24 hours of any changes to personal circumstances such as changes to contact details or ongoing ability to meet the financial obligations of this agreement, or any other relevant data with respect to the student such as medical information.<br/><span class="chinese-text">若出现以下情况，家长必须于24小时内通知英伦学居：联系方式变更、经济状况变化而无法履行本协议，或学生其他相关信息（如健康状况）发生变化。</span></p>
+<p><strong>c)</strong> The Parents consent to the collection, processing, and use of personal data of the student and the Parents by StudyNest, in compliance with applicable data protection laws such as GDPR.<br/><span class="chinese-text">家长同意英伦学居依据适用的资料保护法（如GDPR）收集、处理及使用学生及家长的个人资料。</span></p>
+<p><strong>d)</strong> The Parents shall provide StudyNest with an emergency contact telephone number that is accessible 24/7.<br/><span class="chinese-text">家长应向英伦学居提供可24小时联系的紧急电话号码。</span></p>
+<p><strong>e)</strong> The Parents shall pay all required fees and costs in a timely manner and in accordance with the payment dates set out in any invoice.<br/><span class="chinese-text">家长应按照付款通知上规定的付款日期，及时支付所有必要费用及款项。</span></p>
+<p><strong>f)</strong> It is the sole responsibility of the Parents to obtain and maintain adequate insurance coverage for any loss, theft, or accidental damage to the student's personal property during their stay in the UK. Neither the school, StudyNest, nor the homestay shall be held liable for any such loss or damage.<br/><span class="chinese-text">家长应自行负责为学生在英国期间的个人物品购买并维持适当的保险保障，对于任何遗失、失窃或意外损坏，学校、英伦学居及寄宿家庭均不承担任何责任。</span></p>
+<p><strong>g)</strong> The Parents shall confirm that StudyNest will be released from guardianship responsibilities during any periods when the student is under direct control of the Parents, is outside the UK, is absent from the school or homestay for purposes not sanctioned by StudyNest or by the school, or is following the arrangement by the Parents directly.<br/><span class="chinese-text">家长须确认以下几种情况，英伦学居不对学生承担监护责任：当学生在直接受到家长管辖的时候；当学生不在英国境内的时候；当学生未经英伦学居或学校允许，私自离开学校或者寄宿家庭的时候；以及当学生接受家长直接安排的时候。</span></p>
+<p><strong>h)</strong> The student shall comply with all rules and regulations of the school attended, as well as the reasonable requirements of StudyNest. The Parents shall cooperate fully with both the school and StudyNest in managing the student's behaviour and accept responsibility for any consequences arising from the student's misconduct or violation of such rules.<br/><span class="chinese-text">学生须遵守就读学校的所有规章制度及英伦学居的合理要求。家长应积极配合学校及英伦学居管理学生行为，并承担学生违规所产生的相应后果。</span></p>
+
+<p><strong>i)</strong> The Parents shall specify if they do not wish the student to take part in any activity or sports in writing to StudyNest in advance. The Parents shall confirm that if any of these details change at any time, StudyNest will be informed in the first place. If the school considers that the student may have an undiagnosed special educational need or learning difficulty, StudyNest will inform the Parents and ask the Parents to cooperate with the school to provide such individual support as is necessary for the student to make sufficient progress.<br/><span class="chinese-text">若家长不希望学生参加特定活动或运动项目，应提前以书面形式通知英伦学居。如有任何变更，亦须第一时间通知英伦学居。如学校认为学生可能有未被诊断的特殊教育需求或学习困难，英伦学居将通知家长并要求家长配合学校提供必要的个别辅助，以促进学生顺利进步。</span></p>
+<p><strong>j)</strong> The Parents shall report on the attached Medical Form any mental or physical illness, allergy, disability, or condition that may interfere with their ability to successfully complete their study, that may impact the health and wellbeing of any other student or staff member, that may require monitoring, treatment, or emergent intervention of any kind during the student's stay, or that may require special accommodation arrangement. StudyNest will make decision on whether or not to provide guardianship services on the basis of a professional evaluation. There will be an additional service charge for this if the evaluation result appears to be positive. StudyNest will take no responsibility if the medical information is not fully reported and if the student's continued participation represents a risk to the health and safety of their own or of other students or staff, and in this case, the student's physical or mental condition will be deemed to make him / her unable or unlikely to successfully complete the study and StudyNest reserves the right to terminate all the guardianship services forthwith. As required by the British government, all the students under 18 shall submit a medical waiver form, and signing this agreement constitutes such a waiver.<br/><span class="chinese-text">对于可能导致学生无法顺利完成学业、可能影响其他学生或教职员健康、可能需要在学生在读期间进行监测、治疗或紧急处理，或需要特殊住宿安排的精神或身体疾病、过敏、残疾或其他状况，家长必须在随附的医疗信息表中如实填写。英伦学居将根据专业评估结果决定是否提供监护服务。如评估通过，将另行收费。如家长未如实填报，学生若因此对自己或他人健康造成风险，英伦学居将不承担任何责任，并有权立即终止所有监护服务。根据英国政府规定，所有未满18岁的学生须提交医疗授权声明，签署本协议即构成该声明。</span></p>
+<p><strong>k)</strong> The Parents agree to indemnify, defend, and hold harmless StudyNest and its officers, employees, and agents from and against any and all claims, liabilities, losses, damages, costs, and expenses (including reasonable legal fees) arising from:<br/><span class="chinese-text">家长同意赔偿、保护并使英伦学居及其管理人员、员工和代理人免于因以下事项所产生的任何及所有索赔、责任、损失、损害、费用（含合理律师费）：</span></p>
+<ul style="margin-left: 40px;">
+<li>The Student's breach of this Agreement or misconduct; <span class="chinese-text">学生违反本协议或不当行为；</span></li>
+<li>Any false or incomplete information provided by the Parents or Student; <span class="chinese-text">家长或学生提供虚假或不完整资讯；</span></li>
+<li>Any act or omission by the Parents or Student causing harm or damage to third parties; <span class="chinese-text">家长或学生之行为或疏忽导致第三方损害；</span></li>
+<li>Any failure by the Parents to fulfil their obligations under this Agreement. <span class="chinese-text">家长未履行本协议义务。</span></li>
+</ul>
+</div>
+<h2>General Terms and Conditions 通用条款与条件</h2>
+<div style="padding-left: 20px;">
+<p><strong>a) Late arrivals, vacations, and absences:</strong> The Student shall be responsible for attending classes punctually. No refunds or extensions will be granted for late enrolment, vacation absences, or any other absence from class. Unauthorized absences may also jeopardize the Student's visa status.<br/><span class="chinese-text">学生须准时上课，迟到、缺席或请假均不予退款或课程延长。未经授权之缺席，可能影响学生签证资格。</span></p>
+
+<p><strong>b) Expulsion / Suspension:</strong> StudyNest reserves the right to suspend or expel any Student who commits a criminal offence, breaches the Student Code of Conduct or school policies, demonstrates unsatisfactory attendance, or fails to pay any fees or charges due. No refund shall be made in such circumstances. Relevant immigration authorities shall be informed as required by law.<br/><span class="chinese-text">若学生涉及刑事犯罪、违反行为守则或校规、出勤不佳或未缴费，英伦学居有权依规定暂停或开除该学生，且不予退款，并依法通报移民机关。</span></p>
+<p><strong>c) Payment Deadline:</strong> All fees shall be paid in full within seven (7) days of the issuance of the Confirmation of Acceptance for Studies (CAS). If the CAS is issued less than thirty (30) days before the course commencement date, full payment shall be made immediately. Failure to pay fees by the stipulated deadlines may result in suspension or termination of all services without prior notice.<br/><span class="chinese-text">所有费用须于收到CAS后七日内付清。如距离开课日期少于三十日，则须立即缴清。未依时付款者，英伦学居可随时暂停或终止所有服务，且不另行通知。</span></p>
+<p><strong>d) Damages and costs:</strong> The Parents shall be solely liable for any and all damages, losses, or costs incurred as a result of the Student's actions, including but not limited to personal injury, property damage, and any associated expenses (e.g., telephone charges). The Parents agree to indemnify and hold harmless StudyNest and its affiliates against any claims arising therefrom.<br/><span class="chinese-text">家长须全权负责学生所造成之任何损害、损失及相关费用（包括但不限于人身伤害及财物损失），并同意对英伦学居及其关联方提供赔偿，免于相关索赔。</span></p>
+<p><strong>e) Force majeure:</strong> StudyNest shall not be liable for any failure or delay in performance caused by events beyond its reasonable control, including but not limited to natural disasters, governmental actions, supplier failures, labour disputes, or other unforeseen circumstances. In such events, StudyNest shall make reasonable efforts to resume services as soon as possible.<br/><span class="chinese-text">因天灾、政府行为、供应商问题、劳资纠纷或其他不可抗力因素导致英伦学居无法履行合约义务时，英伦学居不负任何责任，并将尽合理努力尽快恢复服务。</span></p>
+<p><strong>f) Cancellation of Guardianship Service 取消监护服务：</strong></p>
+<ul style="margin-left: 40px;">
+<li>Refunds shall only be considered upon presentation of official visa refusal documentation. <span class="chinese-text">仅在提供官方签证拒签证明后，方可考虑退款。</span></li>
+<li>Cancellation after enrolment will result in forfeiture of the first year's service fees. <span class="chinese-text">学生注册后取消监护服务，首年服务费不予退还。</span></li>
+<li>In cases where the Student is expelled by the school, StudyNest shall be immediately released from all contractual obligations, and no refund will be granted. Subsequent arrangements must be negotiated directly between the Parents and StudyNest. <span class="chinese-text">学生被校方开除，英伦学居立即解除合约义务，不退费。后续安排需由家长与英伦学居另行协商。</span></li>
+<li>If the Student persistently behaves unreasonably despite StudyNest's reasonable interventions, StudyNest reserves the right to terminate this agreement by written notice. Upon termination, all obligations shall cease, and fees paid shall not be refunded. <span class="chinese-text">学生在英伦学居合理介入后仍持续不当行为，英伦学居有权书面终止合约，终止后责任解除，已缴费费用不退。</span></li>
+
+</ul>
+<p><strong>g) Cancellation of Short-term Accommodation:</strong> Cancellation requires at least fourteen (14) calendar days' prior written notice to StudyNest. Notice received between seven (7) and fourteen (14) calendar days prior will incur a 50% penalty of the total accommodation cost. Notice received less than seven (7) calendar days prior will incur a 100% penalty. StudyNest reserves the right to define acceptable methods of written notice.<br/><span class="chinese-text">取消短期住宿需提前14日书面通知英伦学居。7至14日内通知者，收取50%住宿费作为罚金；少于7日通知者，罚金为100%。英伦学居有权规定书面通知方式。</span></p>
+<p><strong>h) Termination of this Agreement:</strong> This agreement shall remain effective for the duration of the Student's enrolment at any StudyNest partner institution. The Parents may notify their intention to terminate at any time; however, termination shall take effect only at the end of the current academic year. No refund of fees will be provided upon termination. Termination does not exempt the Parents from fulfilling any outstanding financial obligations.<br/><span class="chinese-text">本协议于学生就读期间有效。家长可随时通知终止，但终止效力自当学年结束起生效。终止后不退费，且家长仍须履行所有未清款项。</span></p>
+<p><strong>i) Limitation of Liability:</strong> Except for death or personal injury caused by StudyNest's negligence, or for fraudulent misrepresentation, StudyNest's total liability under or in connection with this Agreement, whether in contract, tort (including negligence), or otherwise, shall be limited to the amount of fees paid by the Parents under this Agreement. Under no circumstances shall StudyNest be liable for any indirect, incidental, consequential, special, or punitive damages, including but not limited to loss of profit, loss of data, or loss of opportunity.<br/><span class="chinese-text">除非因英伦学居过失导致死亡或人身伤害，或有欺诈行为，否则英伦学居基于本协议所承担的全部责任（包含合约、侵权行为等）不超过家长依本协议所支付费用总额。英伦学居不承担任何间接、附带、衍生、特殊或惩罚性损害赔偿，包括但不限于利润损失、资料损失或商机损失。</span></p>
+<p><strong>j) Governing Law and Dispute Resolution:</strong> This Agreement shall be governed by and construed in accordance with the laws of England and Wales. Any dispute, controversy, or claim arising out of or in connection with this Agreement, including its validity, breach, termination, or invalidity, shall be finally resolved by arbitration administered by the London Court of International Arbitration (LCIA) under its Rules. The seat of arbitration shall be London, England. The language of the arbitration shall be English. The arbitration award shall be final and binding on both parties.<br/><span class="chinese-text">本协议适用英格兰及威尔斯法律。因本协议引起或与本协议相关之任何争议，包括其有效性、违约、终止或无效，双方同意提交由伦敦国际仲裁院（LCIA）依其规则最终仲裁。仲裁地点为英国伦敦，仲裁语言为英文，仲裁裁决为最终且具有约束力。</span></p>
+</div>
+<h2>Agreement Effectiveness and Confirmation 协议生效</h2>
+<p>This Agreement shall be deemed legally effective upon being signed by both parties and upon receipt in full of the applicable fees by SchoolsGroup Limited UK.</p>
+<p class="chinese-text">本协议应由双方签署，并于英伦学居（SchoolsGroup Limited UK）收到全部应付服务费用后正式生效。</p>
+
+<h2>Confirmation 委托确认</h2>
+<p>We, the undersigned, being the Parents or legal guardians of the student named below, hereby formally appoint SchoolsGroup Limited UK to provide education guardianship services for the student.</p>
+<p class="chinese-text">我们，作为下列学生之家长/法定监护人，特此正式委托英伦学居（SchoolsGroup Limited UK）为该学生提供教育监护服务。</p>
+<h3>Student Details 学生信息</h3>
+<table class="parties-table">
+<tr>
+<td style="width: 20%;"><strong>First Name<br/>名字</strong></td>
+<td style="width: 30%;"><input class="input-field" id="studentFirstName" placeholder="请以英文拼音填写" required="" type="text"/></td>
+<td style="width: 20%;"><strong>Surnameame<br/>姓氏</strong></td>
+<td style="width: 30%;"><input class="input-field" id="studentLastName" placeholder="请以英文拼音填写" required="" type="text"/></td>
+</tr>
+<tr>
+<td><strong>Date of Birth<br/>出生日期</strong></td>
+<td><input class="input-field" id="studentDOB" required="" type="date"/></td>
+<td><strong>Gender<br/>性別</strong></td>
+<td>
+<label style="margin-right: 15px;"><input name="gender" required="" type="radio" value="male"/> Male 男</label>
+<label><input name="gender" required="" type="radio" value="female"/> Female 女</label>
+</td>
+</tr>
+<tr>
+<td><strong>Passport NO.<br/>护照号码</strong></td>
+<td colspan="3"><input class="input-field" id="passportNo" placeholder="Passport Number" required="" type="text"/></td>
+</tr>
+</table>
+<h3>Family Contact Details 家长联系资料</h3>
+<table class="parties-table">
+<tr>
+<td style="width: 25%;"></td>
+<td style="width: 37.5%; text-align: center;"><strong>Mother 母亲资料</strong></td>
+<td style="width: 37.5%; text-align: center;"><strong>Father 父亲资料</strong></td>
+</tr>
+<tr>
+<td><strong>Name 姓名</strong></td>
+<td><input class="input-field" id="motherName" placeholder="母亲中英文姓名" type="text"/></td>
+<td><input class="input-field" id="fatherName" placeholder="父亲中英文姓名" type="text"/></td>
+</tr>
+<tr>
+<td><strong>Occupation 职业</strong></td>
+<td><input class="input-field" id="motherOccupation" placeholder="母亲职业" type="text"/></td>
+<td><input class="input-field" id="fatherOccupation" placeholder="父亲职业" type="text"/></td>
+</tr>
+<tr>
+<td><strong>Mobile No. 手机号码</strong></td>
+<td><input class="input-field" id="motherMobile" placeholder="母亲手机号码" type="tel"/></td>
+<td><input class="input-field" id="fatherMobile" placeholder="父亲手机号码" type="tel"/></td>
+</tr>
+<tr>
+<td><strong>Email Address 邮箱</strong></td>
+<td><input class="input-field" id="motherEmail" placeholder="母亲邮箱" type="email"/></td>
+<td><input class="input-field" id="fatherEmail" placeholder="父亲邮箱" type="email"/></td>
+</tr>
+<tr>
+<td><strong>Home Address<br/>家庭地址</strong></td>
+<td colspan="2"><textarea class="input-field" id="homeAddress" placeholder="英文版本的完整住家地址" rows="2"></textarea></td>
+</tr>
+</table>
+
+<h3>请选择所需监护方案 Please tick your selected guardianship plan</h3>
+<div class="checkbox-group">
+<input id="corePlan" name="guardianshipPlan" type="radio" value="core"/>
+<label for="corePlan">核心监护方案 Core Guardianship Plan</label>
+</div>
+<div class="checkbox-group">
+<input id="comprehensivePlan" name="guardianshipPlan" type="radio" value="comprehensive"/>
+<label for="comprehensivePlan">全面监护方案 Comprehensive Guardianship Plan</label>
+</div>
+<h2>Appendix A. Service Details 监护方案介紹</h2>
+<p>Below are the two carefully designed guardianship plans offered by SchoolsGroup to meet the diverse needs of families and students, providing professional and comprehensive support and protection. Please select the plan that best suits your requirements.</p>
+<p class="chinese-text">以下为英伦学居为您精心设计的两款监护方案，旨在满足不同家庭和学生的需求，提供专业全面的支持和保障。请根据您的需求选择最合适的方案。</p>
+<table class="service-table">
+<thead>
+<tr>
+<th style="width: 60%;">服务项目 / Services</th>
+<th style="width: 20%;">Core 核心方案</th>
+<th style="width: 20%;">Comprehensive 全面方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3" style="background-color: #f0f8ff; font-weight: bold; text-align: center;">🛫 抵英前服务 Pre-arrival Services</td>
+</tr>
+<tr>
+<td>Provide guardian contact to school 提供监护人联系讯息给学校</td>
+<td class="check-mark">✔️</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Liaise with designated school contact 与学校指定联系人实际沟通与信息传递</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Emergency contact setup &amp; procedures 安排监护人紧急联络方式与应变流程说明</td>
+<td class="check-mark">✔️</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Visa &amp; official document support 签证及官方文件签署协助</td>
+<td class="check-mark">✔️</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Pre-departure briefing 行前指导服务，协助学生与家长了解英国生活实务 </td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td colspan="3" style="background-color: #f0f8ff; font-weight: bold; text-align: center;">🏫 抵英后 &amp; 学期中服务 Term-time UK Services</td>
+</tr>
+<tr>
+<td>24/7 emergency support 双语紧急电话支援</td>
+<td class="check-mark">✔️</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Emergency coordination (at parents' expense) 紧急事件应变（衍生费用由家长承担）</td>
+<td class="check-mark">✔️</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Assist with student finances 协助家长管理学生财务，如定期零用金转账安排 </td>
+<td class="check-mark">✔️</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+
+<td>UK bank account support 协助学生开设英国银行账户</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Holiday homestay &amp; transport arrangement 协助安排假期寄宿家庭及交通接送</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Medical support &amp; interpretation 监护人陪同就医与语言协助</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>School/homestay visit on request 根据需求安排学校或寄宿家庭拜访</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Termly online consultations 每学期与学生及家长进行一次线上会谈</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Academic support coordination 學術支持（選課諮詢、課外活動安排、家教安排）</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>University &amp; UCAS guidance 升学咨询服务（包括UCAS指导、大学申请）</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Attend parent's meeting with report监护人代家长参加家长会并提供报告</td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+<tr>
+<td>Act as official school contact 作为学生正式校方联系人，确保重要讯息不遗漏 </td>
+<td class="check-mark">---</td>
+<td class="check-mark">✔️</td>
+</tr>
+</tbody>
+</table>
+<div class="fees-highlight">
+<h3 style="color: white !important; font-size: 1.5em; margin-bottom: 15px; font-weight: 700;">Fees and Charges 费用与收费</h3>
+<p><strong>Core Guardianship Plan 核心监护方案：£1,047 per year 每年（£349 x 3學期）</strong></p>
+<p><strong>Comprehensive Guardianship Plan 全面监护方案：£2,697 per year 每年（£899 x 3學期）</strong></p>
+<p>The guardianship fees are charged on an annual basis and cover the full academic year,<br/><span style="display: block; text-align: center; margin-top: 5px;">including all three school terms.</span></p>
+<p class="chinese-text">监护费以年度计算，涵盖整个学年（三学期）的所有服务。</p>
+</div>
+<div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ed8936; border-top: 1px solid #e2e8f0;">
+<h4 style="color: #2d3748;">Third-Party Expenses 第三方费用说明</h4>
+<p>All other third-party expenses directly incurred are excluded from the guardianship fees and remain the sole responsibility of the Parents, including but not limited to:</p>
+<p class="chinese-text">所有其他由第三方直接产生的费用不包含于监护费中，均由家长自行负担，包含但不限于：</p>
+<ul style="margin: 15px 0; padding-left: 25px;">
+<li>Third-party service fees and expenses arising from emergency situations (e.g., medical costs, passport reissuance)<br/><span class="chinese-text">紧急事件产生的第三方服务费用及相关支出（如医疗费用、护照补办等）</span></li>
+<li>Holiday homestay accommodation and transportation fees<br/><span class="chinese-text">假期寄宿家庭安排及交通接送费用</span></li>
+<li>Costs incurred by guardians accompanying the student for medical treatment<br/><span class="chinese-text">监护人陪同就医所产生的费用</span></li>
+<li>Fees for on-demand tutoring and academic consultation services<br/><span class="chinese-text">按需提供之家教及学术咨询服务费用</span></li>
+<li>Other third-party service fees<br/><span class="chinese-text">其他第三方服务费用</span></li>
+</ul>
+
+<p><strong>Additional Expense Arrangement 储备金安排：</strong></p>
+<p>In addition to the termly guardianship fees, a deposit of £1,000 will be collected at the start of the agreement as the student's allowance reserve fund, which will be held and managed by StudyNest for the purpose of covering necessary incidental expenses (e.g. purchase of personal items, emergency needs, transport bookings, etc.). Expenses under £50 will be deducted directly from the student's allowance account. Expenses exceeding £50 will require prior notification and consent from the Parents before payment. When the balance falls below £300, Parents will be notified to top up the fund.</p>
+<p class="chinese-text">除每学期之监护服务费外，英伦学居将于首年签约时收取 £1,000 英镑 作为学生之储备零用金，由本公司妥善保管并用于学生在英期间必要的临时支出（如购买生活用品、紧急应变、交通预订等）。对于金额低于 £50 英镑 的第三方费用，将直接从学生零用金账户扣除；金额超过 £50 英镑 的支出，需事先通知并获得家长书面同意后方可支付。当余额低于 £300 英镑 时，我们将主动通知家长进行储值补充。</p>
+<p><strong>Payment Security 付款安全：</strong></p>
+<p>All payments must be made strictly in accordance with the invoices issued by StudyNest on official company letterhead. To prevent fraud, StudyNest only accepts payments made upon receipt of a valid invoice issued on official company letterhead. Payments made outside of this procedure are not recognized as valid, but parents remain obligated to fulfill all payment responsibilities under the agreement.</p>
+<p class="chinese-text">所有款项须依据由英伦学居以正式公司信纸开立的发票进行支付。为防范诈骗，英伦学居仅接受在收到正式且有效发票后，依照发票指示进行的付款。若未依此程序付款，英伦学居仍保留追讨应付款项的权利。</p>
+</div>
+<h2>Appendix B: Student Health &amp; Medical Consent 学生健康信息与医疗授权</h2>
+<div class="medical-form">
+<p>To support your child's health and safety during their studies in the UK, we need accurate information about their physical and mental well-being. This form helps the school and guardianship company provide appropriate care and support.</p>
+<p class="chinese-text">为了保障您孩子在英国求学期间的健康与安全，我们需要您提供准确的身心健康信息。本表格将协助学校与监护机构提供合适的照护与支持。</p>
+<table class="parties-table">
+<tr>
+
+<td style="width: 25%;"><strong>Full Name / 全名</strong></td>
+<td style="width: 75%;"><input class="input-field" id="medicalName" placeholder="學生全名" type="text"/></td>
+</tr>
+<tr>
+<td><strong>Date of Birth / 出生日期</strong></td>
+<td><input class="input-field" id="medicalDOB" type="date"/></td>
+</tr>
+<tr>
+<td><strong>Blood Type / 血型</strong></td>
+<td><input class="input-field" id="bloodType" placeholder="血型 (如：A+, B-, O+等)" type="text"/></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>General Health<br/>一般健康状况</strong><br/><small>Please describe any existing health issues or concerns.<br/></small></td>
+<td><textarea class="input-field" id="generalHealth" placeholder="请详细描述学生的一般健康状况，包括任何慢性疾病、正在服用的药物、或需要特别注意的健康问题..." rows="3"></textarea></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Allergies<br/>过敏状况</strong><br/><small>Please list any allergies.<br/></small></td>
+<td><textarea class="input-field" id="allergies" placeholder="请详细列出所有过敏源，包括食物过敏、药物过敏、环境过敏（如花粉、尘螨）、动物过敏等..." rows="3"></textarea></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Last Medical Checkup<br/>最近一次体检时间</strong><br/><small>Date and doctor's contact if applicable.<br/></small></td>
+<td><textarea class="input-field" id="lastCheckup" placeholder="最近体检日期及医生联络方式（例：2024年6月15日，Dr. Smith, Tel: +44...）" rows="2"></textarea></td>
+</tr>
+<tr>
+<td><strong>Dental Care Needed?<br/>是否需要牙科照护？</strong></td>
+<td>
+<label style="margin-right: 15px;"><input name="dentalCare" style="margin-right: 8px;" type="radio" value="yes"/> Yes 是</label>
+<label><input name="dentalCare" style="margin-right: 8px;" type="radio" value="no"/> No 否</label>
+</td>
+</tr>
+<tr>
+<td><strong>Chronic Conditions<br/>慢性病或特殊健康状况 </strong></td>
+<td>
+<label style="margin-right: 15px;"><input name="chronicConditions" style="margin-right: 8px;" type="radio" value="yes"/> Yes 是</label>
+<label><input name="chronicConditions" style="margin-right: 8px;" type="radio" value="no"/> No 否</label>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">If yes, please specify: <span class="chinese-text">如是，请说明：</span></td>
+<td><textarea class="input-field" id="chronicDetails" placeholder="请详细说明任何慢性疾病或特殊健康状况，包括诊断日期、治疗方法、服用药物等..." rows="2"></textarea></td>
+</tr>
+<tr>
+<td><strong>Learning Difficulties<br/>学习障碍</strong></td>
+<td>
+<label style="margin-right: 15px;"><input name="learningDifficulties" style="margin-right: 8px;" type="radio" value="yes"/> Yes 是</label>
+<label><input name="learningDifficulties" style="margin-right: 8px;" type="radio" value="no"/> No 否</label>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">If yes, please specify: <span class="chinese-text">如是，请说明</span></td>
+<td><textarea class="input-field" id="learningDetails" placeholder="请详细说明学习障碍类型、诊断情况、所需支援等..." rows="2"></textarea></td>
+</tr>
+<tr>
+
+<td style="vertical-align: top;"><strong>Additional Information<br/>其他重要健康资讯</strong></td>
+<td><textarea class="input-field" id="additionalInfo" placeholder="请提供任何其他重要的健康资讯，包括心理健康状况、特殊需求、紧急联络人资讯等..." rows="3"></textarea></td>
+</tr>
+</table>
+<h4>Vaccination Record 疫苗接种纪录</h4>
+<p>Please provide date for each vaccine your child has received. <span class="chinese-text">请提供孩子已接种疫苗的日期。。</span></p>
+<table class="parties-table">
+<tr>
+<th>Vaccine 疫苗</th>
+<th>Date 日期</th>
+</tr>
+<tr>
+<td>DTaP/IPV/Hib (Diphtheria, Tetanus, Pertussis, Polio, Hib)<br/><span class="chinese-text">白喉、破伤风、百日咳、脊髓灰质炎、B型流感嗜血杆菌</span></td>
+<td><input class="input-field" id="vaccine1" type="date"/></td>
+</tr>
+<tr>
+<td>MMR (Measles, Mumps, Rubella)<br/><span class="chinese-text">麻疹、腮腺炎、风疹</span></td>
+<td><input class="input-field" id="vaccine2" type="date"/></td>
+</tr>
+<tr>
+<td>BCG (Tuberculosis)<br/><span class="chinese-text">卡介苗</span></td>
+<td><input class="input-field" id="vaccine3" type="date"/></td>
+</tr>
+<tr>
+<td>Meningitis ACWY<br/><span class="chinese-text">脑膜炎菌 A、C、W、Y 型</span></td>
+<td><input class="input-field" id="vaccine4" type="date"/></td>
+</tr>
+<tr>
+<td>Meningitis B<br/><span class="chinese-text">脑膜炎菌 B 型</span></td>
+<td><input class="input-field" id="vaccine5" type="date"/></td>
+</tr>
+<tr>
+<td>HPV (Human Papillomavirus)<br/><span class="chinese-text">人类乳突病毒</span></td>
+<td><input class="input-field" id="vaccine6" type="date"/></td>
+</tr>
+<tr>
+<td>Pneumococcal<br/><span class="chinese-text">肺炎球菌</span></td>
+<td><input class="input-field" id="vaccine7" type="date"/></td>
+</tr>
+</table>
+</div>
+<h2>Signatures and Acknowledgements 签署及确认</h2>
+<h3>声明与确认 Declaration</h3>
+<p><strong>Please tick the box to confirm acceptance 请在每项声明前方框内勾选以示确认：</strong></p>
+<div class="checkbox-group">
+<input id="declaration1" required="" type="checkbox"/>
+<label for="declaration1">I / We have read and understood all Terms and Conditions as contained in this document including the Appendices.<br/><span class="chinese-text">本人/我们已阅读并理解本协议及其附件（A 与 B）中的所有条款。</span></label>
+</div>
+
+<div class="checkbox-group">
+<input id="declaration2" required="" type="checkbox"/>
+<label for="declaration2">I / We have understood and completed the Parental consents section.<br/><span class="chinese-text">本人/我们已了解并完整填写了家长批准相关部分。</span></label>
+</div>
+<div class="checkbox-group">
+<input id="declaration3" required="" type="checkbox"/>
+<label for="declaration3">I / We agree to inform SchoolsGroup Limited UK of any changes to any information requested herein and anything which may affect the care of the student, the Agreement, and StudyNest's ability to discharge its obligations under this Agreement.<br/><span class="chinese-text">本人/我们同意如有本表所要求的信息变更，或任何可能影响英伦学居履行照顾学生义务与协议内容之情况，将主动告知。</span></label>
+</div>
+<div class="checkbox-group">
+<input id="declaration4" required="" type="checkbox"/>
+<label for="declaration4">I / We confirm that we will pay the fees in advance or on receipt of an invoice.<br/><span class="chinese-text">本人/我们确认将提前支付或于收到付款通知后支付相关费用。。</span></label>
+</div>
+<div class="checkbox-group">
+<input id="declaration5" required="" type="checkbox"/>
+<label for="declaration5">I / We confirm that we have read and understood all the contents of Appendix A and Appendix B. The signature below confirms acceptance.<br/><span class="chinese-text">本人/我们确认已阅读并理解附件 A 及附件 B 的全部内容。以下签字即为接受。</span></label>
+</div>
+<div class="checkbox-group">
+<input id="declaration6" required="" type="checkbox"/>
+<label for="declaration6">I / We agree that this Agreement is governed by the laws of England and Wales, and that any disputes shall be subject to the exclusive jurisdiction of the courts located in the place of StudyNest Education's registration.<br/><span class="chinese-text">本人/我们同意本协议受英格兰与威尔斯法律管辖，并同意任何争议应提交至英伦学居注册所在地具管辖权之法院处理。</span></label>
+</div>
+<div class="checkbox-group">
+<input id="declaration7" required="" type="checkbox"/>
+<label for="declaration7">I / We agree to abide by all obligations set out in this Agreement and undertake not to make false claims or defamatory remarks against StudyNest, its staff, host families, or agents that are unrelated to the actual care of the student.<br/><span class="chinese-text">本人/我们同意遵守本协议所载之所有义务，并承诺不对英伦学居、其工作人员、寄宿家庭或代理人作出与实际照顾学生无关之虚假指控或毁损名誉的行为。</span></label>
+</div>
+<div style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;">
+<h4 style="color: #2d3748;">Declaration 声明:</h4>
+<p>I declare that the information provided above is true and accurate to the best of my knowledge. I understand that providing false information may affect my child's admission or enrolment. I authorize SchoolsGroup and the school to use this information to ensure proper care for my child.</p>
+<p class="chinese-text">本人声明上述资料均属真实且正确。明白如有虚假资料，可能影响孩子入学资格。授权英伦学居及学校使用本信息以保障孩子健康与安全。</p>
+</div>
+
+<div class="signature-section">
+<h4>家长／监护人签名（父亲 Father）</h4>
+<canvas class="signature-pad" id="fatherSignature"></canvas>
+<div class="signature-controls">
+<button class="btn btn-secondary" onclick="clearSignature('fatherSignature')" type="button">清除 Clear</button>
+</div>
+<input class="input-field" id="fatherSignatureDate" placeholder="簽名日期 Signature Date" style="margin-top: 10px;" type="text"/>
+<div class="signature-status empty">⚠ 請完成签名 Please complete signature</div>
+</div>
+<div class="signature-section">
+<h4>家长／监护人签名（母亲 Mother）</h4>
+<canvas class="signature-pad" id="motherSignature"></canvas>
+<div class="signature-controls">
+<button class="btn btn-secondary" onclick="clearSignature('motherSignature')" type="button">清除 Clear</button>
+</div>
+<input class="input-field" id="motherSignatureDate" placeholder="簽名日期 Signature Date" style="margin-top: 10px;" type="text"/>
+<div class="signature-status empty">⚠ 請完成签名 Please complete signature</div>
+</div>
+<div class="signature-section">
+<h4>StudyNest Education 代表签名</h4>
+<div style="text-align: center; padding: 20px; background: white; border: 2px solid #ddd; border-radius: 8px;">
+<div class="elegant-signature">Jessie Chang</div>
+<p><strong>StudyNest Education Representative</strong></p>
+<p>Date: <span id="companySignatureDate"></span></p>
+</div>
+<!-- 感谢文字 -->
+<div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px; border-left: 5px solid #28a745; text-align: center;">
+<h4 style="color: #28a745; margin-bottom: 15px; font-size: 1.2em;">✅ Contract Completion 合約完成</h4>
+<p style="margin-bottom: 10px; line-height: 1.6;">
+Thank you for completing the online contract. Your electronic signature has been recorded. To finalise the process, please <strong>download the signed PDF</strong> and <strong>return it to StudyNest via email or messaging app</strong> for our records. No further signature is required.
+</p>
+<p class="chinese-text" style="margin: 0; line-height: 1.6; color: #495057;">
+感谢您完成线上合约填写，您的电子签名已成功记录。为完成最终程序，请<strong>下载已签署的 PDF 合约</strong>並<strong>回传至英伦学居</strong>，以便我们存档备查。<strong>无需再次签名。</strong>
+</p>
+</div>
+</div>
+<div class="final-actions">
+<button class="btn btn-primary" onclick="printContract()" type="button">
+                📄 Download Signed Contract 下载已签署合约
+            </button>
+</div>
+</div>
+
+<script>
+// 檢查必要的外部庫是否已載入
+function checkLibraries() {
+    const missingLibs = [];
+    
+    if (typeof window.jspdf === 'undefined') {
+        missingLibs.push('jsPDF');
+    }
+    
+    if (typeof html2canvas === 'undefined') {
+        missingLibs.push('html2canvas');
+    }
+    
+    if (missingLibs.length > 0) {
+        console.error('缺少必要的外部庫:', missingLibs.join(', '));
+        return false;
+    }
+    
+    return true;
+}
+
+// 電子簽名功能類
+class SignaturePad {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.isDrawing = false;
+        this.hasSignature = false;
+        this.lastPos = { x: 0, y: 0 };
+        
+        this.setupCanvas();
+        this.attachEventListeners();
+    }
+    
+    setupCanvas() {
+        // 設置canvas尺寸
+        const rect = this.canvas.getBoundingClientRect();
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        
+        this.canvas.width = rect.width * ratio;
+        this.canvas.height = rect.height * ratio;
+        
+        this.canvas.style.width = rect.width + 'px';
+        this.canvas.style.height = rect.height + 'px';
+        
+        this.ctx.scale(ratio, ratio);
+        
+        // 設置繪製樣式
+        this.ctx.strokeStyle = '#2c3e50';
+        this.ctx.lineWidth = 2;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.imageSmoothingEnabled = true;
+    }
+    
+    attachEventListeners() {
+        // 鼠標事件
+        this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+        this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+        this.canvas.addEventListener('mouseup', () => this.stopDrawing());
+        this.canvas.addEventListener('mouseout', () => this.stopDrawing());
+        
+        // 觸控事件
+        this.canvas.addEventListener('touchstart', (e) => this.handleTouch(e));
+        this.canvas.addEventListener('touchmove', (e) => this.handleTouch(e));
+        this.canvas.addEventListener('touchend', () => this.stopDrawing());
+        
+        // 防止頁面滾動
+        this.canvas.addEventListener('touchstart', (e) => e.preventDefault());
+        this.canvas.addEventListener('touchmove', (e) => e.preventDefault());
+    }
+    
+    getPosition(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    }
+    
+    startDrawing(e) {
+        this.isDrawing = true;
+        this.lastPos = this.getPosition(e);
+        
+        // 開始新路徑
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.lastPos.x, this.lastPos.y);
+    }
+    
+    draw(e) {
+        if (!this.isDrawing) return;
+        
+        const currentPos = this.getPosition(e);
+        
+        this.ctx.lineTo(currentPos.x, currentPos.y);
+        this.ctx.stroke();
+        
+        this.lastPos = currentPos;
+        this.hasSignature = true;
+        this.updateStatus();
+    }
+    
+    stopDrawing() {
+        if (this.isDrawing) {
+            this.isDrawing = false;
+            this.ctx.beginPath(); // 結束當前路徑
+        }
+    }
+    
+    handleTouch(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent(
+            e.type === 'touchstart' ? 'mousedown' : 'mousemove',
+            {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            }
+        );
+        this.canvas.dispatchEvent(mouseEvent);
+    }
+    
+    clear() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.hasSignature = false;
+        this.updateStatus();
+    }
+    
+    isEmpty() {
+        return !this.hasSignature;
+    }
+    
+    getDataURL(type = 'image/png') {
+        return this.canvas.toDataURL(type);
+    }
+    
+    updateStatus() {
+        const statusEl = this.canvas.parentElement.querySelector('.signature-status');
+        if (statusEl) {
+            if (this.hasSignature) {
+                statusEl.className = 'signature-status signed';
+                statusEl.textContent = '✓ 簽名已完成 Signature completed';
+            } else {
+                statusEl.className = 'signature-status empty';
+                statusEl.textContent = '⚠ 請完成簽名 Please complete signature';
+            }
+        }
+    }
+}
+
+// PDF生成和下載功能類
+class ContractPDFGenerator {
+    constructor() {
+        this.signatures = {};
+    }
+    
+    // 初始化所有簽名板
+    initializeSignaturePads() {
+        const signatureCanvases = document.querySelectorAll('.signature-pad');
+        
+        signatureCanvases.forEach(canvas => {
+            this.signatures[canvas.id] = new SignaturePad(canvas);
+            
+            // 添加狀態顯示元素
+            if (!canvas.parentElement.querySelector('.signature-status')) {
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'signature-status empty';
+                statusDiv.textContent = '⚠ 請完成簽名 Please complete signature';
+                canvas.parentElement.appendChild(statusDiv);
+            }
+        });
+    }
+    
+    // 清除指定簽名
+    clearSignature(canvasId) {
+        if (this.signatures[canvasId]) {
+            this.signatures[canvasId].clear();
+        }
+    }
+    
+    // 驗證表單完整性
+    validateForm() {
+        const errors = [];
+        
+        try {
+            // 檢查必填欄位
+            const requiredFields = [
+                { id: 'parentName', name: '家長姓名' },
+                { id: 'parentAddress', name: '家長地址' },
+                { id: 'studentFirstName', name: '學生名字' },
+                { id: 'studentLastName', name: '學生姓氏' },
+                { id: 'studentDOB', name: '學生出生日期' },
+                { id: 'passportNo', name: '護照號碼' }
+            ];
+            
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field.id);
+                if (!element) {
+                    console.warn(`必填欄位元素未找到: ${field.id}`);
+                    errors.push(`找不到欄位: ${field.name}`);
+                } else if (!element.value || !element.value.trim()) {
+                    errors.push(`請填寫 ${field.name}`);
+                }
+            });
+            
+            // 檢查性別選擇
+            const genderChecked = document.querySelector('input[name="gender"]:checked');
+            if (!genderChecked) {
+                errors.push('請選擇學生性別');
+            }
+            
+            // 檢查監護方案選擇
+            const planChecked = document.querySelector('input[name="guardianshipPlan"]:checked');
+            if (!planChecked) {
+                errors.push('請選擇監護方案');
+            }
+            
+            // 檢查必要的勾選項
+            const requiredCheckboxes = [
+                'declaration1', 'declaration2', 'declaration3', 
+                'declaration4', 'declaration5', 'declaration6', 'declaration7'
+            ];
+            
+            requiredCheckboxes.forEach(checkboxId => {
+                const checkbox = document.getElementById(checkboxId);
+                if (!checkbox) {
+                    console.warn(`勾選項目元素未找到: ${checkboxId}`);
+                    errors.push(`找不到勾選項目: ${checkboxId}`);
+                } else if (!checkbox.checked) {
+                    errors.push(`請勾選聲明項目: ${checkboxId}`);
+                }
+            });
+            
+            // 檢查簽名
+            if (this.signatures) {
+                let signatureErrors = [];
+                Object.keys(this.signatures).forEach(signatureId => {
+                    if (this.signatures[signatureId] && this.signatures[signatureId].isEmpty()) {
+                        const signatureName = signatureId.replace('Signature', '');
+                        signatureErrors.push(`請完成${signatureName}簽名`);
+                    }
+                });
+                
+                if (signatureErrors.length > 0) {
+                    errors.push(...signatureErrors);
+                }
+            } else {
+                errors.push('簽名功能尚未初始化');
+            }
+            
+        } catch (error) {
+            console.error('表單驗證時發生錯誤:', error);
+            errors.push('表單驗證過程中發生錯誤');
+        }
+        
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
+    }
+    
+    // 生成合約編號
+    generateContractNumber() {
+        try {
+            const firstNameEl = document.getElementById('studentFirstName');
+            const lastNameEl = document.getElementById('studentLastName');
+            const signingDateEl = document.getElementById('signingDate');
+            
+            if (!firstNameEl || !lastNameEl || !signingDateEl) {
+                console.warn('合約編號生成：必要元素未找到');
+                return 'SN-PENDING-COMPLETION';
+            }
+            
+            const firstName = firstNameEl.value?.trim() || '';
+            const lastName = lastNameEl.value?.trim() || '';
+            const signingDate = signingDateEl.value || '';
+            
+            if (firstName && lastName && signingDate) {
+                const firstInitial = firstName.charAt(0).toUpperCase();
+                const lastInitial = lastName.charAt(0).toUpperCase();
+                const dateFormatted = signingDate.replace(/-/g, '');
+                const randomNum = Math.floor(Math.random() * 900) + 100;
+                
+                const contractNumber = `SN-${firstInitial}${lastInitial}-${dateFormatted}-${randomNum}`;
+                
+                // 更新顯示
+                const contractNumberInput = document.getElementById('contractNumberInput');
+                if (contractNumberInput) {
+                    contractNumberInput.value = contractNumber;
+                    contractNumberInput.style.backgroundColor = '#e8f5e8';
+                    contractNumberInput.style.color = '#2d5a2d';
+                } else {
+                    console.warn('contractNumberInput 元素未找到');
+                }
+                
+                return contractNumber;
+            }
+            
+            return 'SN-PENDING-COMPLETION';
+        } catch (error) {
+            console.error('生成合約編號時發生錯誤:', error);
+            return 'SN-PENDING-COMPLETION';
+        }
+    }
+    
+    // 生成並下載PDF
+    async generatePDF() {
+        try {
+            // 檢查外部庫
+            if (!checkLibraries()) {
+                alert('系統載入中，請稍後再試...\nSystem loading, please try again later...');
+                return;
+            }
+            
+            // 驗證表單
+            const validation = this.validateForm();
+            if (!validation.isValid) {
+                alert('請完成以下項目後再下載合約：\n\n' + validation.errors.join('\n'));
+                return;
+            }
+            
+            // 生成合約編號
+            this.generateContractNumber();
+            
+            // 隱藏下載按鈕
+            const finalActions = document.querySelector('.final-actions');
+            if (finalActions) {
+                finalActions.style.display = 'none';
+            }
+            
+            // 顯示載入訊息
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'pdf-loading';
+            loadingDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                text-align: center;
+                font-family: inherit;
+            `;
+            loadingDiv.innerHTML = `
+                <div style="font-size: 18px; margin-bottom: 15px;">📄 正在生成PDF合約...</div>
+                <div style="font-size: 14px; color: #666;">Generating PDF contract...</div>
+                <div style="margin-top: 15px;">
+                    <div style="width: 200px; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
+                        <div style="width: 0%; height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px; animation: progress 3s ease-in-out infinite;"></div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes progress {
+                        0% { width: 0%; }
+                        50% { width: 70%; }
+                        100% { width: 100%; }
+                    }
+                </style>
+            `;
+            document.body.appendChild(loadingDiv);
+            
+            // 等待一點時間讓UI更新
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // 使用html2canvas捕獲整個合約內容
+            const contractContainer = document.querySelector('.contract-container');
+            
+            const canvas = await html2canvas(contractContainer, {
+                scale: 2, // 高品質
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                width: contractContainer.offsetWidth,
+                height: contractContainer.offsetHeight,
+                scrollX: 0,
+                scrollY: 0
+            });
+            
+            // 創建PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            
+            // 計算圖片尺寸以適應A4
+            const imgWidth = 210; // A4寬度
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            // 如果內容太長，分頁處理
+            let heightLeft = imgHeight;
+            let position = 0;
+            
+            // 添加第一頁
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= 297; // A4高度
+            
+            // 如果需要分頁
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= 297;
+            }
+            
+            // 生成檔案名稱
+            const contractNumber = this.generateContractNumber();
+            const studentName = `${document.getElementById('studentFirstName').value}_${document.getElementById('studentLastName').value}`;
+            const fileName = `StudyNest_Contract_${contractNumber}_${studentName}.pdf`;
+            
+            // 下載PDF
+            pdf.save(fileName);
+            
+            // 移除載入訊息
+            document.body.removeChild(loadingDiv);
+            
+            // 恢復下載按鈕
+            if (finalActions) {
+                finalActions.style.display = 'flex';
+            }
+            
+            // 顯示成功訊息
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #d4edda;
+                color: #155724;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                font-family: inherit;
+                border: 1px solid #c3e6cb;
+            `;
+            successDiv.innerHTML = `
+                <div style="font-weight: bold;">✅ PDF合約下載成功！</div>
+                <div style="font-size: 12px; margin-top: 5px;">請將檔案回傳給StudyNest Education</div>
+            `;
+            document.body.appendChild(successDiv);
+            
+            // 3秒後移除成功訊息
+            setTimeout(() => {
+                if (document.body.contains(successDiv)) {
+                    document.body.removeChild(successDiv);
+                }
+            }, 3000);
+            
+        } catch (error) {
+            console.error('PDF生成錯誤:', error);
+            
+            // 移除載入訊息
+            const loadingDiv = document.getElementById('pdf-loading');
+            if (loadingDiv) {
+                document.body.removeChild(loadingDiv);
+            }
+            
+            // 恢復下載按鈕
+            const finalActions = document.querySelector('.final-actions');
+            if (finalActions) {
+                finalActions.style.display = 'flex';
+            }
+            
+            alert('PDF生成失敗，請稍後重試或聯繫技術支援。\nPDF generation failed, please try again or contact technical support.');
+        }
+    }
+}
+
+// 全局實例
+let contractPDF = null;
+
+// 頁面載入完成後初始化
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        // 創建PDF生成器實例
+        contractPDF = new ContractPDFGenerator();
+        
+        // 初始化簽名板
+        contractPDF.initializeSignaturePads();
+        
+        // 設置今天的日期
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        const todayDisplay = today.toLocaleDateString('en-GB');
+        
+        // 安全地設置日期值
+        const signingDateEl = document.getElementById('signingDate');
+        const companySignatureDateEl = document.getElementById('companySignatureDate');
+        const fatherSignatureDateEl = document.getElementById('fatherSignatureDate');
+        const motherSignatureDateEl = document.getElementById('motherSignatureDate');
+        
+        if (signingDateEl) signingDateEl.value = todayString;
+        if (companySignatureDateEl) companySignatureDateEl.textContent = todayDisplay;
+        if (fatherSignatureDateEl) fatherSignatureDateEl.value = todayDisplay;
+        if (motherSignatureDateEl) motherSignatureDateEl.value = todayDisplay;
+        
+        // 自動同步學生資訊
+        const syncStudentInfo = () => {
+            try {
+                const firstNameEl = document.getElementById('studentFirstName');
+                const lastNameEl = document.getElementById('studentLastName');
+                const dobEl = document.getElementById('studentDOB');
+                const medicalNameEl = document.getElementById('medicalName');
+                const medicalDOBEl = document.getElementById('medicalDOB');
+                
+                const firstName = firstNameEl?.value || '';
+                const lastName = lastNameEl?.value || '';
+                const dob = dobEl?.value || '';
+                
+                if (firstName && lastName && medicalNameEl) {
+                    medicalNameEl.value = `${firstName} ${lastName}`;
+                }
+                if (dob && medicalDOBEl) {
+                    medicalDOBEl.value = dob;
+                }
+                
+                if (contractPDF) {
+                    contractPDF.generateContractNumber();
+                }
+            } catch (error) {
+                console.error('同步學生資訊時發生錯誤:', error);
+            }
+        };
+        
+        // 安全地添加事件監聽器
+        const studentFirstNameEl = document.getElementById('studentFirstName');
+        const studentLastNameEl = document.getElementById('studentLastName');
+        const studentDOBEl = document.getElementById('studentDOB');
+        const signingDateEl2 = document.getElementById('signingDate');
+        
+        if (studentFirstNameEl) {
+            studentFirstNameEl.addEventListener('input', syncStudentInfo);
+        }
+        if (studentLastNameEl) {
+            studentLastNameEl.addEventListener('input', syncStudentInfo);
+        }
+        if (studentDOBEl) {
+            studentDOBEl.addEventListener('change', syncStudentInfo);
+        }
+        if (signingDateEl2) {
+            signingDateEl2.addEventListener('change', () => {
+                if (contractPDF) contractPDF.generateContractNumber();
+            });
+        }
+        
+        console.log('✅ 頁面初始化完成');
+        
+    } catch (error) {
+        console.error('頁面初始化時發生錯誤:', error);
+    }
+});
+
+// 全局函數（供HTML調用）
+function clearSignature(canvasId) {
+    try {
+        if (contractPDF && contractPDF.signatures && contractPDF.signatures[canvasId]) {
+            contractPDF.clearSignature(canvasId);
+        } else {
+            console.warn(`簽名板 ${canvasId} 未找到或未初始化`);
+        }
+    } catch (error) {
+        console.error('清除簽名時發生錯誤:', error);
+    }
+}
+
+function printContract() {
+    try {
+        if (contractPDF) {
+            contractPDF.generatePDF();
+        } else {
+            console.error('contractPDF 未初始化');
+            alert('系統尚未完全載入，請稍後再試');
+        }
+    } catch (error) {
+        console.error('生成PDF時發生錯誤:', error);
+        alert('PDF生成失敗，請稍後重試或聯繫技術支援。');
+    }
+}
+
+// 窗口大小改變時重新設置canvas
+window.addEventListener('resize', function() {
+    try {
+        if (contractPDF && contractPDF.signatures) {
+            setTimeout(() => {
+                Object.values(contractPDF.signatures).forEach(signature => {
+                    if (signature && signature.setupCanvas) {
+                        signature.setupCanvas();
+                    }
+                });
+            }, 100);
+        }
+    } catch (error) {
+        console.error('調整畫布大小時發生錯誤:', error);
+    }
+});
+</script>
+
+</body>
+</html>
 
