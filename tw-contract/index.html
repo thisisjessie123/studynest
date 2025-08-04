@@ -489,6 +489,15 @@
 </div>
 </div>
 <div class="contract-content">
+<div style="text-align: right; margin-bottom: 15px;">
+<span style="font-size: 0.85em; color: #ed8936; font-weight: 600;">
+Contract No. <span id="contractNumber" style="font-family: 'Courier New', monospace;">SN-PENDING-COMPLETION</span>
+</span>
+<br/>
+<span style="font-size: 0.75em; color: #666; font-weight: 500;" class="chinese-text">
+資料填寫完成後將自動生成合約編號
+</span>
+</div>
 <div class="review-date">
 <strong>審閱日期 Review Date：2025年8月 August 2025</strong>
 </div>
@@ -496,29 +505,61 @@
 <h2>Agreement Parties 合約雙方</h2>
 <table class="parties-table">
 <tr>
-<th style="width: 20%;">Party A 甲方</th>
+<th style="width: 20%;">
+<div style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Party A:</strong></div>
+<div class="chinese-text"><strong>甲方：</strong></div>
+</div>
+</th>
 <td style="width: 40%;">
 <input class="input-field" id="parentName" placeholder="家長姓名 Parent Name" required="" type="text"/>
 </td>
-<td style="width: 40%;">（以下簡稱「家長」）</td>
+<td style="width: 40%; font-size: 0.85em; line-height: 1.4;">
+<div>(hereinafter referred to as <strong>the Parent</strong>)</div>
+<div class="chinese-text">（以下簡稱「<strong>家長</strong>」）</div>
+</td>
 </tr>
 <tr>
-<td><strong>Address 地址：</strong></td>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Address:</strong></div>
+<div class="chinese-text"><strong>地址：</strong></div>
+</td>
 <td colspan="2">
 <textarea class="input-field" id="parentAddress" placeholder="請輸入完整地址 Please enter complete address" required="" rows="3"></textarea>
 </td>
 </tr>
 <tr>
-<th>Party B 乙方</th>
+<th style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Party B:</strong></div>
+<div class="chinese-text"><strong>乙方：</strong></div>
+</th>
 <td><strong>StudyNest Education Limited</strong></td>
-<td>（以下簡稱「監護公司」或「監護人」）</td>
+<td style="font-size: 0.85em; line-height: 1.4;">
+<div>(hereinafter referred to as <strong>StudyNest</strong> or <strong>the Guardian</strong>)</div>
+<div class="chinese-text">（以下簡稱「<strong>英倫學居</strong>」或「<strong>監護人</strong>」）</div>
+</td>
 </tr>
 <tr>
-<td><strong>Address 地址：</strong></td>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Address:</strong></div>
+<div class="chinese-text"><strong>地址：</strong></div>
+</td>
 <td colspan="2"><strong>1 Boleyn Way, Barnet, EN5 5LH</strong></td>
 </tr>
 <tr>
-<td><strong>簽署日期 Date of Signing：</strong></td>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Contract No.:</strong></div>
+<div class="chinese-text"><strong>合約編號：</strong></div>
+</td>
+<td colspan="2">
+<input class="input-field" id="contractNumberInput" placeholder="Contract number will be auto-generated" readonly="" style="background-color: #f8f9fa; color: #6c757d;" type="text"/>
+</td>
+</tr>
+<tr>
+<td style="font-size: 0.9em; line-height: 1.3;">
+<div><strong>Date of Signing:</strong></div>
+<div class="chinese-text"><strong>簽署日期：</strong></div>
+</td>
 <td colspan="2">
 <input class="input-field" id="signingDate" readonly="" required="" type="date"/>
 </td>
@@ -667,6 +708,7 @@
 <input id="comprehensivePlan" name="guardianshipPlan" type="radio" value="comprehensive"/>
 <label for="comprehensivePlan">全面監護方案 Comprehensive Guardianship Plan</label>
 </div>
+
 <h3>聲明與確認 Declaration</h3>
 <p><strong>Please tick the box to confirm acceptance 請在每項聲明前方框內勾選以示確認：</strong></p>
 <div class="checkbox-group">
@@ -697,6 +739,7 @@
 <input id="declaration7" required="" type="checkbox"/>
 <label for="declaration7">I / We agree to abide by all obligations set out in this Agreement and undertake not to make false claims or defamatory remarks against StudyNest, its staff, host families, or agents that are unrelated to the actual care of the student.<br/><span class="chinese-text">本人／我們同意遵守本協議所載之所有義務，並承諾不對英倫學居、其職員、寄宿家庭或代理人作出與實際照顧學生無關之虛假指控或毀損名譽的行為。</span></label>
 </div>
+
 <h2>Appendix A. Service Details 監護方案介紹</h2>
 <p>Below are the two carefully designed guardianship plans offered by SchoolsGroup to meet the diverse needs of families and students, providing professional and comprehensive support and protection. Please select the plan that best suits your requirements.</p>
 <p class="chinese-text">以下為英倫學居為您精心設計的兩款監護方案，旨在滿足不同家庭和學生的需求，提供專業全面的支持和保障。請根據您的需求選擇最合適的方案。</p>
@@ -929,7 +972,12 @@
 </div>
 <h2>Signatures and Acknowledgements 簽署及確認</h2>
 <div class="signature-section">
-<h4>家長／監護人簽名（父親 Father）</h4>
+<div style="margin-top: 40px; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;">
+<h4 style="color: #2d3748;">Declaration 聲明:</h4>
+<p>I declare that the information provided above is true and accurate to the best of my knowledge. I understand that providing false information may affect my child's admission or enrolment. I authorize SchoolsGroup and the school to use this information to ensure proper care for my child.</p>
+<p class="chinese-text">本人聲明上述資料均屬真實且正確。明白如有虛假資料，可能影響孩子入學資格。授權英倫學居及學校使用本資訊以保障孩子健康與安全。</p>
+</div>
+        <h4>家長／監護人簽名（父親 Father）</h4>
 <canvas class="signature-pad" id="fatherSignature"></canvas>
 <div class="signature-controls">
 <button class="btn btn-secondary" onclick="clearSignature('fatherSignature')" type="button">清除 Clear</button>
@@ -951,24 +999,62 @@
 <p><strong>StudyNest Education Representative</strong></p>
 <p>Date: <span id="companySignatureDate"></span></p>
 </div>
-</div>
-<div style="margin-top: 40px; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;">
-<h4 style="color: #2d3748;">Declaration 聲明:</h4>
-<p>I declare that the information provided above is true and accurate to the best of my knowledge. I understand that providing false information may affect my child's admission or enrolment. I authorize SchoolsGroup and the school to use this information to ensure proper care for my child.</p>
-<p class="chinese-text">本人聲明上述資料均屬真實且正確。明白如有虛假資料，可能影響孩子入學資格。授權英倫學居及學校使用本資訊以保障孩子健康與安全。</p>
+
+<!-- 感谢文字 -->
+<div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px; border-left: 5px solid #28a745; text-align: center;">
+<h4 style="color: #28a745; margin-bottom: 15px; font-size: 1.2em;">✅ Contract Completion 合約完成</h4>
+<p style="margin-bottom: 10px; line-height: 1.6;">
+Thank you for completing the online contract. Your electronic signature has been recorded. To finalise the process, please <strong>download the signed PDF</strong> and <strong>return it to StudyNest</strong> for our records. No further signature is required.
+</p>
+<p class="chinese-text" style="margin: 0; line-height: 1.6; color: #495057;">
+感謝您完成線上合約填寫，您的電子簽名已成功記錄。為完成最終程序，請<strong>下載已簽署的 PDF 合約</strong>並<strong>回傳至英倫學居</strong>，以便我們存檔備查。<strong>無需再次簽名。</strong>
+</p>
 </div>
 </div>
 <div class="final-actions">
 <button class="btn btn-primary" onclick="printContract()" type="button">
-                🖨️ Print as PDF
-            </button>
-<button class="btn btn-success" onclick="submitContract()" type="button">
-                📧 確認送出 Submit
+                📄 Download Signed Contract 下載已簽署合約
             </button>
 </div>
 </div>
 <script>
         let signatures = {};
+        
+        function generateContractNumber() {
+            const firstName = document.getElementById('studentFirstName').value.trim();
+            const lastName = document.getElementById('studentLastName').value.trim();
+            const signingDate = document.getElementById('signingDate').value;
+            
+            if (firstName && lastName && signingDate) {
+                // Get initials from names
+                const firstInitial = firstName.charAt(0).toUpperCase();
+                const lastInitial = lastName.charAt(0).toUpperCase();
+                
+                // Format date as YYYYMMDD
+                const dateFormatted = signingDate.replace(/-/g, '');
+                
+                // Generate 3-digit random number
+                const randomNum = Math.floor(Math.random() * 900) + 100; // 100-999
+                
+                // Create contract number: SN-JS-20250804-127
+                const contractNumber = `SN-${firstInitial}${lastInitial}-${dateFormatted}-${randomNum}`;
+                
+                // Update display
+                document.getElementById('contractNumber').textContent = contractNumber;
+                document.getElementById('contractNumber').style.color = '#f6ad55';
+                
+                // Store for email submission
+                window.generatedContractNumber = contractNumber;
+                
+                return contractNumber;
+            } else {
+                // Reset to pending if incomplete
+                document.getElementById('contractNumber').textContent = 'SN-PENDING-COMPLETION';
+                document.getElementById('contractNumber').style.color = 'white';
+                window.generatedContractNumber = null;
+                return null;
+            }
+        }
         
         function initializeSignaturePads() {
             const signaturePads = document.querySelectorAll('.signature-pad');
@@ -1052,6 +1138,7 @@
         }
         
         function validateForm() {
+            // Simplified validation for contract completion
             const requiredFields = [
                 'parentName', 'parentAddress', 'signingDate', 'studentFirstName', 
                 'studentLastName', 'studentDOB', 'passportNo'
@@ -1077,7 +1164,7 @@
                 }
             });
             
-            // Check required checkboxes
+            // Check required checkboxes  
             requiredCheckboxes.forEach(checkboxId => {
                 const checkbox = document.getElementById(checkboxId);
                 if (!checkbox.checked) {
@@ -1100,15 +1187,35 @@
                 errors.push('Please select a guardianship plan');
             }
             
-            if (!isValid) {
-                alert('請填寫所有必填項目：\n' + errors.join('\n'));
+            // Ensure contract number is generated
+            if (!window.generatedContractNumber) {
+                generateContractNumber();
+                if (!window.generatedContractNumber) {
+                    isValid = false;
+                    errors.push('Contract number could not be generated. Please check student name and signing date.');
+                }
             }
             
-            return isValid;
+            if (!isValid) {
+                alert('請完成所有必填項目後再下載合約：\nPlease complete all required fields before downloading:\n\n' + errors.join('\n'));
+                return false;
+            }
+            
+            return true;
         }
         
         function printContract() {
             try {
+                // Validate form before printing
+                if (!validateForm()) {
+                    return; // Stop if validation fails
+                }
+                
+                // Ensure contract number is generated before printing
+                if (!window.generatedContractNumber) {
+                    generateContractNumber();
+                }
+                
                 // Create a print stylesheet to hide action buttons
                 const style = document.createElement('style');
                 style.textContent = `
@@ -1130,164 +1237,7 @@
                 
             } catch (error) {
                 console.error('Print error:', error);
-                alert('列印功能發生錯誤，請嘗試使用瀏覽器的列印功能（Ctrl+P）');
-            }
-        }
-        
-        function submitContract() {
-            try {
-                if (!validateForm()) {
-                    return;
-                }
-                
-                // Show loading state
-                const submitBtn = event.target;
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '📧 發送中... Sending...';
-                submitBtn.disabled = true;
-                
-                // Collect all form data
-                const formData = {
-                    // Basic info
-                    parentName: document.getElementById('parentName').value || 'Not provided',
-                    parentAddress: document.getElementById('parentAddress').value || 'Not provided',
-                    signingDate: document.getElementById('signingDate').value || 'Not provided',
-                    
-                    // Student info
-                    studentFirstName: document.getElementById('studentFirstName').value || 'Not provided',
-                    studentLastName: document.getElementById('studentLastName').value || 'Not provided',
-                    studentDOB: document.getElementById('studentDOB').value || 'Not provided',
-                    passportNo: document.getElementById('passportNo').value || 'Not provided',
-                    gender: document.querySelector('input[name="gender"]:checked')?.value || 'Not specified',
-                    
-                    // Parents info
-                    motherName: document.getElementById('motherName').value || 'Not provided',
-                    fatherName: document.getElementById('fatherName').value || 'Not provided',
-                    motherMobile: document.getElementById('motherMobile').value || 'Not provided',
-                    fatherMobile: document.getElementById('fatherMobile').value || 'Not provided',
-                    motherEmail: document.getElementById('motherEmail').value || 'Not provided',
-                    fatherEmail: document.getElementById('fatherEmail').value || 'Not provided',
-                    homeAddress: document.getElementById('homeAddress').value || 'Not provided',
-                    
-                    // Plan selection
-                    guardianshipPlan: document.querySelector('input[name="guardianshipPlan"]:checked')?.value || 'Not selected',
-                    
-                    // Medical info
-                    bloodType: document.getElementById('bloodType').value || 'Not provided',
-                    generalHealth: document.getElementById('generalHealth').value || 'Not provided',
-                    allergies: document.getElementById('allergies').value || 'Not provided',
-                    additionalInfo: document.getElementById('additionalInfo').value || 'Not provided'
-                };
-                
-                // Create comprehensive email body
-                const emailSubject = `Guardianship Service Agreement - ${formData.studentFirstName} ${formData.studentLastName}`;
-                
-                const emailBody = `Dear StudyNest Education Team,
-
-I am submitting the completed Guardianship Service Agreement for my child. Please find the details below:
-
-═══════════════════════════════════════════════════════════════
-STUDENT INFORMATION 學生信息
-═══════════════════════════════════════════════════════════════
-Student Name: ${formData.studentFirstName} ${formData.studentLastName}
-Date of Birth: ${formData.studentDOB}
-Gender: ${formData.gender}
-Passport Number: ${formData.passportNo}
-
-═══════════════════════════════════════════════════════════════
-PARENT/GUARDIAN INFORMATION 家長信息
-═══════════════════════════════════════════════════════════════
-Primary Contact: ${formData.parentName}
-Address: ${formData.parentAddress}
-
-Mother: ${formData.motherName}
-Mobile: ${formData.motherMobile}
-Email: ${formData.motherEmail}
-
-Father: ${formData.fatherName}  
-Mobile: ${formData.fatherMobile}
-Email: ${formData.fatherEmail}
-
-Home Address: ${formData.homeAddress}
-
-═══════════════════════════════════════════════════════════════
-SERVICE PLAN 監護方案
-═══════════════════════════════════════════════════════════════
-Selected Plan: ${formData.guardianshipPlan === 'core' ? 'Core Guardianship Plan (£1,047/year)' : 'Comprehensive Guardianship Plan (£2,697/year)'}
-
-═══════════════════════════════════════════════════════════════
-MEDICAL INFORMATION 醫療信息
-═══════════════════════════════════════════════════════════════
-Blood Type: ${formData.bloodType}
-General Health: ${formData.generalHealth}
-Allergies: ${formData.allergies}
-Additional Information: ${formData.additionalInfo}
-
-═══════════════════════════════════════════════════════════════
-DECLARATION 聲明
-═══════════════════════════════════════════════════════════════
-I confirm that:
-✓ I have read and understood all Terms and Conditions
-✓ All information provided is accurate and complete
-✓ I agree to all declarations in the contract
-✓ Electronic signatures have been provided
-
-Contract Signing Date: ${formData.signingDate}
-
-Please confirm receipt of this application and advise on the next steps for processing.
-
-Best regards,
-${formData.parentName}
-
----
-This email was generated from the StudyNest Education electronic contract system.
-此郵件由英倫學居電子合約系統生成。
-                `;
-                
-                // Create mailto link with proper encoding
-                const mailtoLink = `mailto:info@studynest.uk?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-                
-                // Try to open email client
-                const newWindow = window.open(mailtoLink, '_blank');
-                
-                // Check if popup was blocked
-                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                    // Fallback: copy to clipboard and show instructions
-                    navigator.clipboard.writeText(`收件人: info@studynest.uk\n主旨: ${emailSubject}\n\n${emailBody}`).then(() => {
-                        alert(`✅ 合約內容已複製到剪貼板！\n✅ Contract content copied to clipboard!\n\n請手動發送郵件至: info@studynest.uk\nPlease manually send email to: info@studynest.uk`);
-                    }).catch(() => {
-                        // If clipboard fails, show the content in a new window
-                        const contentWindow = window.open('', '_blank');
-                        contentWindow.document.write(`
-                            <html>
-                                <head><title>Contract Submission</title></head>
-                                <body style="font-family: Arial, sans-serif; padding: 20px;">
-                                    <h2>請複製以下內容發送郵件至: info@studynest.uk</h2>
-                                    <p><strong>主旨:</strong> ${emailSubject}</p>
-                                    <hr>
-                                    <pre style="white-space: pre-wrap; font-family: Arial;">${emailBody}</pre>
-                                </body>
-                            </html>
-                        `);
-                    });
-                } else {
-                    // Email client opened successfully
-                    alert(`✅ 郵件客戶端已開啟！\n✅ Email client opened!\n\n請在郵件中檢查並發送。\nPlease review and send the email.`);
-                }
-                
-                // Reset button after a delay
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Submit error:', error);
-                alert('❌ 發送時發生錯誤，請稍後再試或直接聯繫 info@studynest.uk\n❌ Error occurred. Please try again or contact info@studynest.uk directly.');
-                
-                // Reset button
-                event.target.innerHTML = '📧 確認送出 Submit';
-                event.target.disabled = false;
+                alert('列印功能發生錯誤，請嘗試使用瀏覽器的列印功能（Ctrl+P）\nPrint function error occurred, please try using browser print function (Ctrl+P)');
             }
         }
         
@@ -1324,11 +1274,22 @@ This email was generated from the StudyNest Education electronic contract system
                 if (studentDOB.value) {
                     medicalDOB.value = studentDOB.value;
                 }
+                
+                // Generate contract number when student info is complete
+                generateContractNumber();
             }
             
             studentFirstName.addEventListener('blur', syncStudentInfo);
+            studentFirstName.addEventListener('input', generateContractNumber);
             studentLastName.addEventListener('blur', syncStudentInfo);
+            studentLastName.addEventListener('input', generateContractNumber);
             studentDOB.addEventListener('change', syncStudentInfo);
+            
+            // Also generate contract number when signing date changes
+            document.getElementById('signingDate').addEventListener('change', generateContractNumber);
+            
+            // Generate initial contract number if date is already set
+            generateContractNumber();
         });
         
         // Auto-resize signature pads
@@ -1344,6 +1305,3 @@ This email was generated from the StudyNest Education electronic contract system
                 ctx.clearRect(0, 0, pad.width, pad.height);
             });
         });
-    </script>
-</body>
-</html>
