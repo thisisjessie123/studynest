@@ -158,10 +158,17 @@
             animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
         .cta-button {
             display: inline-block;
             padding: 15px 40px;
-            background: #d35400;
             color: white;
             text-decoration: none;
             border-radius: 50px;
@@ -169,13 +176,29 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(211, 84, 0, 0.3);
-            animation: fadeInUp 0.8s ease-out 0.6s both;
         }
 
-        .cta-button:hover {
+        .cta-button.primary {
+            background: #d35400;
+        }
+
+        .cta-button.primary:hover {
             background: #c0392b;
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(211, 84, 0, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-button.secondary:hover {
+            background: white;
+            color: #2c3e50;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
         }
 
         /* Services Section */
@@ -207,10 +230,22 @@
         }
 
         .services-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            justify-content: center;
             gap: 2rem;
             margin-top: 2rem;
+        }
+
+        .single-plan {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .service-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            font-style: italic;
         }
 
         .service-card {
@@ -263,7 +298,7 @@
 
         .service-features {
             list-style: none;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0;
         }
 
         .service-features li {
@@ -310,24 +345,6 @@
             font-size: 0.8rem;
             color: #7f8c8d;
             line-height: 1.3;
-        }
-
-        .choose-button {
-            width: 100%;
-            padding: 15px;
-            background: #d35400;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .choose-button:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
         }
 
         /* Contact Section */
@@ -415,9 +432,26 @@
                 font-size: 0.9rem;
             }
 
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+                width: 200px;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
             .services-grid {
-                grid-template-columns: 1fr;
+                flex-direction: column;
                 gap: 1.5rem;
+            }
+
+            .single-plan {
+                max-width: 100%;
             }
 
             .price {
@@ -808,169 +842,87 @@
                 选校选系的路上，很多家长都感到焦虑和不安。面对复杂的UCAS申请流程，您或许也觉得无从着手。<br><br>
                 我们提供专业的学业管理与UCAS申请服务，从学生的兴趣探索、升学方向规划，到申请材料准备，每一步都细心陪伴，帮助孩子稳扎稳打，迈向理想大学。让您和孩子都能更安心、自信地迎接未来挑战。
             </p>
-            <a href="#services" class="cta-button" onclick="openUCASModal()">了解UCAS</a>
+            <div class="cta-buttons">
+                <a href="#services" class="cta-button primary">查看服务方案</a>
+                <a href="#" class="cta-button secondary" onclick="openUCASModal()">了解UCAS</a>
+            </div>
         </div>
     </section>
 
     <section id="services" class="services">
         <div class="container">
             <h2 class="section-title">服务项目</h2>
-            <p class="section-subtitle">选择最适合您孩子的专业服务方案</p>
+            <p class="section-subtitle">专业全程升学顾问服务，一站式解决您的UCAS申请需求</p>
             
             <div class="services-grid">
-                <!-- UCAS Fast-Track -->
-                <div class="service-card">
+                <!-- StudyNest 全程升学方案 -->
+                <div class="service-card single-plan">
                     <div class="service-header">
-                        <h3 class="service-title">UCAS Fast-Track</h3>
-                        <p class="service-target">适合 A2 学生</p>
-                        <div class="price">£580</div>
-                        <div class="price-unit">一次性服务</div>
+                        <h3 class="service-title">StudyNest 全程升学方案</h3>
+                        <p class="service-subtitle">One Plan, Full Journey | UCAS 全包升学顾问服务</p>
+                        <p class="service-target">适合计划申请英国大学、希望从 AS 阶段起进行完整升学准备与策略规划的国际学生</p>
+                        <div class="price">£2,200</div>
+                        <div class="price-unit">一次性付款</div>
                     </div>
                     <div class="service-content">
                         <ul class="service-features">
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">定制化申请时间表与进度跟踪</div>
-                                    <div class="feature-description">量身定做的UCAS申请时程规划</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">大学/科系选校建议与分析</div>
-                                    <div class="feature-description">最多两轮调整建议</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">Personal Statement 一对一指导与润稿</div>
-                                    <div class="feature-description">最多两轮润稿服务</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">UCAS 申请表协助与检查</div>
-                                    <div class="feature-description">填写指导与检查</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">UCAS 平台注册与提交</div>
-                                    <div class="feature-description">提交前确认</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">Offer 管理与后续支援</div>
-                                    <div class="feature-description">基本回复指导</div>
-                                </div>
-                            </li>
-                        </ul>
-                        <button class="choose-button" onclick="contactUs('UCAS Fast-Track')">选择此方案</button>
-                    </div>
-                </div>
-
-                <!-- Academic Pathway -->
-                <div class="service-card">
-                    <div class="service-header">
-                        <h3 class="service-title">Academic Pathway</h3>
-                        <p class="service-target">适合 AS 学生</p>
-                        <div class="price">£1,300</div>
-                        <div class="price-unit">完整学年服务</div>
-                    </div>
-                    <div class="service-content">
-                        <ul class="service-features">
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">定制化申请时间表与进度跟踪</div>
-                                    <div class="feature-description">含学期整体学业规划</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">大学/科系选校建议与分析</div>
-                                    <div class="feature-description">不限次策略建议与背景规划</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">Personal Statement 一对一指导与润稿</div>
-                                    <div class="feature-description">多轮润稿＋内容架构辅导</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">UCAS 申请表协助与检查</div>
-                                    <div class="feature-description">填写、校对与资料优化建议</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">UCAS 平台注册与提交</div>
-                                    <div class="feature-description">全程陪同指导</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">✅</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">Offer 管理与后续支援</div>
-                                    <div class="feature-description">完整跟踪与选择建议</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">📘</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">学期学业跟踪报告</div>
-                                    <div class="feature-description">每学期 1 次，含顾问建议</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">🏫</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">学校联络与协调支援</div>
-                                    <div class="feature-description">就课业主动联系学校</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">🧭</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">选科与升学路径建议</div>
-                                    <div class="feature-description">从AS起即建立申请策略</div>
-                                </div>
-                            </li>
                             <li>
                                 <span class="feature-icon included">🎯</span>
                                 <div class="feature-text">
-                                    <div class="feature-title">升学方向探索与性向测评</div>
-                                    <div class="feature-description">问卷＋顾问咨询</div>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="feature-icon included">📆</span>
-                                <div class="feature-text">
-                                    <div class="feature-title">升学进度回顾会议</div>
-                                    <div class="feature-description">每学期一次，与学生与家长同步</div>
+                                    <div class="feature-title">升学规划起点</div>
+                                    <div class="feature-description">学生背景分析与升学方向探索、兴趣/学术/性向初步评估、升学阶段规划（Year 12～申请截止）</div>
                                 </div>
                             </li>
                             <li>
                                 <span class="feature-icon included">🧑‍🏫</span>
                                 <div class="feature-text">
-                                    <div class="feature-title">推荐信策略指导</div>
-                                    <div class="feature-description">含要点引导与内容建议</div>
+                                    <div class="feature-title">学业与选科辅导</div>
+                                    <div class="feature-description">A-Level 选科策略建议与调整、提升学术履历建议（含阅读、竞赛、课外项目）、每学期顾问学业进度回顾与建议（书面报告＋会谈）</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">🏫</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">学校沟通协调</div>
+                                    <div class="feature-description">与寄宿学校老师/成绩顾问联系、推荐信准备与策略建议（协助整理要点/范例）</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">📝</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">Personal Statement 全程指导</div>
+                                    <div class="feature-description">1对1构思会议与内容架构设计、多轮修改润稿（含语言 + 思路）、最终版本交叉审核把关</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">💻</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">UCAS 平台操作与文件提交</div>
+                                    <div class="feature-description"><strong>由顾问输入整份申请资料</strong>至 UCAS 平台（非仅提供建议）、专业检查所有资料栏位与拼字错误、上传推荐信与个人陈述</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">📬</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">UCAS Email 账号管理</div>
+                                    <div class="feature-description"><strong>为学生设立专属 UCAS email 信箱</strong>（升学用）、监护顾问每日追踪该账号信件与大学通知、即时回报申请进度与 Offer 通知</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">🗓️</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">申请进度跟踪表</div>
+                                    <div class="feature-description">提供个人化 UCAS 进度表（Google Sheet），让家长/学生即时了解阶段进展</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">📩</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">后续申请支援</div>
+                                    <div class="feature-description">Offer 条件说明与接受流程说明、选校与Firm/Insurance选择策略、统一信件管理与提醒</div>
                                 </div>
                             </li>
                         </ul>
-                        <button class="choose-button" onclick="contactUs('Academic Pathway')">选择此方案</button>
                     </div>
                 </div>
             </div>
@@ -979,8 +931,8 @@
 
     <section id="contact" class="contact">
         <div class="container">
-            <h2>准备开始您的UCAS申请之旅？</h2>
-            <p>立即联系我们的专业顾问，获得个人化的申请建议</p>
+            <h2>准备开始您的StudyNest升学之旅？</h2>
+            <p>立即联系我们的专业顾问，获得完整的UCAS申请服务</p>
             <a href="#" class="contact-button" onclick="contactUs('general')">免费咨询</a>
         </div>
     </section>
@@ -1184,12 +1136,16 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const href = this.getAttribute('href');
+                // 检查href是否有效且不只是'#'
+                if (href && href !== '#' && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
             });
         });
@@ -1206,36 +1162,12 @@
             }
         });
 
-        // Contact function
-        function contactUs(service) {
-            let message = '';
-            if (service === 'UCAS Fast-Track') {
-                message = '我想了解更多关于 UCAS Fast-Track 服务的信息。';
-            } else if (service === 'Academic Pathway') {
-                message = '我想了解更多关于 Academic Pathway 服务的信息。';
-            } else {
-                message = '我想了解更多关于UCAS申请服务的信息。';
-            }
-            
-            // 这里可以整合实际的联络表单或微信等联系方式
-            alert(`谢谢您的询问！\n\n${message}\n\n我们的顾问将尽快与您联系。`);
-        }
-
         // Language switch function
         function switchLanguage() {
-            // 简单的页面跳转实现，您可以根据实际需要调整
-            const currentUrl = window.location.href;
-            const isSimplified = currentUrl.includes('simplified') || !currentUrl.includes('traditional');
-            
-            if (isSimplified) {
-                // 跳转到繁体版本（这里可以设置实际的繁体版本URL）
-                alert('即将跳转到繁体中文版本！');
-                // window.location.href = 'traditional-version.html'; // 实际部署时启用
-            } else {
-                // 跳转到简体版本
-                alert('即将跳转到简体中文版本！');
-                // window.location.href = 'simplified-version.html'; // 实际部署时启用
-            }
+            // 简单提示，实际部署时可设置跳转URL
+            alert('即将跳转到繁体中文版本！\n\n在实际部署时，这里会跳转到对应的繁体版本页面。');
+            // 实际部署时取消以下注释并设定正确URL：
+            // window.location.href = 'traditional-version.html';
         }
 
         // UCAS Modal functions
