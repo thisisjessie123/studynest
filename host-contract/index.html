@@ -96,85 +96,6 @@
             border-radius: 50%;
         }
         
-        .nest-logo {
-            width: 35px;
-            height: 35px;
-            position: relative;
-        }
-        
-        /* Create the nest bowl shape */
-        .nest-bowl {
-            width: 22px;
-            height: 12px;
-            border: 2px solid #ed8936;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .nest-bowl::before {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 2px;
-            background: #ed8936;
-            top: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 1px;
-        }
-        
-        .nest-bowl::after {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 1px;
-            background: #ed8936;
-            top: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 1px;
-        }
-        
-        /* Create the leaf */
-        .nest-leaf {
-            width: 6px;
-            height: 10px;
-            background: #38b2ac;
-            border-radius: 0 100% 0 100%;
-            position: absolute;
-            top: 4px;
-            left: 50%;
-            transform: translateX(-50%) rotate(15deg);
-        }
-        
-        /* Create the book */
-        .nest-book {
-            width: 18px;
-            height: 4px;
-            background: #2b6cb0;
-            position: absolute;
-            bottom: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 1px;
-        }
-        
-        .nest-book::before {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 3px;
-            background: #3182ce;
-            top: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 1px;
-        }
-        
         .title-section {
             text-align: left;
             flex-grow: 1;
@@ -254,6 +175,19 @@
             color: #2d3748;
         }
         
+        h4 {
+            font-size: 1.05em;
+            color: #2c5282;
+            margin: 15px 0 10px 0;
+        }
+        
+        h5 {
+            font-size: 1em;
+            color: #4a5568;
+            margin: 12px 0 8px 0;
+            font-weight: 600;
+        }
+        
         .parties-table {
             width: 100%;
             border-collapse: collapse;
@@ -308,33 +242,6 @@
             margin-right: 12px;
             transform: scale(1.2);
             accent-color: #667eea;
-        }
-        
-        .service-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            border: 2px solid #ddd;
-            font-size: 12px;
-        }
-        
-        .service-table th, .service-table td {
-            border: 1px solid #ddd;
-            padding: 6px 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-        
-        .service-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-        
-        .service-table .check-mark {
-            text-align: center;
-            font-size: 1.2em;
-            color: #28a745;
         }
         
         .signature-section {
@@ -419,23 +326,6 @@
             gap: 20px;
         }
         
-        .medical-form {
-            background: #f0f8ff;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 5px solid #667eea;
-        }
-        
-        .fees-highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
         .validation-error {
             border-color: #dc3545 !important;
             box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
@@ -498,6 +388,21 @@
             font-family: 'Noto Sans SC', sans-serif;
             font-weight: 400;
         }
+
+        .content-section {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content-section ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
 </style>
 </head>
 <body>
@@ -505,18 +410,21 @@
 <div class="letterhead">
 <div class="logo-container">
 <div class="logo" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.5);">
-<img alt="StudyNest Education Logo" src="StudyNest Education.png" style="width: 65px; height: 65px; object-fit: contain;"/>
+<div style="color: #2c5282; font-size: 24px; font-weight: bold;">SN</div>
 </div>
 <div class="title-section">
 <h1>StudyNest Education</h1>
 </div>
 </div>
 </div>
+
 <div class="contract-content">
 <div class="review-date">
 <strong>Review Date：August 2025</strong>
 </div>
+
 <h1 style="text-align: center;">Short-Term Host Family Agreement</h1>
+
 <h2>Agreement Parties</h2>
 <table class="parties-table">
 <tr>
@@ -526,7 +434,7 @@
 </div>
 </th>
 <td style="width: 40%;">
-<input class="input-field" id="parentName" placeholder="Host Family Representative" required="" type="text"/>
+<input class="input-field" id="parentName" placeholder="Host Family Representative" required type="text"/>
 </td>
 <td style="width: 40%; font-size: 0.85em; line-height: 1.4;">
 <div>(hereinafter referred to as <strong>the Host</strong>)</div>
@@ -537,7 +445,7 @@
 <div><strong>Address:</strong></div>
 </td>
 <td colspan="2">
-<textarea class="input-field" id="parentAddress" placeholder="Please enter full address" required="" rows="3"></textarea>
+<textarea class="input-field" id="parentAddress" placeholder="Please enter full address" required rows="3"></textarea>
 </td>
 </tr>
 <tr>
@@ -560,7 +468,7 @@
 <div><strong>Contract No.:</strong></div>
 </td>
 <td colspan="2">
-<input class="input-field" id="contractNumberInput" placeholder="Contract number will be auto-generated" readonly="" style="background-color: #f8f9fa; color: #6c757d;" type="text"/>
+<input class="input-field" id="contractNumberInput" placeholder="Contract number will be auto-generated" readonly style="background-color: #f8f9fa; color: #6c757d;" type="text"/>
 </td>
 </tr>
 <tr>
@@ -568,121 +476,111 @@
 <div><strong>Date of Signing:</strong></div>
 </td>
 <td colspan="2">
-<input class="input-field" id="signingDate" readonly="" required="" type="date"/>
+<input class="input-field" id="signingDate" readonly required type="date"/>
 </td>
 </tr>
 </table>
+
 <p>By signing this Agreement, both parties agree to abide by the following terms and conditions, including the appended Host Family Responsibilities and Legal Provisions.</p>
 
 <h2>Purpose and Scope</h2>
-<div style="padding-left: 20px;">
-<p>This Agreement governs the provision of short-term accommodation to students under the care of StudyNest Education Ltd. Placements may include weekends, half-terms, exeats, or emergency situations.</span></p>
-<p>The primary aim is to ensure:</span></p>
-        <ul style="margin-left: 40px;">
-<li>Student welfare and safeguarding at all times</span></li>
-<li>A safe, clean, and appropriate hosting environment</span></li>
-<li>Clarity regarding responsibilities, expectations, and conduct</span></li>
+<div class="content-section">
+<p>This Agreement governs the provision of short-term accommodation to students under the care of StudyNest Education Ltd. Placements may include weekends, half-terms, exeats, or emergency situations.</p>
+<p>The primary aim is to ensure:</p>
+<ul>
+<li>Student welfare and safeguarding at all times</li>
+<li>A safe, clean, and appropriate hosting environment</li>
+<li>Clarity regarding responsibilities, expectations, and conduct</li>
+</ul>
 </div>
 
 <h2>Booking Process</h2>
-<div style="padding-left: 20px;">
-<p>All placements are coordinated exclusively by StudyNest Education Ltd.</span></p>
-<p>Hosts will be contacted with student details, stay dates, and special requirements.</span></p>
-<p>Hosts must respond to confirm availability within 24 hours.</span></p>
-<p>The Company reserves the right to reallocate students if timely confirmation is not received.</span></p>
+<div class="content-section">
+<ul>
+<li>All placements are coordinated exclusively by StudyNest Education Ltd.</li>
+<li>Hosts will be contacted with student details, stay dates, and special requirements.</li>
+<li>Hosts must respond to confirm availability within 24 hours.</li>
+<li>The Company reserves the right to reallocate students if timely confirmation is not received.</li>
 </ul>
 </div>
 
 <h2>Host Responsibilities</h2>
-<div style="padding-left: 20px;">
-<p>The Host Family agrees to:</span></p>
-<p><strong>a) </strong> Provide a clean, safe home environment with appropriate facilities</span></p>
-<p><strong>b) </strong> Offer a private bedroom (not shared with any family member)</span></p>
-<p><strong>c) </strong> Supply three daily meals unless otherwise agreed</span></p>
-<p><strong>d) </strong> Supervise the student appropriately and ensure they are never left overnight without an adult</span></p>
-<p><strong>e) </strong> Maintain open communication with the Company and promptly report any issues or concerns</span></p>
-<p>Students must not:</span></p>
-<p><strong>a) </strong> Stay overnight elsewhere without prior written approval from the Company</span></p>
-<p><strong>b) </strong> Be left unsupervised overnight under any circumstance</span></p>
-<p>If a key is not provided, a responsible adult must be present to allow entry at expected times.</span></p>
+<div class="content-section">
+<p>The Host Family agrees to:</p>
+<ul>
+<li>Provide a clean, safe home environment with appropriate facilities</li>
+<li>Offer a private bedroom (not shared with any family member)</li>
+<li>Supply three daily meals unless otherwise agreed</li>
+<li>Supervise the student appropriately and ensure they are never left overnight without an adult</li>
+<li>Maintain open communication with the Company and promptly report any issues or concerns</li>
 </ul>
+<p>Students must not:</p>
+<ul>
+<li>Stay overnight elsewhere without prior written approval from the Company</li>
+<li>Be left unsupervised overnight under any circumstance</li>
+</ul>
+<p>If a key is not provided, a responsible adult must be present to allow entry at expected times.</p>
 </div>
 
-<h2>Host Responsibilities</h2>
-<div style="padding-left: 20px;">
-<p>All residents aged 16+ must undergo enhanced DBS checks.</span></p>
-<p>The Host agrees to comply with the Company’s safeguarding policy at all times.</span></p>
-<p>Any safeguarding concern must be reported immediately to the Company.</span></p>
-<p><strong>Safeguarding Contacts:<strong></span></p>
-<p> DSL: Jessie Chang info@studynest.uk </span></p>
+<h2>Safeguarding</h2>
+<div class="content-section">
+<ul>
+<li>All residents aged 16+ must undergo enhanced DBS checks.</li>
+<li>The Host agrees to comply with the Company's safeguarding policy at all times.</li>
+<li>Any safeguarding concern must be reported immediately to the Company.</li>
 </ul>
+<p><strong>Safeguarding Contacts:</strong></p>
+<p>DSL: Jessie Chang info@studynest.uk</p>
 </div>
 
 <h2>Payments</h2>
-<div style="padding-left: 20px;">
-<p>Hosts will be paid the agreed nightly rate by bank transfer within 7 working days following the end of the placement.</span></p>
-<p>The Company is not liable for reimbursement of incidental expenses (e.g., transportation, entertainment, personal items).</span></p>
+<div class="content-section">
+<ul>
+<li>Hosts will be paid the agreed nightly rate by bank transfer within 7 working days following the end of the placement.</li>
+<li>The Company is not liable for reimbursement of incidental expenses (e.g., transportation, entertainment, personal items).</li>
 </ul>
-</div>   
+</div>
 
 <h2>Cancellations</h2>
-<div style="padding-left: 20px;">
-<p>If StudyNest cancels a confirmed booking within one week (7 days) prior to the scheduled arrival date, a goodwill cancellation fee of £50 per week of the confirmed booking will be paid to the Host, up to a maximum of £100.</span></p>
-<p>No cancellation fee will be payable if cancellation is made more than one week prior to the scheduled arrival.</span></p>
-<p>Repeated or unreasonably late cancellations by the Host may result in temporary suspension or removal from the approved host list, at the discretion of StudyNest Education.</span></p>
+<div class="content-section">
+<ul>
+<li>If StudyNest cancels a confirmed booking within one week (7 days) prior to the scheduled arrival date, a goodwill cancellation fee of £50 per week of the confirmed booking will be paid to the Host, up to a maximum of £100.</li>
+<li>No cancellation fee will be payable if cancellation is made more than one week prior to the scheduled arrival.</li>
+<li>Repeated or unreasonably late cancellations by the Host may result in temporary suspension or removal from the approved host list, at the discretion of StudyNest Education.</li>
 </ul>
-</div>   
+</div>
 
 <h2>Private Arrangements</h2>
-<div style="padding-left: 20px;">
-<p>Hosts may not enter into direct or private agreements with students or their families.</span></p>
-<p>All placements must be made through StudyNest Education Ltd.</span></p>
-<p>Breach of this clause will result in immediate termination and potential legal action.</span></p>
+<div class="content-section">
+<ul>
+<li>Hosts may not enter into direct or private agreements with students or their families.</li>
+<li>All placements must be made through StudyNest Education Ltd.</li>
+<li>Breach of this clause will result in immediate termination and potential legal action.</li>
 </ul>
-</div>   
+</div>
 
 <h2>Termination</h2>
-<div style="padding-left: 20px;">
-<p>Either party may terminate this Agreement with 14 days' written notice.</span></p>
-<p>The Company reserves the right to terminate the agreement immediately in the event of any safeguarding concern, misconduct, or breach of contract.</span></p>
-</ul>
-</div>   
-
-<h2>Host Family Responsibilities</h2>
-<div style="padding-left: 20px;">
-<p>The Host must:</span></p>
-<p><strong>1. </strong> Submit enhanced DBS checks (covered by the Company)</span></p>
-<p><strong>2. </strong> Subscribe to the DBS Update Service and maintain validity</span></p>
-<p><strong>3. </strong> Complete annual safeguarding training (online)</span></p>
-<p><strong>4. </strong> Submit a signed medical declaration</span></p>
-<p><strong>5. </strong> Provide two character references (one professional)</span></p>
-<p><strong>6. </strong> Cooperate with inspections by the Company, AEGIS, or other relevant authorities</span></p>
-<p><strong>7. </strong> Provide:</span></p>
-        <li>Private bed and study space</span></li>
-        <li>Clean linens and towels weekly</span></li>
-        <li>Heating, lighting, bathroom access</span></li>
-        <li>Three meals daily and appropriate supervision</span></li>
-<p><strong>8. </strong> Notify the Company of any changes to household members or conditions</span></p>
-<p><strong>9. </strong> Refrain from making any private hosting arrangements with students or families</span></p>
-<p><strong>10. </strong> Maintain emergency contact communication and assist students if needed</span></p>
+<div class="content-section">
+<ul>
+<li>Either party may terminate this Agreement with 14 days' written notice.</li>
+<li>The Company reserves the right to terminate the agreement immediately in the event of any safeguarding concern, misconduct, or breach of contract.</li>
 </ul>
 </div>
 
 <h2>Legal Provisions</h2>
-<div style="padding-left: 20px;">
-<p><strong>Indemnity<strong></span></p>
-<p>The Host agrees to indemnify StudyNest Education Ltd from all liabilities resulting from negligence, misconduct, or breach of contract.</span></p>
-<p><strong>Insurance<strong></span></p>
-<p>The Host must maintain appropriate home insurance including third-party liability.</span></p>
-<p><strong>Confidentiality & Data Protection<strong></span></p>
-<p>All student and Company information must be treated as confidential under GDPR and UK Data Protection Act 2018.</span></p>
-<p><strong>Jurisdiction<strong></span></p>
-<p>This Agreement is governed by the laws of England and Wales.</span></p>
-<p><strong>Enforcement<strong></span></p>
-<p>The attached job description and legal provisions form part of this binding agreement.</span></p>
-</ul>
-</div> 
-        
+<div class="content-section">
+<p><strong>Indemnity</strong></p>
+<p>The Host agrees to indemnify StudyNest Education Ltd from all liabilities resulting from negligence, misconduct, or breach of contract.</p>
+<p><strong>Insurance</strong></p>
+<p>The Host must maintain appropriate home insurance including third-party liability.</p>
+<p><strong>Confidentiality & Data Protection</strong></p>
+<p>All student and Company information must be treated as confidential under GDPR and UK Data Protection Act 2018.</p>
+<p><strong>Jurisdiction</strong></p>
+<p>This Agreement is governed by the laws of England and Wales.</p>
+<p><strong>Enforcement</strong></p>
+<p>The attached job description and legal provisions form part of this binding agreement.</p>
+</div>
+
 <h2>Payment Information</h2>
 <p>To ensure prompt and accurate payment following any short-term hosting arrangement, please provide your bank details below. This information will be used solely for the purpose of transferring agreed fees for completed placements.</p>
 
@@ -715,40 +613,154 @@
 </table>
 
 <div style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;">
-<h4 style="color: #2d3748;">Declaration </h4>
+<h4 style="color: #2d3748;">Declaration</h4>
 <p>By signing this Agreement, both parties agree to abide by the following terms and conditions, including the appended Host Family Responsibilities and Legal Provisions.</p>
 </div>
 
 <div class="signature-section">
 <h4>Host Signature</h4>
-<canvas class="signature-pad" id="fatherSignature"></canvas>
+<canvas class="signature-pad" id="hostSignature"></canvas>
 <div class="signature-controls">
-<button class="btn btn-secondary" onclick="clearSignature('fatherSignature')" type="button"> Clear</button>
+<button class="btn btn-secondary" onclick="clearSignature('hostSignature')" type="button">Clear</button>
 </div>
-<input class="input-field" id="fatherSignatureDate" placeholder="簽名日期 Signature Date" style="margin-top: 10px;" type="text"/>
+<input class="input-field" id="hostSignatureDate" placeholder="Signature Date" style="margin-top: 10px;" type="text"/>
 <div class="signature-status empty">⚠ Please complete signature</div>
 </div>
+
 <div class="signature-section">
-<div class="signature-section">
-<h4>StudyNest Education 代表簽名</h4>
+<h4>StudyNest Education Representative Signature</h4>
 <div style="text-align: center; padding: 20px; background: white; border: 2px solid #ddd; border-radius: 8px;">
 <div class="elegant-signature">Jessie Chang</div>
 <p><strong>StudyNest Education Representative</strong></p>
 <p>Date: <span id="companySignatureDate"></span></p>
 </div>
-<!-- 感谢文字 -->
+
 <div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px; border-left: 5px solid #28a745; text-align: center;">
-<h4 style="color: #28a745; margin-bottom: 15px; font-size: 1.2em;">✅ Contract Completion 合約完成</h4>
+<h4 style="color: #28a745; margin-bottom: 15px; font-size: 1.2em;">✅ Contract Completion</h4>
 <p style="margin-bottom: 10px; line-height: 1.6;">
-Thank you for completing the online contract. Your electronic signature has been recorded. To finalise the process, please <strong>download the signed PDF</strong> and <strong>return it to StudyNest Education</strong> for our records. No further signature is required.
+Thank you for completing the online contract. Your electronic signature has been recorded. To finalise the process, please <strong>scroll to the end of the page and click download the signed PDF</strong> and <strong>return it to StudyNest Education</strong> for our records. No further signature is required.
 </p>
 </div>
 </div>
+
+<h2 style="margin-top: 40px; padding-top: 30px; border-top: 3px solid #667eea;">Appendix: Host Family Job Description</h2>
+<div class="content-section">
+<h3>StudyNest Education Ltd</h3>
+<p>Host families play a vital role in supporting the wellbeing and cultural experience of international students placed with them during school breaks or under temporary care. Hosts offer a safe, welcoming, and stable home environment that complements the student's academic journey in the UK. The responsibilities outlined below form part of the agreement between the host family and StudyNest Education Ltd.</p>
+
+<h4>Reporting Structure</h4>
+<p>Host families report to the assigned Local Coordinator or StudyNest Guardian responsible for the student's care. For all routine matters, updates, or non-urgent concerns, hosts should communicate directly with their assigned contact.</p>
+<p>In case of emergencies, safeguarding issues, or serious incidents, hosts must contact the Designated Safeguarding Lead (DSL) at StudyNest Education without delay.</p>
+<p>If the host is also appointed as the student's education guardian, they report directly to the DSL for all matters related to the student's wellbeing.</p>
+
+<h4>Safeguarding & Compliance</h4>
+<p>To ensure student safety and meet safeguarding standards:</p>
+
+<h5>Enhanced DBS Checks</h5>
+<ul>
+<li>All household members aged 16 and over must complete an Enhanced DBS check before hosting.</li>
+<li>StudyNest covers the cost for up to two main hosts.</li>
+<li>Additional household members will be processed through StudyNest, with subscription responsibilities remaining with the host.</li>
+<li>Hosts must subscribe to the DBS Update Service, pay the annual fee, and provide StudyNest with ongoing subscription details.</li>
+</ul>
+
+<h5>Training</h5>
+<ul>
+<li>Hosts must complete online safeguarding training (provided by StudyNest) prior to hosting. This must be renewed annually.</li>
+</ul>
+
+<h5>Code of Conduct</h5>
+<ul>
+<li>Hosts must adhere to the Host Family Code of Conduct, as detailed in the Host Handbook.</li>
+</ul>
+
+<h5>Declarations and Checks</h5>
+<ul>
+<li>A medical declaration confirming fitness to host is required.</li>
+<li>Hosts may be asked to undergo a Right to Work check in line with government guidelines.</li>
+<li>The main host must hold British Citizenship or Settled Status in the UK.</li>
+<li>All household members over 16 must sign a Declaration of Suitability to Host, confirming understanding of safeguarding responsibilities.</li>
+</ul>
+
+<h5>References</h5>
+<ul>
+<li>Both the primary and secondary host must provide two references each, including at least one professional contact (non-family) who has known them for 3+ years.</li>
+</ul>
+
+<h5>Policy Compliance</h5>
+<p>Hosts agree to follow StudyNest's policies, including:</p>
+<ul>
+<li>Safeguarding & Child Protection</li>
+<li>Health & Safety</li>
+<li>E-Safety</li>
+<li>Anti-Bullying</li>
+<li>Anti-Radicalisation</li>
+<li>Missing Student Protocol</li>
+</ul>
+
+<h5>Home Inspections</h5>
+<ul>
+<li>Hosts consent to home visits or inspections by StudyNest, AEGIS, or other official bodies.</li>
+</ul>
+
+<h5>Photo Consent</h5>
+<ul>
+<li>Hosts allow photos of their home to be used for matching and profile purposes.</li>
+</ul>
+
+<h4>Hosting Responsibilities</h4>
+<p>Students are typically placed during school holidays (half-terms, term breaks, exeats), and occasionally under short-term emergency arrangements.</p>
+<p>Hosts must:</p>
+<ul>
+<li>Provide a safe, inclusive, and caring home.</li>
+<li>Support with arranging emergency medical care and inform StudyNest promptly.</li>
+<li>Share and exchange contact and emergency details with both the student and StudyNest.</li>
+<li>Help students become familiar with local transport and the surrounding area.</li>
+<li>Supervise student wellbeing and ensure their whereabouts are known at all times.</li>
+<li>Immediately report any changes in household, accommodation, or circumstances.</li>
+<li>Not arrange alternative stays unless approved by StudyNest in advance.</li>
+<li>Avoid any direct financial arrangements with students or their families.</li>
+</ul>
+
+<h4>Communication & Feedback</h4>
+<p>Hosts must:</p>
+<ul>
+<li>Report illness, welfare concerns, or safeguarding issues immediately to StudyNest.</li>
+<li>Notify the team if a student does not return home as expected or shows changes in behaviour or wellbeing.</li>
+<li>Communicate regarding any overnight stay requests or routine deviations.</li>
+<li>Provide feedback after placements when requested (e.g., brief termly reports).</li>
+</ul>
+
+<h4>Accommodation Standards</h4>
+<p>All host homes must meet StudyNest's minimum accommodation standards:</p>
+<p><strong>A private bedroom for each student</strong> (unless a shared room is pre-approved), including:</p>
+<ul>
+<li>Comfortable bed with clean bedding (changed weekly)</li>
+<li>Desk, chair, and lamp for study</li>
+<li>Wardrobe and drawer space</li>
+<li>Natural light and heating</li>
+<li>Access to a lockable bathroom</li>
+<li>Weekly laundry services</li>
+</ul>
+
+<p><strong>Full board:</strong></p>
+<ul>
+<li>Breakfast and dinner daily</li>
+<li>Lunch during weekends and holidays</li>
+<li>Snacks, drinks, and fruit available at all times</li>
+</ul>
+
+<p style="margin-top: 20px; font-style: italic;">If you are interested in joining StudyNest's network of caring host families and helping international students feel at home in the UK, please contact us at info@studynest.uk.</p>
+</div>
+
+</div>
+
 <div class="final-actions">
 <button class="btn btn-primary" onclick="printContract()" type="button">
-                📄 Download Signed Contract
-            </button>
+📄 Download Signed Contract
+</button>
 </div>
+
 </div>
 
 <script>
@@ -765,7 +777,7 @@ function checkLibraries() {
     }
     
     if (missingLibs.length > 0) {
-        console.error('缺少必要的外部庫:', missingLibs.join(', '));
+        console.error('Missing required libraries:', missingLibs.join(', '));
         return false;
     }
     
@@ -892,12 +904,48 @@ class SignaturePad {
         if (statusEl) {
             if (this.hasSignature) {
                 statusEl.className = 'signature-status signed';
-                statusEl.textContent = '✓ 簽名已完成 Signature completed';
+                statusEl.textContent = '✓ Signature completed';
             } else {
                 statusEl.className = 'signature-status empty';
-                statusEl.textContent = '⚠ 請完成簽名 Please complete signature';
+                statusEl.textContent = '⚠ Please complete signature';
             }
         }
+    }
+}
+
+// 生成合約編號
+function generateContractNumber() {
+    try {
+        const hostNameEl = document.getElementById('parentName');
+
+        if (!hostNameEl) {
+            console.warn('Contract number generation: Host Family Representative field not found');
+            return 'HOST-PENDING-COMPLETION';
+        }
+
+        const hostNameRaw = hostNameEl.value?.trim() || '';
+
+        if (hostNameRaw) {
+            // 移除特殊字元與多餘空格，保證合約編號格式乾淨
+            const hostNameSanitized = hostNameRaw.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '');
+            const contractNumber = `HOST-${hostNameSanitized}-2025`;
+
+            const contractNumberInput = document.getElementById('contractNumberInput');
+            if (contractNumberInput) {
+                contractNumberInput.value = contractNumber;
+                contractNumberInput.style.backgroundColor = '#e8f5e8';
+                contractNumberInput.style.color = '#2d5a2d';
+            } else {
+                console.warn('contractNumberInput element not found');
+            }
+
+            return contractNumber;
+        }
+
+        return 'HOST-PENDING-COMPLETION';
+    } catch (error) {
+        console.error('Error generating contract number:', error);
+        return 'HOST-PENDING-COMPLETION';
     }
 }
 
@@ -918,7 +966,7 @@ class ContractPDFGenerator {
             if (!canvas.parentElement.querySelector('.signature-status')) {
                 const statusDiv = document.createElement('div');
                 statusDiv.className = 'signature-status empty';
-                statusDiv.textContent = '⚠ 請完成簽名 Please complete signature';
+                statusDiv.textContent = '⚠ Please complete signature';
                 canvas.parentElement.appendChild(statusDiv);
             }
         });
@@ -930,57 +978,57 @@ class ContractPDFGenerator {
             this.signatures[canvasId].clear();
         }
     }
-    
 
-    
-    // 生成合約編號
-function generateContractNumber() {
-    try {
-        const hostNameEl = document.getElementById('parentName');
+    // 驗證表單
+    validateForm() {
+        const errors = [];
+        const requiredFields = [
+            { id: 'parentName', name: 'Host Family Representative' },
+            { id: 'parentAddress', name: 'Address' },
+            { id: 'accountName', name: 'Account Name' },
+            { id: 'contactNumber', name: 'Contact Number' },
+            { id: 'sortCode', name: 'Sort Code' },
+            { id: 'accountNumber', name: 'Account Number' }
+        ];
 
-        if (!hostNameEl) {
-            console.warn('合約編號生成：找不到 Host Family Representative 欄位');
-            return 'HOST-PENDING-COMPLETION';
-        }
-
-        const hostNameRaw = hostNameEl.value?.trim() || '';
-
-        if (hostNameRaw) {
-            // 移除特殊字元與多餘空格，保證合約編號格式乾淨
-            const hostNameSanitized = hostNameRaw.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '');
-            const contractNumber = `HOST-${hostNameSanitized}-2025`;
-
-            const contractNumberInput = document.getElementById('contractNumberInput');
-            if (contractNumberInput) {
-                contractNumberInput.value = contractNumber;
-                contractNumberInput.style.backgroundColor = '#e8f5e8';
-                contractNumberInput.style.color = '#2d5a2d';
+        // 檢查必填欄位
+        requiredFields.forEach(field => {
+            const element = document.getElementById(field.id);
+            if (!element || !element.value.trim()) {
+                errors.push(`${field.name} is required`);
+                if (element) {
+                    element.classList.add('validation-error');
+                }
             } else {
-                console.warn('contractNumberInput 元素未找到');
+                if (element) {
+                    element.classList.remove('validation-error');
+                }
             }
+        });
 
-            return contractNumber;
+        // 檢查簽名
+        if (this.signatures['hostSignature'] && this.signatures['hostSignature'].isEmpty()) {
+            errors.push('Host signature is required');
         }
 
-        return 'HOST-PENDING-COMPLETION';
-    } catch (error) {
-        console.error('生成合約編號時發生錯誤:', error);
-        return 'HOST-PENDING-COMPLETION';
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
     }
-}
     
     // 生成並下載PDF
     async generatePDF() {
-            
+        try {
             // 驗證表單
             const validation = this.validateForm();
             if (!validation.isValid) {
-                alert('請完成以下項目後再下載合約：\n\n' + validation.errors.join('\n'));
+                alert('Please complete the following items before downloading the contract:\n\n' + validation.errors.join('\n'));
                 return;
             }
             
             // 生成合約編號
-            this.generateContractNumber();
+            generateContractNumber();
             
             // 隱藏下載按鈕
             const finalActions = document.querySelector('.final-actions');
@@ -1005,8 +1053,8 @@ function generateContractNumber() {
                 font-family: inherit;
             `;
             loadingDiv.innerHTML = `
-                <div style="font-size: 18px; margin-bottom: 15px;">📄 正在生成PDF合約...</div>
-                <div style="font-size: 14px; color: #666;">Generating PDF contract...</div>
+                <div style="font-size: 18px; margin-bottom: 15px;">📄 Generating PDF Contract...</div>
+                <div style="font-size: 14px; color: #666;">Please wait...</div>
                 <div style="margin-top: 15px;">
                     <div style="width: 200px; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
                         <div style="width: 0%; height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 2px; animation: progress 3s ease-in-out infinite;"></div>
@@ -1068,9 +1116,9 @@ function generateContractNumber() {
             }
             
             // 生成檔案名稱
-            const contractNumber = this.generateContractNumber();
-            const studentName = `${document.getElementById('studentFirstName').value}_${document.getElementById('studentLastName').value}`;
-            const fileName = `StudyNest_Contract_${contractNumber}_${studentName}.pdf`;
+            const contractNumber = generateContractNumber();
+            const hostName = document.getElementById('parentName').value.trim() || 'Host';
+            const fileName = `StudyNest_Contract_${contractNumber}_${hostName}.pdf`;
             
             // 下載PDF
             pdf.save(fileName);
@@ -1100,7 +1148,7 @@ function generateContractNumber() {
             `;
             successDiv.innerHTML = `
                 <div style="font-weight: bold;">✅ PDF Download Successful!</div>
-                <div style="font-size: 12px; margin-top: 5px;">Please kindly send back to StudyNest Education</div>
+                <div style="font-size: 12px; margin-top: 5px;">Please send back to StudyNest Education</div>
             `;
             document.body.appendChild(successDiv);
             
@@ -1112,7 +1160,7 @@ function generateContractNumber() {
             }, 3000);
             
         } catch (error) {
-            console.error('PDF生成錯誤:', error);
+            console.error('PDF generation error:', error);
             
             // 移除載入訊息
             const loadingDiv = document.getElementById('pdf-loading');
@@ -1126,7 +1174,7 @@ function generateContractNumber() {
                 finalActions.style.display = 'flex';
             }
             
-            alert('PDF生成失敗，請稍後重試或聯繫技術支援。\nPDF generation failed, please try again or contact technical support.');
+            alert('PDF generation failed, please try again or contact technical support.');
         }
     }
 }
@@ -1151,67 +1199,36 @@ document.addEventListener('DOMContentLoaded', function() {
         // 安全地設置日期值
         const signingDateEl = document.getElementById('signingDate');
         const companySignatureDateEl = document.getElementById('companySignatureDate');
-        const fatherSignatureDateEl = document.getElementById('fatherSignatureDate');
-        const motherSignatureDateEl = document.getElementById('motherSignatureDate');
+        const hostSignatureDateEl = document.getElementById('hostSignatureDate');
         
         if (signingDateEl) signingDateEl.value = todayString;
         if (companySignatureDateEl) companySignatureDateEl.textContent = todayDisplay;
-        if (fatherSignatureDateEl) fatherSignatureDateEl.value = todayDisplay;
-        if (motherSignatureDateEl) motherSignatureDateEl.value = todayDisplay;
+        if (hostSignatureDateEl) hostSignatureDateEl.value = todayDisplay;
         
-        // 自動同步學生資訊
-        const syncStudentInfo = () => {
+        // 自動生成合約編號
+        const generateContractNumberOnChange = () => {
             try {
-                const firstNameEl = document.getElementById('studentFirstName');
-                const lastNameEl = document.getElementById('studentLastName');
-                const dobEl = document.getElementById('studentDOB');
-                const medicalNameEl = document.getElementById('medicalName');
-                const medicalDOBEl = document.getElementById('medicalDOB');
-                
-                const firstName = firstNameEl?.value || '';
-                const lastName = lastNameEl?.value || '';
-                const dob = dobEl?.value || '';
-                
-                if (firstName && lastName && medicalNameEl) {
-                    medicalNameEl.value = `${firstName} ${lastName}`;
-                }
-                if (dob && medicalDOBEl) {
-                    medicalDOBEl.value = dob;
-                }
-                
-                if (contractPDF) {
-                    contractPDF.generateContractNumber();
-                }
+                generateContractNumber();
             } catch (error) {
-                console.error('同步學生資訊時發生錯誤:', error);
+                console.error('Error updating contract number:', error);
             }
         };
         
         // 安全地添加事件監聽器
-        const studentFirstNameEl = document.getElementById('studentFirstName');
-        const studentLastNameEl = document.getElementById('studentLastName');
-        const studentDOBEl = document.getElementById('studentDOB');
+        const parentNameEl = document.getElementById('parentName');
         const signingDateEl2 = document.getElementById('signingDate');
         
-        if (studentFirstNameEl) {
-            studentFirstNameEl.addEventListener('input', syncStudentInfo);
-        }
-        if (studentLastNameEl) {
-            studentLastNameEl.addEventListener('input', syncStudentInfo);
-        }
-        if (studentDOBEl) {
-            studentDOBEl.addEventListener('change', syncStudentInfo);
+        if (parentNameEl) {
+            parentNameEl.addEventListener('input', generateContractNumberOnChange);
         }
         if (signingDateEl2) {
-            signingDateEl2.addEventListener('change', () => {
-                if (contractPDF) contractPDF.generateContractNumber();
-            });
+            signingDateEl2.addEventListener('change', generateContractNumberOnChange);
         }
         
-        console.log('✅ 頁面初始化完成');
+        console.log('✅ Page initialization completed');
         
     } catch (error) {
-        console.error('頁面初始化時發生錯誤:', error);
+        console.error('Error during page initialization:', error);
     }
 });
 
@@ -1221,10 +1238,10 @@ function clearSignature(canvasId) {
         if (contractPDF && contractPDF.signatures && contractPDF.signatures[canvasId]) {
             contractPDF.clearSignature(canvasId);
         } else {
-            console.warn(`簽名板 ${canvasId} 未找到或未初始化`);
+            console.warn(`Signature pad ${canvasId} not found or not initialized`);
         }
     } catch (error) {
-        console.error('清除簽名時發生錯誤:', error);
+        console.error('Error clearing signature:', error);
     }
 }
 
@@ -1233,12 +1250,12 @@ function printContract() {
         if (contractPDF) {
             contractPDF.generatePDF();
         } else {
-            console.error('contractPDF 未初始化');
-            alert('系統尚未完全載入，請稍後再試');
+            console.error('contractPDF not initialized');
+            alert('System not fully loaded, please try again later');
         }
     } catch (error) {
-        console.error('生成PDF時發生錯誤:', error);
-        alert('PDF生成失敗，請稍後重試或聯繫技術支援。');
+        console.error('Error generating PDF:', error);
+        alert('PDF generation failed, please try again or contact technical support.');
     }
 }
 
@@ -1255,12 +1272,10 @@ window.addEventListener('resize', function() {
             }, 100);
         }
     } catch (error) {
-        console.error('調整畫布大小時發生錯誤:', error);
+        console.error('Error adjusting canvas size:', error);
     }
 });
 </script>
 
 </body>
 </html>
-
-
