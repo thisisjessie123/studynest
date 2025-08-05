@@ -15,11 +15,11 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            line-height: 1.6;
+            line-height: 1.4;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #2980b9 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
@@ -32,16 +32,39 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
             text-align: center;
-            color: white;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(211, 84, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px) translateY(-100px); }
+            100% { transform: translateX(0px) translateY(0px); }
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            color: #34495e;
+            position: relative;
+            z-index: 2;
         }
 
         .language-toggle {
@@ -68,33 +91,93 @@
             transform: translateY(-2px);
         }
 
+        .document-reminder {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #495057;
+            padding: 25px;
+            margin: 0;
+            text-align: center;
+            position: relative;
+            border-bottom: 3px solid #ffc107;
+        }
+
+        .document-reminder-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .document-reminder h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #dc3545;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .document-reminder h2::before {
+            content: '⚠️';
+            font-size: 1.2em;
+        }
+
+        .document-list {
+            background: rgba(211, 84, 0, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 12px;
+            border: 2px solid rgba(211, 84, 0, 0.2);
+        }
+
+        .document-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0;
+        }
+
+        .document-list li {
+            padding: 5px 0;
+            font-size: 1em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .document-list li::before {
+            content: '📄';
+            font-size: 1.2em;
+        }
+
         .form-container {
-            padding: 40px;
+            padding: 25px;
         }
 
         .section {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #4facfe;
+            margin-bottom: 20px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            border-left: 4px solid #d35400;
+            box-shadow: 0 2px 4px rgba(52, 73, 94, 0.1);
         }
 
         .section h3 {
-            color: #4facfe;
-            margin-bottom: 20px;
-            font-size: 1.3em;
+            color: #d35400;
+            margin-bottom: 15px;
+            font-size: 1.2em;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-row {
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
 
         .form-row .form-group {
@@ -103,31 +186,31 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: bold;
-            color: #555;
+            color: #333;
         }
 
         input[type="text"], input[type="date"], input[type="email"], input[type="tel"], textarea, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 15px;
             transition: all 0.3s ease;
             background: white;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #4facfe;
+            border-color: #d35400;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.3);
         }
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 65px;
         }
 
         .signature-section {
@@ -135,56 +218,61 @@
         }
 
         .signature-pad {
-            border: 3px solid #4facfe;
-            border-radius: 10px;
-            margin: 20px auto;
+            border: 3px solid #d35400;
+            border-radius: 8px;
+            margin: 15px auto;
             background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.2);
         }
 
         .signature-controls {
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: #d35400;
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 10px 25px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
-            margin: 0 10px;
+            margin: 0 8px;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .btn:hover {
+            background: #c0392b;
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 10px 25px rgba(211, 84, 0, 0.4);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #333;
+            background: #34495e;
+            color: white;
         }
 
         .btn-secondary:hover {
-            box-shadow: 0 10px 25px rgba(252, 182, 159, 0.4);
+            background: #2c3e50;
+            box-shadow: 0 10px 25px rgba(52, 73, 94, 0.4);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            color: #333;
-            font-size: 18px;
-            padding: 15px 40px;
-            margin-top: 30px;
+            background: #d35400;
+            color: white;
+            font-size: 16px;
+            padding: 12px 35px;
+            margin-top: 20px;
+            border-radius: 30px;
         }
 
         .btn-success:hover {
-            box-shadow: 0 15px 35px rgba(168, 237, 234, 0.4);
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(211, 84, 0, 0.4);
         }
 
         .hidden {
@@ -197,15 +285,28 @@
             }
             
             .header h1 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
             
             .container {
-                margin: 10px;
+                margin: 8px;
             }
             
             .form-container {
-                padding: 20px;
+                padding: 15px;
+            }
+
+            .document-reminder h2 {
+                font-size: 1.3em;
+            }
+
+            .document-list li {
+                font-size: 0.95em;
+            }
+
+            .section {
+                padding: 15px;
+                margin-bottom: 15px;
             }
         }
     </style>
@@ -213,10 +314,34 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Parental Consent Letter Generator</h1>
-            <p>Generate official consent letter for minor travel to UK</p>
-            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin-top: 20px;">
-                <p style="font-size: 18px; font-weight: bold; color: white;">以下资讯请全部以英文填写, 系统将自动生成家长同意信函</p>
+            <h1 style="position: relative; z-index: 2;">Parental Consent Letter Generator</h1>
+            <p style="position: relative; z-index: 2; color: #666;">Generate official consent letter for minor travel to UK</p>
+            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; margin-top: 15px; position: relative; z-index: 2;">
+                <p style="font-size: 16px; font-weight: bold; color: #34495e;">以下资讯请全部以英文填写, 系统将自动生成家长同意信函</p>
+            </div>
+        </div>
+
+        <!-- Document Reminder Section -->
+        <div class="document-reminder">
+            <div class="document-reminder-content">
+                <h2>Important Documents Required 重要文件提醒</h2>
+                <p style="font-size: 1em; margin-bottom: 10px; color: #34495e;">Please prepare the following documents alongside this consent letter:</p>
+                <p style="font-size: 1em; margin-bottom: 10px; color: #666;">請搭配以下文件一起準備：</p>
+                
+                <div class="document-list">
+                    <ul>
+                        <li>Child's Passport Copy 兒童護照影本</li>
+                        <li>UK School Admission Certificate 英國學校入學證明</li>
+                        <li>Guardian Agreement Copy 監護協議副本</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 10px; font-size: 0.95em; color: #666;">
+                    These documents are essential for UK immigration and should be presented together with this consent letter.
+                </p>
+                <p style="font-size: 0.95em; color: #666;">
+                    這些文件對英國入境檢查至關重要，請與同意信函一同準備。
+                </p>
             </div>
         </div>
 
