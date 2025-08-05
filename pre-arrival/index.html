@@ -370,6 +370,28 @@
             margin: 20px 0;
         }
 
+        /* 語言切換控制 */
+        .zh-TW {
+            display: none;
+        }
+
+        .zh-CN {
+            display: inline;
+        }
+
+        /* 對於某些需要block顯示的元素 */
+        div.zh-TW, h1.zh-TW, h2.zh-TW, h3.zh-TW, h4.zh-TW, p.zh-TW, ul.zh-TW, ol.zh-TW {
+            display: none;
+        }
+
+        div.zh-CN, h1.zh-CN, h2.zh-CN, h3.zh-CN, h4.zh-CN, p.zh-CN, ul.zh-CN, ol.zh-CN {
+            display: block;
+        }
+
+        span.zh-CN, strong.zh-CN, em.zh-CN {
+            display: inline;
+        }
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -444,26 +466,26 @@
             <!-- <img src="StudyNest Education.png" alt="StudyNest Education" class="company-logo"> -->
             
             <div class="language-switcher">
-                <button class="lang-btn active" onclick="switchLanguage('zh-TW')" id="btn-zh-TW">繁</button>
-                <button class="lang-btn" onclick="switchLanguage('zh-CN')" id="btn-zh-CN">简</button>
+                <button class="lang-btn" onclick="switchLanguage('zh-TW')" id="btn-zh-TW">繁</button>
+                <button class="lang-btn active" onclick="switchLanguage('zh-CN')" id="btn-zh-CN">简</button>
             </div>
             
             <div class="company-name">
                 <span class="zh-TW">StudyNest Education 英倫學居</span>
-                <span class="zh-CN" style="display: none;">StudyNest Education 英伦学居</span>
+                <span class="zh-CN">StudyNest Education 英伦学居</span>
             </div>
             <div style="font-size: 1rem; color: rgba(255,255,255,0.9); margin-bottom: 15px; font-style: italic;">
                 <span class="zh-TW">學在英倫，心有所居 | Bringing Minds to Britain, and Hearts to Home</span>
-                <span class="zh-CN" style="display: none;">学在英伦，心有所居 | Bringing Minds to Britain, and Hearts to Home</span>
+                <span class="zh-CN">学在英伦，心有所居 | Bringing Minds to Britain, and Hearts to Home</span>
             </div>
             
             <h1>
                 <span class="zh-TW">英國行前準備指南</span>
-                <span class="zh-CN" style="display: none;">英国行前准备指南</span>
+                <span class="zh-CN">英国行前准备指南</span>
             </h1>
             <p>
                 <span class="zh-TW">準備好開始你的英國求學之旅了嗎？</span>
-                <span class="zh-CN" style="display: none;">准备好开始你的英国求学之旅了吗？</span>
+                <span class="zh-CN">准备好开始你的英国求学之旅了吗？</span>
             </p>
         </div>
 
@@ -474,29 +496,29 @@
         <div class="navigation">
             <div class="nav-item active" onclick="showSection('documents')">
                 <span class="zh-TW">📄 重要文件準備</span>
-                <span class="zh-CN" style="display: none;">📄 重要文件准备</span>
+                <span class="zh-CN">📄 重要文件准备</span>
             </div>
             <div class="nav-item" onclick="showSection('arrival')">
                 <span class="zh-TW">✈️ 抵達英國</span>
-                <span class="zh-CN" style="display: none;">✈️ 抵达英国</span>
+                <span class="zh-CN">✈️ 抵达英国</span>
             </div>
             <div class="nav-item" onclick="showSection('packing')">
                 <span class="zh-TW">🧳 行李清單</span>
-                <span class="zh-CN" style="display: none;">🧳 行李清单</span>
+                <span class="zh-CN">🧳 行李清单</span>
             </div>
             <div class="nav-item" onclick="showSection('school-life')">
                 <span class="zh-TW">🏫 校園生活</span>
-                <span class="zh-CN" style="display: none;">🏫 校园生活</span>
+                <span class="zh-CN">🏫 校园生活</span>
             </div>
             <div class="nav-item" onclick="showSection('life-guide')">
                 <span class="zh-TW">🇬🇧 英國生活指南</span>
-                <span class="zh-CN" style="display: none;">🇬🇧 英国生活指南</span>
+                <span class="zh-CN">🇬🇧 英国生活指南</span>
             </div>
         </div>
 
         <div class="completion-badge" id="completionBadge">
             <span class="zh-TW">🎉 完成度: </span>
-            <span class="zh-CN" style="display: none;">🎉 完成度: </span>
+            <span class="zh-CN">🎉 完成度: </span>
             <span id="completionPercent">0%</span>
         </div>
 
@@ -1822,20 +1844,38 @@
         let currentSection = 'documents';
         let checkedItems = new Set();
         let totalCheckboxes = 0;
-        let currentLanguage = 'zh-TW';
+        let currentLanguage = 'zh-CN';
 
         function switchLanguage(lang) {
             currentLanguage = lang;
             
-            // 隱藏所有語言內容
-            document.querySelectorAll('.zh-TW, .zh-CN').forEach(el => {
-                el.style.display = 'none';
-            });
-            
-            // 顯示選中語言的內容
-            document.querySelectorAll(`.${lang}`).forEach(el => {
-                el.style.display = lang === 'zh-TW' ? 'inline' : 'inline';
-            });
+            if (lang === 'zh-TW') {
+                // 顯示繁體，隱藏簡體
+                document.querySelectorAll('.zh-TW').forEach(el => {
+                    el.style.display = '';
+                    if (el.tagName === 'DIV' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'P' || el.tagName === 'UL' || el.tagName === 'OL') {
+                        el.style.display = 'block';
+                    } else {
+                        el.style.display = 'inline';
+                    }
+                });
+                document.querySelectorAll('.zh-CN').forEach(el => {
+                    el.style.display = 'none';
+                });
+            } else {
+                // 顯示簡體，隱藏繁體
+                document.querySelectorAll('.zh-CN').forEach(el => {
+                    el.style.display = '';
+                    if (el.tagName === 'DIV' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'P' || el.tagName === 'UL' || el.tagName === 'OL') {
+                        el.style.display = 'block';
+                    } else {
+                        el.style.display = 'inline';
+                    }
+                });
+                document.querySelectorAll('.zh-TW').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
             
             // 更新按鈕狀態
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1912,6 +1952,9 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // 默認顯示簡體中文
+            switchLanguage('zh-CN');
+            
             updateProgress();
             
             // Add some interactive animations
