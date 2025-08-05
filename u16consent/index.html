@@ -1,1 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parental Consent Letter Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: white;
+            color: #4facfe;
+            transform: translateY(-2px);
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .section h3 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], input[type="email"], input[type="tel"], textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .signature-section {
+            text-align: center;
+        }
+
+        .signature-pad {
+            border: 3px solid #4facfe;
+            border-radius: 10px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .signature-controls {
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 25px rgba(252, 182, 159, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            font-size: 18px;
+            padding: 15px 40px;
+            margin-top: 30px;
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 15px 35px rgba(168, 237, 234, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Parental Consent Letter Generator</h1>
+            <p>Generate official consent letter for minor travel to UK</p>
+            <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin-top: 20px;">
+                <p style="font-size: 18px; font-weight: bold; color: white;">以下資訊請全部以英文填寫, 系統將自動生成家長同意信函</p>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="consentForm">
+                <!-- Child Details Section -->
+                <div class="section">
+                    <h3>Child's Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="childName">Full Name</label>
+                            <input type="text" id="childName" name="childName" placeholder="学生的英文全名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="childDob">Date of Birth</label>
+                            <input type="date" id="childDob" name="childDob" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="childNationality">Nationality</label>
+                            <input type="text" id="childNationality" name="childNationality" placeholder="如: Chinese" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passportNumber">Passport Number</label>
+                            <input type="text" id="passportNumber" name="passportNumber" placeholder="护照号码" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="passportExpiry">Passport Expiry Date</label>
+                        <input type="date" id="passportExpiry" name="passportExpiry" required>
+                    </div>
+                </div>
+
+                <!-- Travel Information Section -->
+                <div class="section">
+                    <h3>Travel Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="entryDate">Date of Entry to UK</label>
+                            <input type="date" id="entryDate" name="entryDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="flightInfo">Flight Number and Airline</label>
+                            <input type="text" id="flightInfo" name="flightInfo" placeholder="如: BA123, British Airways" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="departureCity">Departure City & Country</label>
+                            <input type="text" id="departureCity" name="departureCity" placeholder="如: Taipei, Taiwan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="arrivalAirport">Arrival Airport in UK</label>
+                            <input type="text" id="arrivalAirport" name="arrivalAirport" placeholder="如: Heathrow Airport, London" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- School and Purpose of Visit Section -->
+                <div class="section">
+                    <h3>School and Purpose of Visit</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="schoolName">School Name</label>
+                            <input type="text" id="schoolName" name="schoolName" placeholder="英国学校的全名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="courseType">Course Type</label>
+                            <input type="text" id="courseType" name="courseType" placeholder="如: GCSE, A-Level, Foundation Course" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="schoolAddress">School Address</label>
+                        <textarea id="schoolAddress" name="schoolAddress" placeholder="学校的完整英文地址" required></textarea>
+                    </div>
+                    
+                    <h4>Education Guardian in the UK</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adultName">Guardian Organization</label>
+                            <input type="text" id="adultName" name="adultName" value="StudyNest Education Ltd. - Jessie Chang" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="adultRelation">Relationship to Child</label>
+                            <input type="text" id="adultRelation" name="adultRelation" value="Education Guardian" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ukAddress">Guardian Address in the UK</label>
+                        <textarea id="ukAddress" name="ukAddress" readonly>1 Boleyn Way, Barnet EN5 5LH, United Kingdom</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ukPhone">UK Phone Number</label>
+                            <input type="tel" id="ukPhone" name="ukPhone" value="07550011520" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="ukEmail">Email Address</label>
+                            <input type="email" id="ukEmail" name="ukEmail" value="info@studynest.uk" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parent/Guardian Details Section -->
+                <div class="section">
+                    <h3>Parent/Guardian Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="parentName">Full Name</label>
+                            <input type="text" id="parentName" name="parentName" placeholder="家长的英文全名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentRelation">Relationship to Child</label>
+                            <select id="parentRelation" name="parentRelation" required>
+                                <option value="">请选择与孩子的关系</option>
+                                <option value="Father">Father</option>
+                                <option value="Mother">Mother</option>
+                                <option value="Legal Guardian">Legal Guardian</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="parentPhone">International Phone Number</label>
+                            <input type="tel" id="parentPhone" name="parentPhone" placeholder="如: +886-912-345-678" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentEmail">Email Address</label>
+                            <input type="email" id="parentEmail" name="parentEmail" placeholder="家长的电子邮件地址" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="homeAddress">Home Address</label>
+                        <textarea id="homeAddress" name="homeAddress" placeholder="家庭住址 (请用英文填写)" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="section signature-section">
+                    <h3>Digital Signature</h3>
+                    <p>请在下方签名框内签名:</p>
+                    <canvas id="signaturePad" class="signature-pad" width="600" height="200"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="btn btn-secondary" onclick="clearSignature()">Clear Signature</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="signatureDate">Date</label>
+                        <input type="date" id="signatureDate" name="signatureDate" required>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="button" class="btn btn-success" onclick="generatePDF()">Generate PDF Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize signature pad
+        let signaturePad;
+
+        window.onload = function() {
+            const canvas = document.getElementById('signaturePad');
+            signaturePad = new SignaturePad(canvas, {
+                backgroundColor: 'rgb(255, 255, 255)',
+                penColor: 'rgb(0, 0, 0)'
+            });
+
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('signatureDate').value = today;
+
+            // Resize canvas for mobile
+            resizeCanvas();
+        };
+
+        window.onresize = resizeCanvas;
+
+        function resizeCanvas() {
+            const canvas = document.getElementById('signaturePad');
+            const container = canvas.parentElement;
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            
+            if (window.innerWidth < 768) {
+                canvas.width = container.offsetWidth - 40;
+                canvas.height = 150;
+            } else {
+                canvas.width = 600;
+                canvas.height = 200;
+            }
+            
+            canvas.getContext("2d").scale(ratio, ratio);
+            signaturePad.clear();
+        }
+
+        function clearSignature() {
+            signaturePad.clear();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function generatePDF() {
+            // Validate form
+            const form = document.getElementById('consentForm');
+            if (!form.checkValidity()) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Check if signature exists
+            if (signaturePad.isEmpty()) {
+                alert('Please provide your signature.');
+                return;
+            }
+
+            // Get form data
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            // Get signature as image
+            const signatureImage = signaturePad.toDataURL();
+
+            // Create PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Set font
+            doc.setFont('helvetica');
+
+            // Title
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Parental Consent Letter for a Minor to Travel Unaccompanied', 20, 20);
+
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('To Whom It May Concern,', 20, 35);
+
+            doc.setFont('helvetica', 'normal');
+            const introText = `I, the undersigned, am the legal parent/legal guardian of the minor named below and hereby give my full consent for my child to travel to the United Kingdom unaccompanied.`;
+            const splitIntro = doc.splitTextToSize(introText, 170);
+            doc.text(splitIntro, 20, 45);
+
+            let yPos = 60;
+
+            // Child's Details
+            doc.setFont('helvetica', 'bold');
+            doc.text("Child's Details:", 20, yPos);
+            yPos += 10;
+            doc.setFont('helvetica', 'normal');
+            doc.text(`• Full Name: ${data.childName}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Date of Birth: ${formatDate(data.childDob)}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Nationality: ${data.childNationality}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Passport Number: ${data.passportNumber}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Passport Expiry Date: ${formatDate(data.passportExpiry)}`, 25, yPos);
+            yPos += 15;
+
+            // Travel Information
+            doc.setFont('helvetica', 'bold');
+            doc.text("Travel Information:", 20, yPos);
+            yPos += 10;
+            doc.setFont('helvetica', 'normal');
+            doc.text(`• Date of Entry to the UK: ${formatDate(data.entryDate)}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Flight Number and Airline: ${data.flightInfo}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Departure City & Country: ${data.departureCity}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Arrival Airport in the UK: ${data.arrivalAirport}`, 25, yPos);
+            yPos += 15;
+
+            // Purpose of Visit and School Information
+            doc.setFont('helvetica', 'bold');
+            doc.text("Purpose of Visit:", 20, yPos);
+            yPos += 10;
+            doc.setFont('helvetica', 'normal');
+            const purposeText = `The child is travelling to the UK to attend ${data.schoolName} for ${data.courseType} studies. They will be under the care of:`;
+            const splitPurpose = doc.splitTextToSize(purposeText, 170);
+            doc.text(splitPurpose, 20, yPos);
+            yPos += splitPurpose.length * 7 + 5;
+
+            doc.text(`• School Name: ${data.schoolName}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Course Type: ${data.courseType}`, 25, yPos);
+            yPos += 7;
+            const schoolAddressLines = doc.splitTextToSize(`• School Address: ${data.schoolAddress}`, 170);
+            doc.text(schoolAddressLines, 25, yPos);
+            yPos += schoolAddressLines.length * 7 + 5;
+
+            doc.text(`• Education Guardian: ${data.adultName}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Relationship to Child: ${data.adultRelation}`, 25, yPos);
+            yPos += 7;
+            const addressLines = doc.splitTextToSize(`• Guardian Address: ${data.ukAddress}`, 170);
+            doc.text(addressLines, 25, yPos);
+            yPos += addressLines.length * 7;
+            doc.text(`• Phone Number: ${data.ukPhone}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Email: ${data.ukEmail}`, 25, yPos);
+            yPos += 15;
+
+            // Check if we need a new page
+            if (yPos > 220) {
+                doc.addPage();
+                yPos = 20;
+            }
+
+            // Parent/Guardian Details
+            doc.setFont('helvetica', 'bold');
+            doc.text("Parent/Guardian Details:", 20, yPos);
+            yPos += 10;
+            doc.setFont('helvetica', 'normal');
+            doc.text(`• Full Name: ${data.parentName}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Relationship to Child: ${data.parentRelation}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Phone Number: ${data.parentPhone}`, 25, yPos);
+            yPos += 7;
+            doc.text(`• Email Address: ${data.parentEmail}`, 25, yPos);
+            yPos += 7;
+            const homeAddressLines = doc.splitTextToSize(`• Home Address: ${data.homeAddress}`, 170);
+            doc.text(homeAddressLines, 25, yPos);
+            yPos += homeAddressLines.length * 7 + 10;
+
+            // Confirmation text
+            const confirmText = `I confirm that I am aware of and support my child's travel plans, and that the arrangements made for their accommodation and care in the UK are suitable and safe.\n\nI understand that immigration officials may contact me to verify this information if needed. I am available at any time via the contact details provided above.`;
+            const splitConfirm = doc.splitTextToSize(confirmText, 170);
+            doc.text(splitConfirm, 20, yPos);
+            yPos += splitConfirm.length * 7 + 15;
+
+            // Check if we need a new page for signature
+            if (yPos > 200) {
+                doc.addPage();
+                yPos = 20;
+            }
+
+            // Signature
+            doc.setFont('helvetica', 'bold');
+            doc.text("Signature:", 20, yPos);
+            yPos += 10;
+
+            // Add signature image
+            doc.addImage(signatureImage, 'PNG', 20, yPos, 80, 25);
+            yPos += 30;
+
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Parent/Guardian Signature`, 20, yPos);
+            doc.text(`Date: ${formatDate(data.signatureDate)}`, 120, yPos);
+
+            // Save PDF
+            const fileName = `Parental_Consent_Letter_${data.childName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(fileName);
+        }
+    </script>
+</body>
+</html>
