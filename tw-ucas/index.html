@@ -19,75 +19,9 @@
             min-height: 100vh;
         }
 
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #d35400;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: #2c3e50;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: #d35400;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #d35400;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
         /* Hero Section */
         .hero {
-            padding: 100px 0 60px;
+            padding: 40px 0 60px;
             text-align: center;
             color: white;
             position: relative;
@@ -111,6 +45,14 @@
             padding: 0 2rem;
             position: relative;
             z-index: 2;
+        }
+
+        .hero-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d35400;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .hero h1 {
@@ -303,10 +245,6 @@
             color: #27ae60;
         }
 
-        .feature-icon.not-included {
-            color: #e74c3c;
-        }
-
         .feature-text {
             flex: 1;
         }
@@ -384,12 +322,8 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .logo {
-                font-size: 1.1rem;
+            .hero-logo {
+                font-size: 1.4rem;
             }
 
             .hero h1 {
@@ -785,19 +719,6 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">StudyNest Education 英倫學居</a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#home">首頁</a></li>
-                    <li><a href="#services">服務項目</a></li>
-                    <li><a href="#contact">聯絡我們</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
     <section id="home" class="hero">
         <div class="floating-elements">
             <div class="floating-element"></div>
@@ -805,6 +726,7 @@
             <div class="floating-element"></div>
         </div>
         <div class="hero-content">
+            <div class="hero-logo">StudyNest Education 英倫學居</div>
             <h1>UCAS申請與學業管理服務</h1>
             <p class="subtitle">安心陪伴學生走過選校關鍵期</p>
             <p class="hero-description">
@@ -821,7 +743,7 @@
     <section id="services" class="services">
         <div class="container">
             <h2 class="section-title">服務項目</h2>
-            <p class="section-subtitle">專業全程升學顧問服務，一站式解決您的UCAS申請需求</p>
+            <p class="section-subtitle">專業全程升學顾問服務，一站式解決您的UCAS申請需求</p>
             
             <div class="services-grid">
                 <!-- StudyNest 全程升學方案 -->
@@ -1117,18 +1039,6 @@
                     }
                 }
             });
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.15)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-            }
         });
 
         // UCAS Modal functions
