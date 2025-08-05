@@ -216,7 +216,7 @@
             <h1>Parental Consent Letter Generator</h1>
             <p>Generate official consent letter for minor travel to UK</p>
             <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin-top: 20px;">
-                <p style="font-size: 18px; font-weight: bold; color: white;">以下資訊請全部以英文填寫, 系統將自動生成家長同意信函</p>
+                <p style="font-size: 18px; font-weight: bold; color: white;">以下资讯请全部以英文填写, 系统将自动生成家长同意信函</p>
             </div>
         </div>
 
@@ -224,53 +224,53 @@
             <form id="consentForm">
                 <!-- Child Details Section -->
                 <div class="section">
-                    <h3>Child's Details</h3>
+                    <h3>Student Details学生信息</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="childName">Full Name</label>
-                            <input type="text" id="childName" name="childName" placeholder="学生的英文全名" required>
+                            <label for="childName">Full Name 英文全名</label>
+                            <input type="text" id="childName" name="childName" placeholder="学生英文全名" required>
                         </div>
                         <div class="form-group">
-                            <label for="childDob">Date of Birth</label>
+                            <label for="childDob">Date of Birth 出生日期</label>
                             <input type="date" id="childDob" name="childDob" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="childNationality">Nationality</label>
+                            <label for="childNationality">Nationality 国籍</label>
                             <input type="text" id="childNationality" name="childNationality" placeholder="如: Chinese" required>
                         </div>
                         <div class="form-group">
-                            <label for="passportNumber">Passport Number</label>
+                            <label for="passportNumber">Passport Number 护照号码</label>
                             <input type="text" id="passportNumber" name="passportNumber" placeholder="护照号码" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="passportExpiry">Passport Expiry Date</label>
+                        <label for="passportExpiry">Passport Expiry Date 护照到期日</label>
                         <input type="date" id="passportExpiry" name="passportExpiry" required>
                     </div>
                 </div>
 
                 <!-- Travel Information Section -->
                 <div class="section">
-                    <h3>Travel Information</h3>
+                    <h3>Travel Information 旅游信息</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="entryDate">Date of Entry to UK</label>
+                            <label for="entryDate">Date of Entry to UK 入境英国日期</label>
                             <input type="date" id="entryDate" name="entryDate" required>
                         </div>
                         <div class="form-group">
-                            <label for="flightInfo">Flight Number and Airline</label>
+                            <label for="flightInfo">Flight Number 航班号</label>
                             <input type="text" id="flightInfo" name="flightInfo" placeholder="如: BA123, British Airways" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="departureCity">Departure City & Country</label>
-                            <input type="text" id="departureCity" name="departureCity" placeholder="如: Taipei, Taiwan" required>
+                            <label for="departureCity">Departure City & Country 出发城市及国家</label>
+                            <input type="text" id="departureCity" name="departureCity" placeholder="如: Bejing, China" required>
                         </div>
                         <div class="form-group">
-                            <label for="arrivalAirport">Arrival Airport in UK</label>
+                            <label for="arrivalAirport">Arrival Airport in UK 抵达英国机场</label>
                             <input type="text" id="arrivalAirport" name="arrivalAirport" placeholder="如: Heathrow Airport, London" required>
                         </div>
                     </div>
@@ -278,44 +278,44 @@
 
                 <!-- School and Purpose of Visit Section -->
                 <div class="section">
-                    <h3>School and Purpose of Visit</h3>
+                    <h3>School Information 学校信息</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="schoolName">School Name</label>
+                            <label for="schoolName">School Name 学校名</label>
                             <input type="text" id="schoolName" name="schoolName" placeholder="英国学校的全名" required>
                         </div>
                         <div class="form-group">
-                            <label for="courseType">Course Type</label>
+                            <label for="courseType">Course Type 课程类型</label>
                             <input type="text" id="courseType" name="courseType" placeholder="如: GCSE, A-Level, Foundation Course" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="schoolAddress">School Address</label>
+                        <label for="schoolAddress">School Address学校地址</label>
                         <textarea id="schoolAddress" name="schoolAddress" placeholder="学校的完整英文地址" required></textarea>
                     </div>
                     
-                    <h4>Education Guardian in the UK</h4>
+                    <h4>Guardian Information 监护人信息</h4>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="adultName">Guardian Organization</label>
+                            <label for="adultName">Guardian Organization 监护公司</label>
                             <input type="text" id="adultName" name="adultName" value="StudyNest Education Ltd. - Jessie Chang" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="adultRelation">Relationship to Child</label>
+                            <label for="adultRelation">Relationship to Child 与学生的关系</label>
                             <input type="text" id="adultRelation" name="adultRelation" value="Education Guardian" readonly>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="ukAddress">Guardian Address in the UK</label>
+                        <label for="ukAddress">Guardian's Address 监护人地址</label>
                         <textarea id="ukAddress" name="ukAddress" readonly>1 Boleyn Way, Barnet EN5 5LH, United Kingdom</textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="ukPhone">UK Phone Number</label>
+                            <label for="ukPhone">Guardian's Contact No. 监护人电话</label>
                             <input type="tel" id="ukPhone" name="ukPhone" value="07550011520" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="ukEmail">Email Address</label>
+                            <label for="ukEmail">Guardian's Email 监护人邮箱</label>
                             <input type="email" id="ukEmail" name="ukEmail" value="info@studynest.uk" readonly>
                         </div>
                     </div>
@@ -323,34 +323,34 @@
 
                 <!-- Parent/Guardian Details Section -->
                 <div class="section">
-                    <h3>Parent/Guardian Details</h3>
+                    <h3>Parent Information 家长信息</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="parentName">Full Name</label>
+                            <label for="parentName">Full Name 姓名</label>
                             <input type="text" id="parentName" name="parentName" placeholder="家长的英文全名" required>
                         </div>
                         <div class="form-group">
-                            <label for="parentRelation">Relationship to Child</label>
+                            <label for="parentRelation">Relationship to Child 与学生的关系</label>
                             <select id="parentRelation" name="parentRelation" required>
                                 <option value="">请选择与孩子的关系</option>
-                                <option value="Father">Father</option>
-                                <option value="Mother">Mother</option>
-                                <option value="Legal Guardian">Legal Guardian</option>
+                                <option value="Father">Father 父亲</option>
+                                <option value="Mother">Mother 母亲</option>
+                                <option value="Legal Guardian">Legal Guardian 法定监护人</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="parentPhone">International Phone Number</label>
-                            <input type="tel" id="parentPhone" name="parentPhone" placeholder="如: +886-912-345-678" required>
+                            <label for="parentPhone">International Phone Number国际电话号码</label>
+                            <input type="tel" id="parentPhone" name="parentPhone" placeholder="如: +86-912-345-678" required>
                         </div>
                         <div class="form-group">
-                            <label for="parentEmail">Email Address</label>
-                            <input type="email" id="parentEmail" name="parentEmail" placeholder="家长的电子邮件地址" required>
+                            <label for="parentEmail">Email Address 电邮</label>
+                            <input type="email" id="parentEmail" name="parentEmail" placeholder="家长的电邮" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="homeAddress">Home Address</label>
+                        <label for="homeAddress">Home Address 家庭住址</label>
                         <textarea id="homeAddress" name="homeAddress" placeholder="家庭住址 (请用英文填写)" required></textarea>
                     </div>
                 </div>
