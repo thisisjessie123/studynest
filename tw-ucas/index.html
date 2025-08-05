@@ -1,1 +1,1184 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCAS申請與學業管理服務 | StudyNest Education 英倫學居</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #2980b9 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #d35400;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #d35400;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d35400;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 60px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #f2f6fa;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #e6eef6;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(211, 84, 0, 0.3);
+        }
+
+        .cta-button.primary {
+            background: #d35400;
+        }
+
+        .cta-button.primary:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(211, 84, 0, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-button.secondary:hover {
+            background: white;
+            color: #2c3e50;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 60px 0;
+            background: #f2f6fa;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 2.5rem;
+        }
+
+        .services-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .single-plan {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .service-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .service-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .service-target {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.8rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
+
+        .price-unit {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .service-content {
+            padding: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 0;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .service-features li:hover {
+            background: #e6eef6;
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            font-size: 1.1rem;
+            margin-top: 0.2rem;
+        }
+
+        .feature-icon.included {
+            color: #27ae60;
+        }
+
+        .feature-icon.not-included {
+            color: #e74c3c;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.2rem;
+            font-size: 0.9rem;
+        }
+
+        .feature-description {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            line-height: 1.3;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 50%, #2980b9 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #e6eef6;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            border: 2px solid white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-button:hover {
+            background: white;
+            color: #2c3e50;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: #e6eef6;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-description {
+                font-size: 0.9rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+                width: 200px;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .services-grid {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .single-plan {
+                max-width: 100%;
+            }
+
+            .price {
+                font-size: 2.2rem;
+            }
+
+            .service-features li {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .services {
+                padding: 40px 0;
+            }
+
+            .contact {
+                padding: 40px 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
+
+            .contact h2 {
+                font-size: 2rem;
+            }
+
+            .contact p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 30%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* UCAS Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            width: 95%;
+            max-width: 1000px;  
+            max-height: 90vh;
+            border-radius: 20px;
+            position: relative;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .ucas-intro {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            border-left: 5px solid #d35400;
+        }
+
+        .ucas-intro h3 {
+            color: #d35400;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ucas-intro p {
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .process-section {
+            margin-bottom: 3rem;
+        }
+
+        .process-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .process-path {
+            position: relative;
+            margin: 3rem 0;
+            padding: 2rem 0;
+        }
+
+        .process-step {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            max-width: 400px;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #d35400;
+        }
+
+        /* S型排列 */
+        .process-step:nth-child(odd) {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .process-step:nth-child(even) {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+            color: white;
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0 0.5rem;
+        }
+
+        .step-title {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-left: 30px;
+        }
+
+        .step-content {
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-left: 30px;
+        }
+
+        .step-content ul {
+            margin: 0.5rem 0 0 1rem;
+            padding: 0;
+        }
+
+        .step-content li {
+            margin-bottom: 0.3rem;
+        }
+
+        .reminder-section {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 3rem;
+        }
+
+        .reminder-section h3 {
+            color: #1976d2;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reminder-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reminder-section li {
+            color: #1565c0;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .reminder-section li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        /* 連接線 */
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #d35400, #c0392b);
+            border-radius: 2px;
+        }
+
+        .process-step:nth-child(odd)::after {
+            right: -60px;
+            transform: translateY(-50%);
+        }
+
+        .process-step:nth-child(even)::after {
+            left: -60px;
+            transform: translateY(-50%);
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 98%;
+                margin: 1% auto;
+                max-height: 95vh;
+            }
+
+            .modal-header h2 {
+                font-size: 2rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .process-step {
+                max-width: 100%;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .process-step::after {
+                display: none;
+            }
+
+            .ucas-intro {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">StudyNest Education 英倫學居</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home">首頁</a></li>
+                    <li><a href="#services">服務項目</a></li>
+                    <li><a href="#contact">聯絡我們</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        <div class="hero-content">
+            <h1>UCAS申請與學業管理服務</h1>
+            <p class="subtitle">安心陪伴學生走過選校關鍵期</p>
+            <p class="hero-description">
+                選校選系的路上，很多家長都感到焦慮和不安。面對複雜的UCAS申請流程，您或許也覺得無從著手。<br><br>
+                我們提供專業的學業管理與UCAS申請服務，從學生的興趣探索、升學方向規劃，到申請材料準備，每一步都細心陪伴，幫助孩子穩紮穩打，邁向理想大學。讓您和孩子都能更安心、自信地迎接未來挑戰。
+            </p>
+            <div class="cta-buttons">
+                <a href="#services" class="cta-button primary">查看服務方案</a>
+                <a href="#" class="cta-button secondary" onclick="openUCASModal()">了解UCAS</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">服務項目</h2>
+            <p class="section-subtitle">專業全程升學顧問服務，一站式解決您的UCAS申請需求</p>
+            
+            <div class="services-grid">
+                <!-- StudyNest 全程升學方案 -->
+                <div class="service-card single-plan">
+                    <div class="service-header">
+                        <h3 class="service-title">StudyNest 全程升學方案</h3>
+                        <p class="service-subtitle">One Plan, Full Journey | UCAS 全包升學顧問服務</p>
+                        <p class="service-target">適合計畫申請英國大學、希望從 AS 階段起進行完整升學準備與策略規劃的國際學生</p>
+                        <div class="price">£2,200</div>
+                        <div class="price-unit">一次性付款</div>
+                    </div>
+                    <div class="service-content">
+                        <ul class="service-features">
+                            <li>
+                                <span class="feature-icon included">🎯</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">升學規劃起點</div>
+                                    <div class="feature-description">學生背景分析與升學方向探索、興趣/學術/性向初步評估、升學階段規劃（Year 12～申請截止）</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">🧑‍🏫</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">學業與選科輔導</div>
+                                    <div class="feature-description">A-Level 選科策略建議與調整、提升學術履歷建議（含閱讀、競賽、課外項目）、每學期顧問學業進度回顧與建議（書面報告＋會談）</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">🏫</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">學校溝通協調</div>
+                                    <div class="feature-description">與寄宿學校老師/成績顧問聯繫、推薦信準備與策略建議（協助整理要點/範例）</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">📝</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">Personal Statement 全程指導</div>
+                                    <div class="feature-description">1對1構思會議與內容架構設計、多輪修改潤稿（含語言 + 思路）、最終版本交叉審核把關</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">💻</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">UCAS 平台操作與文件提交</div>
+                                    <div class="feature-description"><strong>由顧問輸入整份申請資料</strong>至 UCAS 平台（非僅提供建議）、專業檢查所有資料欄位與拼字錯誤、上傳推薦信與個人陳述</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">📬</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">UCAS Email 帳號管理</div>
+                                    <div class="feature-description"><strong>為學生設立專屬 UCAS email 信箱</strong>（升學用）、監護顧問每日追蹤該帳號信件與大學通知、即時回報申請進度與 Offer 通知</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">🗓️</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">申請進度追蹤表</div>
+                                    <div class="feature-description">提供個人化 UCAS 進度表（Google Sheet），讓家長/學生即時了解階段進展</div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="feature-icon included">📩</span>
+                                <div class="feature-text">
+                                    <div class="feature-title">後續申請支援</div>
+                                    <div class="feature-description">Offer 條件說明與接受流程說明、選校與Firm/Insurance選擇策略、統一信件管理與提醒</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>準備開始您的StudyNest升學之旅？</h2>
+            <p>立即聯繫我們的專業顧問，獲得完整的UCAS申請服務</p>
+            <a href="https://studynest.uk/" class="contact-button">免費諮詢</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 StudyNest Education 英倫學居. 心有所居，學有所成 | 專業UCAS申請與學業管理服務</p>
+        </div>
+    </footer>
+
+    <!-- UCAS Information Modal -->
+    <div id="ucasModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeUCASModal()">&times;</span>
+                <h2>🌍 什麼是 UCAS？</h2>
+                <p>完整了解英國大學申請系統</p>
+            </div>
+            <div class="modal-body">
+                <div class="ucas-intro">
+                    <h3>🎓 UCAS 簡介</h3>
+                    <p><strong>UCAS（Universities and Colleges Admissions Service）</strong> 是英國大學與學院的<strong>官方申請系統</strong>。</p>
+                    <p>如果您的孩子想申請英國的大學本科課程，無論是醫學、工程、商科還是藝術類課程，<strong>都需要透過 UCAS 系統來提交申請</strong>。<strong>UCAS 是申請英國大學的唯一官方平台</strong>。</p>
+                </div>
+
+                <div class="process-section">
+                    <h2 class="process-title">🎓 UCAS 申請流程全覽｜從選課到錄取</h2>
+                    
+                    <div class="process-path">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-title">📚 AS 選課與升學方向規劃</div>
+                            <div class="step-content">
+                                <p>申請英國大學的準備工作從 AS 年度即開始。選擇 A-Level 或 IB 課程時，應考慮未來想申請的科系，確保科目組合符合大學入學要求。</p>
+                                <p><strong>常見要求如：</strong></p>
+                                <ul>
+                                    <li>工程類需修習數學與物理</li>
+                                    <li>醫學類通常要求化學與生物</li>
+                                    <li>商科類則偏好數學、經濟等基礎</li>
+                                </ul>
+                                <p>透過早期的興趣探索與性向分析，可明確學習方向，降低未來轉向或重修科目的風險。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-title">📊 預估成績（Predicted Grades）與學業追蹤</div>
+                            <div class="step-content">
+                                <p>申請 UCAS 時，多數學生尚未取得正式考試成績，因此學校提供的<strong>「預估成績」</strong>成為大學評估申請的主要依據。</p>
+                                <p>預估成績通常由任課老師根據學生的課堂表現、模擬考試成績和學習態度綜合評估。定期進行學業追蹤與回顧，有助於提升預估表現，爭取更具競爭力的條件。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-title">⏰ UCAS 開放時間與申請截止日</div>
+                            <div class="step-content">
+                                <p><strong>UCAS 系統每年約於 9 月初開放申請</strong>。主要截止日期如下：</p>
+                                <ul>
+                                    <li><strong>10月15日</strong>：牛津、劍橋，以及醫學、牙醫、獸醫課程</li>
+                                    <li><strong>1月31日</strong>：大部分其他課程</li>
+                                </ul>
+                                <p>申請競爭激烈的科系與學校時，建議提早完成準備與提交，以增加成功機會。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <div class="step-title">🎯 志願選擇與申請策略</div>
+                            <div class="step-content">
+                                <p>UCAS 系統最多可同時申請 <strong>5 個課程</strong>。這些課程可以來自同一所大學，也可以來自不同學校。</p>
+                                <p><strong>在選校與選系時，需考量：</strong></p>
+                                <ul>
+                                    <li>預估成績與科系要求是否匹配</li>
+                                    <li>大學風格、地點、排名與專業優勢</li>
+                                    <li>志願之間的落點與備案空間</li>
+                                </ul>
+                                <p>善用志願排序與申請結構設計，有助於提升整體申請成功率。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">5</div>
+                            <div class="step-title">✍️ 個人陳述（Personal Statement）撰寫</div>
+                            <div class="step-content">
+                                <p>個人陳述是英國大學申請的核心文件之一。每位學生須提交一篇最多 <strong>4000 字符（約 500–600 字）</strong>的英文自述，用以說明申請動機、學術興趣與未來目標。</p>
+                                <p><strong>內容重點應涵蓋：</strong></p>
+                                <ul>
+                                    <li>為何選擇該科系／領域</li>
+                                    <li>曾參與的學術或實習經驗</li>
+                                    <li>未來希望深入研究或從事的方向</li>
+                                    <li>展現個人特質與學術潛力的具體例子</li>
+                                </ul>
+                                <p>文筆清晰、具說服力且真誠的陳述，能顯著提升申請成功機率。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">6</div>
+                            <div class="step-title">👨‍🏫 推薦信（Reference Letter）準備</div>
+                            <div class="step-content">
+                                <p>推薦信由任課老師、升學顧問或學校代表撰寫，反映學生的學業表現、潛力與學習態度。</p>
+                                <p>理想的推薦信應具體描述學生的課堂參與、獨立學習能力、思辨能力與合作精神，並提供真實的學術觀察與評價。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">7</div>
+                            <div class="step-title">💻 線上提交申請</div>
+                            <div class="step-content">
+                                <p>所有申請資料皆透過 UCAS 官網（<strong>www.ucas.com</strong>）提交，學生需註冊帳號、填寫基本資料、上傳個人陳述與推薦信，並支付申請費用。</p>
+                                <p>提交前應仔細檢查所有資訊與文件，確保資料完整、正確無誤。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">8</div>
+                            <div class="step-title">📬 接收大學回覆</div>
+                            <div class="step-content">
+                                <p>大學收到申請後，將陸續給出以下三種回應之一：</p>
+                                <ul>
+                                    <li><strong>Conditional Offer</strong>（有條件錄取）：需達到特定成績條件</li>
+                                    <li><strong>Unconditional Offer</strong>（無條件錄取）：已符合所有入學條件</li>
+                                    <li><strong>Rejection</strong>（未錄取）：不予錄取</li>
+                                </ul>
+                                <p>回覆時間依各校與科系不同，可能在數週至數月內出現。建議定期登入 UCAS 平台查看進度。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">9</div>
+                            <div class="step-title">✅ 確認錄取學校（Firm & Insurance Choice）</div>
+                            <div class="step-content">
+                                <p>收到錄取結果後，學生需從中選擇兩所學校：</p>
+                                <ul>
+                                    <li><strong>Firm（首選學校）</strong>：若達條件即保留名額</li>
+                                    <li><strong>Insurance（備選學校）</strong>：若首選未達條件，則視為備案方案</li>
+                                </ul>
+                                <p>選擇時應考量課程喜好、錄取門檻、保底安全性與學術資源等因素。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">10</div>
+                            <div class="step-title">🎓 成績公布與最終錄取確認</div>
+                            <div class="step-content">
+                                <p>當 A-Level、IB、台灣學測或其他認可資格考試成績公布後，UCAS 系統將自動比對學生是否達到錄取條件。</p>
+                                <ul>
+                                    <li>若成績達標，則轉為正式錄取</li>
+                                    <li>若未達條件，可能失去原錄取機會，需啟動後續處理機制</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">11</div>
+                            <div class="step-title">🔄 Clearing 補錄機會（Result Day 當日開放）</div>
+                            <div class="step-content">
+                                <p>Clearing 系統提供未獲錄取或希望更換志願的學生第二次申請機會。</p>
+                                <p>每年約於 <strong>8 月中 A-Level 成績公布日（Result Day）</strong>當天正式開放，學生可查詢仍有名額的課程並重新提出申請。</p>
+                                <p><strong>補錄常見適用情況包括：</strong></p>
+                                <ul>
+                                    <li>沒有收到任何錄取通知</li>
+                                    <li>未達原錄取條件</li>
+                                    <li>改變志願，想申請其他科系</li>
+                                </ul>
+                                <p>Clearing 流程需要快速行動，建議事先了解目標課程、準備個人陳述草稿與聯絡方式，以便當天即時聯繫大學。</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">12</div>
+                            <div class="step-title">🛂 錄取後入學與簽證申請</div>
+                            <div class="step-content">
+                                <p>獲 Confirmed Offer 後，大學將發出 <strong>CAS（Confirmation of Acceptance for Studies）</strong> 文件，作為學生簽證申請依據。</p>
+                                <p><strong>接下來需辦理：</strong></p>
+                                <ul>
+                                    <li>英國學生簽證（Student Visa）</li>
+                                    <li>安排住宿、保險、接機與行前準備</li>
+                                    <li>準備學校開學所需文件與報到程序</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reminder-section">
+                    <h3>📌 小提醒給家長</h3>
+                    <ul>
+                        <li>英國教育強調<strong>自主學習與專業導向</strong>，選科與申請都應由學生主導。</li>
+                        <li><strong>及早規劃、適時諮詢學校顧問</strong>，是申請成功的關鍵。</li>
+                        <li>UCAS 並非「先到先得」，但<strong>越早準備越好</strong>！</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                // 檢查href是否有效且不只是'#'
+                if (href && href !== '#' && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // UCAS Modal functions
+        function openUCASModal() {
+            document.getElementById('ucasModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 防止背景滾動
+        }
+
+        function closeUCASModal() {
+            document.getElementById('ucasModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // 恢復背景滾動
+        }
+
+        // 點擊模態窗口外部關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('ucasModal');
+            if (event.target == modal) {
+                closeUCASModal();
+            }
+        }
+
+        // ESC鍵關閉模態窗口
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeUCASModal();
+            }
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
