@@ -1043,94 +1043,23 @@ body {
 section {
 scroll-margin-top: 75px;
 }
-<!-- 步驟1: 在CSS區域（</style>標籤前）加入這些樣式 -->
-
-/* 公司政策區域樣式 - 加在現有CSS的最後面 */
-.policies-section {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 3rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.policies-title {
-    text-align: center;
-    color: white;
-    font-size: 1.3rem;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-}
-
-.policies-grid {
+/* 簡化的公司政策樣式 - 與服務範圍格式一致 */
+.footer-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.policy-link {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 1.2rem;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.policy-link:hover {
-    background: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    border-color: #d35400;
-}
-
-.policy-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.policy-text {
-    flex-grow: 1;
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-.download-icon {
-    font-size: 1.2rem;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-}
-
-.policy-link:hover .download-icon {
-    opacity: 1;
+    grid-template-columns: 1fr 1fr 1fr 1fr;  /* 改為4欄 */
+    gap: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 /* 手機版適配 */
 @media (max-width: 768px) {
-    .policies-section {
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .policies-grid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
-    
-    .policy-link {
-        padding: 1rem;
-    }
-    
-    .policies-title {
-        font-size: 1.1rem;
+    .footer-content {
+        grid-template-columns: 1fr 1fr;  /* 手機版改為2欄 */
+        gap: 2rem;
     }
 }
+
 </style>
 </head>
 <body>
@@ -1813,43 +1742,7 @@ scroll-margin-top: 75px;
 
 <footer class="footer">
 <div class="container">
-  <div class="policies-section">
-    <h3 class="policies-title">
-        <span class="traditional chinese">公司政策</span>
-        <span class="simplified chinese">公司政策</span>
-        <span class="english">Company Policies</span>
-    </h3>
-    <div class="policies-grid">
-        <a href="Safeguarding Policy.pdf" class="policy-link" download>
-            <div class="policy-icon">🛡️</div>
-            <div class="policy-text">
-                <span class="traditional chinese">學生保護政策</span>
-                <span class="simplified chinese">学生保护政策</span>
-                <span class="english">Safeguarding Policy</span>
-            </div>
-            <div class="download-icon">⬇️</div>
-        </a>
-        
-        <a href="Complaint Policy.pdf" class="policy-link" download>
-            <div class="policy-icon">📋</div>
-            <div class="policy-text">
-                <span class="traditional chinese">投訴處理政策</span>
-                <span class="simplified chinese">投诉处理政策</span>
-                <span class="english">Complaint Policy</span>
-            </div>
-            <div class="download-icon">⬇️</div>
-        </a>
-        
-        <a href="Privacy Notice.pdf" class="policy-link" download>
-            <div class="policy-icon">🔒</div>
-            <div class="policy-text">
-                <span class="traditional chinese">隱私聲明</span>
-                <span class="simplified chinese">隐私声明</span>
-                <span class="english">Privacy Notice</span>
-            </div>
-            <div class="download-icon">⬇️</div>
-        </a>
-    </div>
+  
 </div>
 <div class="footer-content">
 <div class="footer-section">
@@ -1885,6 +1778,31 @@ scroll-margin-top: 75px;
 <span class="english">Guardianship Services • Accommodation<br/>Academic Pathway • Culture Connect<br/>All-round Student Support</span>
 </p>
 </div>
+</div>
+    <div class="footer-section">
+        <h3>
+            <span class="traditional chinese">公司政策</span>
+            <span class="simplified chinese">公司政策</span>
+            <span class="english">Company Policies</span>
+        </h3>
+        <p class="footer-services">
+            <a href="Safeguarding Policy.pdf" download style="color: #d35400; text-decoration: none;">
+                <span class="traditional chinese">學生保護政策</span>
+                <span class="simplified chinese">学生保护政策</span>
+                <span class="english">Safeguarding Policy</span>
+            </a><br/>
+            <a href="Complaint Policy.pdf" download style="color: #d35400; text-decoration: none;">
+                <span class="traditional chinese">投訴處理政策</span>
+                <span class="simplified chinese">投诉处理政策</span>
+                <span class="english">Complaint Policy</span>
+            </a><br/>
+            <a href="Privacy Notice.pdf" download style="color: #d35400; text-decoration: none;">
+                <span class="traditional chinese">隱私聲明</span>
+                <span class="simplified chinese">隐私声明</span>
+                <span class="english">Privacy Notice</span>
+            </a>
+        </p>
+    </div>
 </div>
 <div class="footer-bottom">
 <p>© 2024 StudyNest Education. 
