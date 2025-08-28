@@ -1193,30 +1193,79 @@
             e.preventDefault();
             
             const files = Array.from(document.getElementById('interaction-attachments').files);
-            const attachments = files.map(file => ({
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                url: URL.createObjectURL(file)
-            }));
             
-            const interaction = {
-                id: nextInteractionId++,
-                studentId: parseInt(document.getElementById('interaction-student').value),
-                type: document.getElementById('interaction-type').value,
-                date: document.getElementById('interaction-date').value,
-                duration: document.getElementById('interaction-duration').value || null,
-                summary: document.getElementById('interaction-summary').value,
-                attachments: attachments,
-                createdAt: new Date()
+            // 将文件转换为base64存储
+            const processFiles = async () => {
+                const attachments = [];
+                
+                for (const file of files) {
+                    if (file.size > 5 * 1024 * 1024) { // 限制5MB
+                        alert(`文件 ${file.name} 过大，请选择小于5MB的文件`);
+                        continue;
+                    }
+                    
+                    try {
+                        const base64 = await fileToBase64(file);
+                        attachments.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            base64: base64,
+                            uploadDate: new Date().toISOString()
+                        });
+                    } catch (error) {
+                        console.error('文件处理失败:', file.name, error);
+                        alert(`文件 ${file.name} 处理失败`);
+                    }
+                }
+                
+                const interaction = {
+                    id: nextInteractionId++,
+                    studentId: parseInt(document.getElementById('interaction-student').value),
+                    type: document.getElementById('interaction-type').value,
+                    date: document.getElementById('interaction-date').value,
+                    duration: document.getElementById('interaction-duration').value || null,
+                    summary: document.getElementById('interaction-summary').value,
+                    attachments: attachments,
+                    createdAt: new Date()
+                };
+                
+                interactionsData.push(interaction);
+                saveToLocalStorage();
+                saveDataToGitHub();
+                clearInteractionForm();
+                updateDisplay();
+                alert(`✅ 互动记录添加成功！${attachments.length > 0 ? `包含${attachments.length}个附件` : ''}`);
             };
             
-            interactionsData.push(interaction);
-            saveToLocalStorage();
-            saveDataToGitHub();
-            clearInteractionForm();
-            updateDisplay();
-            alert('✅ 互动记录添加成功！');
+            processFiles();
+        }
+
+        // 文件转base64函数
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // 从base64创建下载链接
+        function base64ToDownloadUrl(base64, filename) {
+            try {
+                const byteCharacters = atob(base64.split(',')[1]);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray]);
+                return URL.createObjectURL(blob);
+            } catch (error) {
+                console.error('文件转换失败:', error);
+                return null;
+            }
         }
 
         function clearInteractionForm() {
@@ -1239,36 +1288,58 @@
             e.preventDefault();
             
             const files = Array.from(document.getElementById('money-attachments').files);
-            const attachments = files.map(file => ({
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                url: URL.createObjectURL(file)
-            }));
             
-            let amount = parseFloat(document.getElementById('money-amount').value);
-            if (document.getElementById('money-type').value === '支出') {
-                amount = -amount;
-            }
-            
-            const record = {
-                id: nextMoneyId++,
-                studentId: parseInt(document.getElementById('money-student').value),
-                type: document.getElementById('money-type').value,
-                amount: amount,
-                date: document.getElementById('money-date').value,
-                category: document.getElementById('money-category').value || '其他',
-                description: document.getElementById('money-description').value || '',
-                attachments: attachments,
-                createdAt: new Date()
+            // 将文件转换为base64存储
+            const processFiles = async () => {
+                const attachments = [];
+                
+                for (const file of files) {
+                    if (file.size > 5 * 1024 * 1024) { // 限制5MB
+                        alert(`文件 ${file.name} 过大，请选择小于5MB的文件`);
+                        continue;
+                    }
+                    
+                    try {
+                        const base64 = await fileToBase64(file);
+                        attachments.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            base64: base64,
+                            uploadDate: new Date().toISOString()
+                        });
+                    } catch (error) {
+                        console.error('文件处理失败:', file.name, error);
+                        alert(`文件 ${file.name} 处理失败`);
+                    }
+                }
+                
+                let amount = parseFloat(document.getElementById('money-amount').value);
+                if (document.getElementById('money-type').value === '支出') {
+                    amount = -amount;
+                }
+                
+                const record = {
+                    id: nextMoneyId++,
+                    studentId: parseInt(document.getElementById('money-student').value),
+                    type: document.getElementById('money-type').value,
+                    amount: amount,
+                    date: document.getElementById('money-date').value,
+                    category: document.getElementById('money-category').value || '其他支出',
+                    description: document.getElementById('money-description').value || '',
+                    attachments: attachments,
+                    createdAt: new Date()
+                };
+                
+                moneyRecordsData.push(record);
+                saveToLocalStorage();
+                saveDataToGitHub();
+                clearMoneyForm();
+                updateDisplay();
+                alert(`✅ 交易记录添加成功！${attachments.length > 0 ? `包含${attachments.length}个附件` : ''}`);
             };
             
-            moneyRecordsData.push(record);
-            saveToLocalStorage();
-            saveDataToGitHub();
-            clearMoneyForm();
-            updateDisplay();
-            alert('✅ 交易记录添加成功！');
+            processFiles();
         }
 
         function clearMoneyForm() {
@@ -1397,15 +1468,15 @@
                         <p><strong>日期:</strong> ${interaction.date}</p>
                         ${interaction.duration ? `<p><strong>时长:</strong> ${interaction.duration} 分钟</p>` : ''}
                         <p><strong>摘要:</strong> ${interaction.summary}</p>
-                        ${interaction.attachments.length > 0 ? `
+                        ${interaction.attachments && interaction.attachments.length > 0 ? `
                             <p><strong>附件:</strong></p>
                             <div style="margin-top: 10px;">
                                 ${interaction.attachments.map(file => `
                                     <div class="file-preview-item">
-                                        ${file.type.startsWith('image/') ? 
-                                            `<img src="${file.url}" alt="${file.name}" class="attachment-preview" 
-                                                  onclick="showFilePreview({url: '${file.url}', type: '${file.type}', size: ${file.size}}, '${file.name}')">` :
-                                            `<div class="file-icon" onclick="showFilePreview({url: '${file.url}', type: '${file.type}', size: ${file.size}}, '${file.name}')">
+                                        ${file.type && file.type.startsWith('image/') && file.base64 ? 
+                                            `<img src="${file.base64}" alt="${file.name}" class="attachment-preview" 
+                                                  onclick="showFilePreview(${JSON.stringify(file).replace(/"/g, '&quot;')}, '${file.name}')">` :
+                                            `<div class="file-icon" onclick="showFilePreview(${JSON.stringify(file).replace(/"/g, '&quot;')}, '${file.name}')">
                                                 📄 ${file.name}
                                              </div>`
                                         }
@@ -1453,15 +1524,15 @@
                             </span>
                         </p>
                         ${record.description ? `<p><strong>描述:</strong> ${record.description}</p>` : ''}
-                        ${record.attachments.length > 0 ? `
+                        ${record.attachments && record.attachments.length > 0 ? `
                             <p><strong>附件:</strong></p>
                             <div style="margin-top: 10px;">
                                 ${record.attachments.map(file => `
                                     <div class="file-preview-item">
-                                        ${file.type.startsWith('image/') ? 
-                                            `<img src="${file.url}" alt="${file.name}" class="attachment-preview" 
-                                                  onclick="showFilePreview({url: '${file.url}', type: '${file.type}', size: ${file.size}}, '${file.name}')">` :
-                                            `<div class="file-icon" onclick="showFilePreview({url: '${file.url}', type: '${file.type}', size: ${file.size}}, '${file.name}')">
+                                        ${file.type && file.type.startsWith('image/') && file.base64 ? 
+                                            `<img src="${file.base64}" alt="${file.name}" class="attachment-preview" 
+                                                  onclick="showFilePreview(${JSON.stringify(file).replace(/"/g, '&quot;')}, '${file.name}')">` :
+                                            `<div class="file-icon" onclick="showFilePreview(${JSON.stringify(file).replace(/"/g, '&quot;')}, '${file.name}')">
                                                 📄 ${file.name}
                                              </div>`
                                         }
@@ -1512,7 +1583,7 @@
             displayInteractions(selectedStudentId);
         }
 
-        // 文件预览功能
+        // 文件预览功能 - 更新版
         function showFilePreview(file, filename) {
             const modal = document.getElementById('file-modal');
             const modalTitle = document.getElementById('modal-title');
@@ -1521,24 +1592,49 @@
             
             modalTitle.textContent = filename;
             
-            if (file.type && file.type.startsWith('image/')) {
-                modalBody.innerHTML = `<img src="${file.url}" alt="${filename}" style="max-width: 100%; max-height: 70vh;">`;
-            } else {
+            // 处理base64存储的文件
+            let fileUrl;
+            if (file.base64) {
+                // 新版本：base64存储
+                fileUrl = file.base64;
+                if (file.type && file.type.startsWith('image/')) {
+                    modalBody.innerHTML = `<img src="${fileUrl}" alt="${filename}" style="max-width: 100%; max-height: 70vh;">`;
+                } else {
+                    modalBody.innerHTML = `
+                        <div style="text-align: center; padding: 40px;">
+                            <div style="font-size: 48px; color: #667eea; margin-bottom: 20px;">📄</div>
+                            <h3>${filename}</h3>
+                            <p>文件类型: ${file.type || '未知'}</p>
+                            <p>文件大小: ${(file.size / 1024).toFixed(2)} KB</p>
+                            <p>上传时间: ${file.uploadDate ? new Date(file.uploadDate).toLocaleString() : '未知'}</p>
+                        </div>
+                    `;
+                }
+            } else if (file.url) {
+                // 旧版本：临时URL（可能已失效）
+                fileUrl = file.url;
                 modalBody.innerHTML = `
                     <div style="text-align: center; padding: 40px;">
-                        <div style="font-size: 48px; color: #667eea; margin-bottom: 20px;">📄</div>
+                        <div style="font-size: 48px; color: #f56565; margin-bottom: 20px;">⚠️</div>
                         <h3>${filename}</h3>
+                        <p style="color: #e53e3e;">此文件链接已失效</p>
                         <p>文件类型: ${file.type || '未知'}</p>
                         <p>文件大小: ${(file.size / 1024).toFixed(2)} KB</p>
+                        <p>请重新上传文件</p>
                     </div>
                 `;
             }
             
             downloadBtn.onclick = function() {
-                const a = document.createElement('a');
-                a.href = file.url;
-                a.download = filename;
-                a.click();
+                if (file.base64) {
+                    // 新版本：从base64下载
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.download = filename;
+                    link.click();
+                } else {
+                    alert('文件链接已失效，无法下载。请重新上传文件。');
+                }
             };
             
             modal.style.display = 'block';
