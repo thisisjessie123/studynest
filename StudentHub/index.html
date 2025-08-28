@@ -532,8 +532,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="health-records">健康记录 (过敏、慢性病等)</label>
-                    <textarea id="health-records" rows="2" placeholder="记录过敏史、慢性病、用药情况等重要健康信息..." style="background-color: #ffe6e6; border-color: #ff9999;"></textarea>
+                    <label for="health-records">Health Records</label>
+                    <textarea id="health-records" rows="2" placeholder="记录过敏史、慢性病、用药情况等重要健康信息..." style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 8px;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="student-notes">备注</label>
@@ -701,8 +701,8 @@
                 <button class="btn btn-danger" onclick="clearAllData()">🗑️ 清空所有数据</button>
             </div>
             
-            <div style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
-                <p><strong>📝 注意：</strong> GitHub自动同步功能已暂时禁用以防止数据丢失。数据现在只保存在本地浏览器中。建议定期使用"导出JSON数据"功能备份数据。</p>
+            <div style="background: rgba(40, 167, 69, 0.1); padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #28a745;">
+                <p><strong>✅ 系统状态：</strong> GitHub自动同步已启用。数据会自动保存到云端，支持多设备访问。建议定期导出备份数据以确保安全。</p>
             </div>
             
             <div id="detailed-reports"></div>
@@ -801,38 +801,121 @@
             return await response.json();
         }
 
-        // 从GitHub读取数据
+        // 智能数据合并功能
+        function mergeData(localData, remoteData) {
+            // 如果远程数据更新时间更新，但本地有数据，进行智能合并
+            const merged = {
+                students: [...localData.students],
+                interactions: [...localData.interactions], 
+                moneyRecords: [...localData.moneyRecords],
+                nextStudentId: Math.max(localData.nextStudentId || 1, remoteData.nextStudentId || 1),
+                nextInteractionId: Math.max(localData.nextInteractionId || 1, remoteData.nextInteractionId || 1),
+                nextMoneyId: Math.max(localData.nextMoneyId || 1, remoteData.nextMoneyId || 1)
+            };
+            
+            // 合并学生数据 - 以最新的为准
+            const remoteStudents = remoteData.students || [];
+            remoteStudents.forEach(remoteStudent => {
+                const localIndex = merged.students.findIndex(s => s.id === remoteStudent.id);
+                if (localIndex === -1) {
+                    // 新学生，直接添加
+                    merged.students.push(remoteStudent);
+                } else {
+                    // 存在的学生，比较更新时间
+                    const localStudent = merged.students[localIndex];
+                    const remoteTime = new Date(remoteStudent.updatedAt || remoteStudent.createdAt);
+                    const localTime = new Date(localStudent.updatedAt || localStudent.createdAt);
+                    
+                    if (remoteTime > localTime) {
+                        merged.students[localIndex] = remoteStudent;
+                    }
+                }
+            });
+            
+            // 合并互动记录 - 去重
+            const remoteInteractions = remoteData.interactions || [];
+            remoteInteractions.forEach(remoteInteraction => {
+                const exists = merged.interactions.find(i => i.id === remoteInteraction.id);
+                if (!exists) {
+                    merged.interactions.push(remoteInteraction);
+                }
+            });
+            
+            // 合并金钱记录 - 去重
+            const remoteMoneyRecords = remoteData.moneyRecords || [];
+            remoteMoneyRecords.forEach(remoteRecord => {
+                const exists = merged.moneyRecords.find(m => m.id === remoteRecord.id);
+                if (!exists) {
+                    merged.moneyRecords.push(remoteRecord);
+                }
+            });
+            
+            return merged;
+        }
+
+        // 从GitHub读取数据 - 改进版
         async function loadDataFromGitHub() {
+            if (!GITHUB_CONFIG.token) {
+                console.log('GitHub Token未设置，跳过云端同步');
+                return false;
+            }
+            
             try {
                 setLoading(true);
                 const response = await githubRequest('GET', GITHUB_CONFIG.dataFile);
                 
                 const content = atob(response.content);
-                const data = JSON.parse(content);
+                const remoteData = JSON.parse(content);
                 
-                studentsData = data.students || [];
-                interactionsData = data.interactions || [];
-                moneyRecordsData = data.moneyRecords || [];
-                nextStudentId = data.nextStudentId || 1;
-                nextInteractionId = data.nextInteractionId || 1;
-                nextMoneyId = data.nextMoneyId || 1;
+                // 获取当前本地数据
+                const currentLocalData = {
+                    students: studentsData,
+                    interactions: interactionsData,
+                    moneyRecords: moneyRecordsData,
+                    nextStudentId,
+                    nextInteractionId,
+                    nextMoneyId
+                };
                 
-                console.log('数据已从GitHub加载');
+                // 智能合并数据
+                const mergedData = mergeData(currentLocalData, remoteData);
+                
+                // 更新全局变量
+                studentsData = mergedData.students;
+                interactionsData = mergedData.interactions;
+                moneyRecordsData = mergedData.moneyRecords;
+                nextStudentId = mergedData.nextStudentId;
+                nextInteractionId = mergedData.nextInteractionId;
+                nextMoneyId = mergedData.nextMoneyId;
+                
+                // 保存合并后的数据到本地
+                saveToLocalStorage();
+                
+                console.log('数据已从GitHub同步并合并');
                 return true;
             } catch (error) {
-                console.log('GitHub数据文件不存在或读取失败，将创建新文件:', error.message);
-                await saveDataToGitHub();
+                console.log('GitHub数据读取失败，使用本地数据:', error.message);
+                // 如果是首次使用，创建初始文件
+                if (error.message.includes('404')) {
+                    await saveDataToGitHub();
+                }
                 return false;
             } finally {
                 setLoading(false);
             }
         }
 
-        // 保存数据到GitHub
+        // 保存数据到GitHub - 改进版
         async function saveDataToGitHub() {
             if (!GITHUB_CONFIG.token) {
                 console.log('GitHub配置未完成，跳过云端保存');
-                return;
+                return false;
+            }
+            
+            // 防止并发保存
+            if (isLoading) {
+                console.log('正在同步中，跳过此次保存');
+                return false;
             }
             
             try {
@@ -845,7 +928,8 @@
                     nextStudentId,
                     nextInteractionId,
                     nextMoneyId,
-                    lastUpdated: new Date().toISOString()
+                    lastUpdated: new Date().toISOString(),
+                    version: "2.0"
                 };
                 
                 const content = btoa(JSON.stringify(data, null, 2));
@@ -869,9 +953,11 @@
                 
                 await githubRequest('PUT', GITHUB_CONFIG.dataFile, requestData);
                 console.log('数据已保存到GitHub');
+                return true;
                 
             } catch (error) {
                 console.error('保存到GitHub失败:', error);
+                return false;
             } finally {
                 setLoading(false);
             }
@@ -1006,8 +1092,7 @@
             }
             
             saveToLocalStorage();
-            // 暂时禁用GitHub同步来测试
-            // saveDataToGitHub();
+            saveDataToGitHub(); // 重新启用GitHub同步
             clearStudentForm();
             updateDisplay();
         }
@@ -1052,7 +1137,7 @@
                 interactionsData = interactionsData.filter(i => i.studentId !== id);
                 moneyRecordsData = moneyRecordsData.filter(m => m.studentId !== id);
                 saveToLocalStorage();
-                // saveDataToGitHub();
+                saveDataToGitHub();
                 updateDisplay();
             }
         }
@@ -1082,8 +1167,7 @@
             
             interactionsData.push(interaction);
             saveToLocalStorage();
-            // 暂时禁用GitHub同步
-            // saveDataToGitHub();
+            saveDataToGitHub();
             clearInteractionForm();
             updateDisplay();
             alert('✅ 互动记录添加成功！');
@@ -1099,7 +1183,7 @@
             if (confirm('确定要删除这条互动记录吗？')) {
                 interactionsData = interactionsData.filter(i => i.id !== id);
                 saveToLocalStorage();
-                // saveDataToGitHub();
+                saveDataToGitHub();
                 updateDisplay();
             }
         }
@@ -1135,7 +1219,7 @@
             
             moneyRecordsData.push(record);
             saveToLocalStorage();
-            // saveDataToGitHub();
+            saveDataToGitHub();
             clearMoneyForm();
             updateDisplay();
             alert('✅ 交易记录添加成功！');
@@ -1151,7 +1235,7 @@
             if (confirm('确定要删除这条交易记录吗？')) {
                 moneyRecordsData = moneyRecordsData.filter(m => m.id !== id);
                 saveToLocalStorage();
-                // saveDataToGitHub();
+                saveDataToGitHub();
                 updateDisplay();
             }
         }
@@ -1215,8 +1299,8 @@
                         <p><strong>House Master:</strong> ${student.dormContact || '未填写'}</p>
                     </div>
                     ${student.healthRecords ? `
-                    <div style="background: rgba(255, 102, 102, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #ff6666;">
-                        <h4 style="color: #cc0000; margin-bottom: 10px;">🏥 健康记录</h4>
+                    <div style="background: rgba(108, 117, 125, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #6c757d;">
+                        <h4 style="color: #495057; margin-bottom: 10px;">🏥 Health Records</h4>
                         <p><strong>健康信息:</strong> ${student.healthRecords}</p>
                     </div>
                     ` : ''}
@@ -1701,13 +1785,13 @@
             
             localStorage.setItem('githubConfig', JSON.stringify(GITHUB_CONFIG));
             
-            document.getElementById('config-status').innerHTML = '<div style="color: #48bb78;">✅ 配置已保存！</div>';
+            document.getElementById('config-status').innerHTML = '<div style="color: #48bb78;">✅ 配置已保存！正在同步数据...</div>';
             
-            setTimeout(() => {
+            setTimeout(async () => {
                 closeGitHubConfig();
-                loadDataFromGitHub().then(() => {
-                    updateDisplay();
-                });
+                // 重新初始化数据，进行智能同步
+                await initializeData();
+                alert('✅ GitHub配置保存成功！数据同步已启用。');
             }, 1000);
         }
         
@@ -1823,7 +1907,7 @@
             }
         }
 
-        // 标签页切换
+        // 标签页切换 - 优化同步策略
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.add('hidden');
@@ -1842,14 +1926,12 @@
                 updateStats();
             }
             
-            // 暂时禁用GitHub同步以防止数据丢失
-            /*
-            if (GITHUB_CONFIG.token && !isLoading) {
+            // 优化：只在切换到重要页面时同步，避免频繁同步
+            if (GITHUB_CONFIG.token && !isLoading && ['reports', 'students'].includes(tabName)) {
                 loadDataFromGitHub().then(() => {
                     updateDisplay();
                 });
             }
-            */
         }
 
         // 点击模态框外部关闭
@@ -1867,7 +1949,7 @@
             }
         });
 
-        // 初始化
+        // 初始化 - 改进版
         document.addEventListener('DOMContentLoaded', function() {
             const savedConfig = localStorage.getItem('githubConfig');
             if (savedConfig) {
@@ -1878,12 +1960,8 @@
             
             document.getElementById('login-form').addEventListener('submit', login);
             
-            // 暂时只使用本地存储，避免GitHub同步问题
-            const loaded = loadFromLocalStorage();
-            if (loaded) {
-                console.log('已加载本地存储的数据');
-            }
-            updateDisplay();
+            // 改进的初始化流程
+            initializeData();
             
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('interaction-date').value = today;
@@ -1897,15 +1975,38 @@
             document.getElementById('interaction-search').addEventListener('input', filterInteractions);
             document.getElementById('money-search').addEventListener('input', filterMoneyRecords);
             
-            // 只保存到本地存储，暂时禁用GitHub自动同步
+            // 重新启用自动保存，但降低频率避免冲突
             setInterval(() => {
                 saveToLocalStorage();
-                // 暂时禁用自动GitHub同步
-                // if (GITHUB_CONFIG.token && !isLoading) {
-                //     saveDataToGitHub();
-                // }
-            }, 60000);
+                if (GITHUB_CONFIG.token && !isLoading) {
+                    saveDataToGitHub();
+                }
+            }, 120000); // 每2分钟自动同步一次
         });
+
+        // 初始化数据函数
+        async function initializeData() {
+            // 先加载本地数据
+            const localLoaded = loadFromLocalStorage();
+            
+            if (GITHUB_CONFIG.token) {
+                // 如果有GitHub配置，尝试同步云端数据
+                const githubLoaded = await loadDataFromGitHub();
+                
+                if (!githubLoaded && !localLoaded) {
+                    // 首次使用，创建初始数据
+                    console.log('首次使用，创建初始数据结构');
+                }
+            } else {
+                if (localLoaded) {
+                    console.log('已加载本地存储的数据');
+                } else {
+                    console.log('使用默认空数据');
+                }
+            }
+            
+            updateDisplay();
+        }
     </script>
 </body>
 </html>
