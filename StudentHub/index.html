@@ -532,11 +532,16 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="health-records">健康记录 (过敏、慢性病等)</label>
+                    <textarea id="health-records" rows="2" placeholder="记录过敏史、慢性病、用药情况等重要健康信息..." style="background-color: #ffe6e6; border-color: #ff9999;"></textarea>
+                </div>
+                <div class="form-group">
                     <label for="student-notes">备注</label>
                     <textarea id="student-notes" rows="3" placeholder="其他重要信息..."></textarea>
                 </div>
                 <button type="submit" class="btn btn-success">添加学生</button>
                 <button type="button" class="btn" onclick="clearStudentForm()">清空表单</button>
+                <input type="hidden" id="edit-student-id" value="">
             </form>
             
             <input type="text" class="search-bar" id="student-search" placeholder="🔍 搜索学生...">
@@ -636,12 +641,14 @@
                     <label for="money-category">分类</label>
                     <select id="money-category">
                         <option value="">请选择分类</option>
-                            <option value="零花收入">零花收入</option>
-                            <option value="学习相关">学习相关</option>
-                            <option value="生活娱乐">生活娱乐</option>
-                            <option value="交通出行">交通出行</option>
-                            <option value="住宿费用">住宿费用</option>
-                            <option value="其他支出">其他支出</option>
+                        <option value="零花钱">零花钱</option>
+                        <option value="奖励">奖励</option>
+                        <option value="礼物">礼物</option>
+                        <option value="学习用品">学习用品</option>
+                        <option value="食物">食物</option>
+                        <option value="娱乐">娱乐</option>
+                        <option value="交通">交通</option>
+                        <option value="其他">其他</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -678,12 +685,24 @@
                 </div>
             </div>
             
+            <!-- 本月互动统计图表 -->
+            <div class="balance-chart">
+                <h3>本月学生互动次数统计</h3>
+                <div id="interaction-chart-content">
+                    <!-- 互动次数条形图将在这里生成 -->
+                </div>
+            </div>
+            
             <div class="form-group">
                 <button class="btn" onclick="showGitHubConfig()">⚙️ GitHub数据同步设置</button>
                 <button class="btn btn-warning" onclick="exportData()">📊 导出JSON数据</button>
                 <button class="btn btn-success" onclick="exportToGoogleSheets()">📋 导出Google Sheets格式</button>
                 <button class="btn btn-success" onclick="importData()">📥 导入数据</button>
                 <button class="btn btn-danger" onclick="clearAllData()">🗑️ 清空所有数据</button>
+            </div>
+            
+            <div style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+                <p><strong>📝 注意：</strong> GitHub自动同步功能已暂时禁用以防止数据丢失。数据现在只保存在本地浏览器中。建议定期使用"导出JSON数据"功能备份数据。</p>
             </div>
             
             <div id="detailed-reports"></div>
@@ -944,30 +963,62 @@
         function addStudent(e) {
             e.preventDefault();
             
-            const student = {
-                id: nextStudentId++,
-                name: document.getElementById('student-name').value,
-                birthday: document.getElementById('student-birthday').value || '',
-                school: document.getElementById('student-school').value || '',
-                grade: document.getElementById('student-grade').value || '',
-                subjects: document.getElementById('student-subjects').value || '',
-                phone: document.getElementById('student-phone').value || '',
-                parentPhone: document.getElementById('parent-phone').value || '',
-                dormContact: document.getElementById('dorm-contact').value || '',
-                notes: document.getElementById('student-notes').value || '',
-                createdAt: new Date()
-            };
+            const editId = document.getElementById('edit-student-id').value;
             
-            studentsData.push(student);
+            if (editId) {
+                // 编辑现有学生
+                const studentIndex = studentsData.findIndex(s => s.id === parseInt(editId));
+                if (studentIndex !== -1) {
+                    studentsData[studentIndex] = {
+                        ...studentsData[studentIndex],
+                        name: document.getElementById('student-name').value,
+                        birthday: document.getElementById('student-birthday').value || '',
+                        school: document.getElementById('student-school').value || '',
+                        grade: document.getElementById('student-grade').value || '',
+                        subjects: document.getElementById('student-subjects').value || '',
+                        phone: document.getElementById('student-phone').value || '',
+                        parentPhone: document.getElementById('parent-phone').value || '',
+                        dormContact: document.getElementById('dorm-contact').value || '',
+                        healthRecords: document.getElementById('health-records').value || '',
+                        notes: document.getElementById('student-notes').value || '',
+                        updatedAt: new Date()
+                    };
+                    alert('✅ 学生信息更新成功！');
+                }
+            } else {
+                // 添加新学生
+                const student = {
+                    id: nextStudentId++,
+                    name: document.getElementById('student-name').value,
+                    birthday: document.getElementById('student-birthday').value || '',
+                    school: document.getElementById('student-school').value || '',
+                    grade: document.getElementById('student-grade').value || '',
+                    subjects: document.getElementById('student-subjects').value || '',
+                    phone: document.getElementById('student-phone').value || '',
+                    parentPhone: document.getElementById('parent-phone').value || '',
+                    dormContact: document.getElementById('dorm-contact').value || '',
+                    healthRecords: document.getElementById('health-records').value || '',
+                    notes: document.getElementById('student-notes').value || '',
+                    createdAt: new Date()
+                };
+                studentsData.push(student);
+                alert('✅ 学生添加成功！');
+            }
+            
             saveToLocalStorage();
-            saveDataToGitHub();
+            // 暂时禁用GitHub同步来测试
+            // saveDataToGitHub();
             clearStudentForm();
             updateDisplay();
-            alert('✅ 学生添加成功！');
         }
 
         function clearStudentForm() {
             document.getElementById('student-form').reset();
+            document.getElementById('edit-student-id').value = '';
+            // 更新提交按钮文字
+            const submitBtn = document.querySelector('#student-form button[type="submit"]');
+            submitBtn.textContent = '添加学生';
+            submitBtn.className = 'btn btn-success';
         }
 
         function editStudent(id) {
@@ -981,9 +1032,17 @@
                 document.getElementById('student-phone').value = student.phone || '';
                 document.getElementById('parent-phone').value = student.parentPhone || '';
                 document.getElementById('dorm-contact').value = student.dormContact || '';
+                document.getElementById('health-records').value = student.healthRecords || '';
                 document.getElementById('student-notes').value = student.notes || '';
+                document.getElementById('edit-student-id').value = id;
                 
-                deleteStudent(id);
+                // 更新按钮文字和样式
+                const submitBtn = document.querySelector('#student-form button[type="submit"]');
+                submitBtn.textContent = '更新学生信息';
+                submitBtn.className = 'btn btn-warning';
+                
+                // 滚动到表单顶部
+                document.getElementById('student-form').scrollIntoView({behavior: 'smooth'});
             }
         }
 
@@ -993,7 +1052,7 @@
                 interactionsData = interactionsData.filter(i => i.studentId !== id);
                 moneyRecordsData = moneyRecordsData.filter(m => m.studentId !== id);
                 saveToLocalStorage();
-                saveDataToGitHub();
+                // saveDataToGitHub();
                 updateDisplay();
             }
         }
@@ -1023,7 +1082,8 @@
             
             interactionsData.push(interaction);
             saveToLocalStorage();
-            saveDataToGitHub();
+            // 暂时禁用GitHub同步
+            // saveDataToGitHub();
             clearInteractionForm();
             updateDisplay();
             alert('✅ 互动记录添加成功！');
@@ -1039,7 +1099,7 @@
             if (confirm('确定要删除这条互动记录吗？')) {
                 interactionsData = interactionsData.filter(i => i.id !== id);
                 saveToLocalStorage();
-                saveDataToGitHub();
+                // saveDataToGitHub();
                 updateDisplay();
             }
         }
@@ -1075,7 +1135,7 @@
             
             moneyRecordsData.push(record);
             saveToLocalStorage();
-            saveDataToGitHub();
+            // saveDataToGitHub();
             clearMoneyForm();
             updateDisplay();
             alert('✅ 交易记录添加成功！');
@@ -1091,7 +1151,7 @@
             if (confirm('确定要删除这条交易记录吗？')) {
                 moneyRecordsData = moneyRecordsData.filter(m => m.id !== id);
                 saveToLocalStorage();
-                saveDataToGitHub();
+                // saveDataToGitHub();
                 updateDisplay();
             }
         }
@@ -1154,6 +1214,12 @@
                         <p><strong>Parent Contact:</strong> ${student.parentPhone || '未填写'}</p>
                         <p><strong>House Master:</strong> ${student.dormContact || '未填写'}</p>
                     </div>
+                    ${student.healthRecords ? `
+                    <div style="background: rgba(255, 102, 102, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #ff6666;">
+                        <h4 style="color: #cc0000; margin-bottom: 10px;">🏥 健康记录</h4>
+                        <p><strong>健康信息:</strong> ${student.healthRecords}</p>
+                    </div>
+                    ` : ''}
                     <p><strong>备注:</strong> ${student.notes || '无'}</p>
                     <p style="font-size: 0.9em; color: #666;"><strong>创建时间:</strong> ${new Date(student.createdAt).toLocaleString()}</p>
                     <div style="margin-top: 15px;">
@@ -1394,52 +1460,99 @@
             }).join('');
         }
 
+        // 计算本月每个学生的互动次数
+        function getMonthlyInteractionCounts() {
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            const monthlyInteractions = {};
+            
+            // 初始化所有学生的计数为0
+            studentsData.forEach(student => {
+                monthlyInteractions[student.id] = {
+                    name: student.name,
+                    count: 0
+                };
+            });
+            
+            // 统计当月互动次数
+            interactionsData.forEach(interaction => {
+                const interactionDate = new Date(interaction.date);
+                if (interactionDate.getMonth() === currentMonth && 
+                    interactionDate.getFullYear() === currentYear) {
+                    if (monthlyInteractions[interaction.studentId]) {
+                        monthlyInteractions[interaction.studentId].count++;
+                    }
+                }
+            });
+            
+            return Object.values(monthlyInteractions);
+        }
+
+        // 生成互动次数图表
+        function generateInteractionChart() {
+            const container = document.getElementById('interaction-chart-content');
+            
+            if (studentsData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">暂无学生数据</p>';
+                return;
+            }
+            
+            const interactionCounts = getMonthlyInteractionCounts();
+            const maxInteractions = Math.max(...interactionCounts.map(s => s.count), 4);
+            
+            // 按互动次数排序（从少到多）
+            interactionCounts.sort((a, b) => a.count - b.count);
+            
+            container.innerHTML = interactionCounts.map(student => {
+                const isLow = student.count < 4;
+                const percentage = (student.count / maxInteractions) * 100;
+                
+                return `
+                    <div class="balance-bar">
+                        <div class="balance-label">${student.name}</div>
+                        <div class="balance-visual">
+                            <div class="balance-fill ${isLow ? 'balance-low' : 'balance-good'}" 
+                                 style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="balance-amount ${isLow ? 'money-negative' : 'money-positive'}">
+                            ${student.count} 次
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // 统计功能
         function updateStats() {
             const container = document.getElementById('stats-grid');
             
             const totalStudents = studentsData.length;
-            const totalInteractions = interactionsData.length;
-            const totalMoneyRecords = moneyRecordsData.length;
             
-            const totalIncome = moneyRecordsData
-                .filter(r => r.amount > 0)
-                .reduce((sum, r) => sum + r.amount, 0);
-                
-            const totalExpenses = moneyRecordsData
-                .filter(r => r.amount < 0)
-                .reduce((sum, r) => sum + Math.abs(r.amount), 0);
-            
+            // 计算余额低于£200的学生数量
             const lowBalanceCount = studentsData.filter(s => getStudentBalance(s.id) < 200).length;
+            
+            // 计算本月互动少于4次的学生数量
+            const interactionCounts = getMonthlyInteractionCounts();
+            const lowInteractionCount = interactionCounts.filter(s => s.count < 4).length;
             
             container.innerHTML = `
                 <div class="stat-card">
                     <div class="stat-number">${totalStudents}</div>
                     <div>学生总数</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">${totalInteractions}</div>
-                    <div>互动记录</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${totalMoneyRecords}</div>
-                    <div>交易记录</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">£${totalIncome.toFixed(2)}</div>
-                    <div>总收入</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">£${totalExpenses.toFixed(2)}</div>
-                    <div>总支出</div>
-                </div>
                 <div class="stat-card" style="background: ${lowBalanceCount > 0 ? 'linear-gradient(135deg, #f56565, #e53e3e)' : 'linear-gradient(135deg, #48bb78, #38a169)'};">
                     <div class="stat-number">${lowBalanceCount}</div>
                     <div>余额低于£200学生</div>
                 </div>
+                <div class="stat-card" style="background: ${lowInteractionCount > 0 ? 'linear-gradient(135deg, #ed8936, #dd6b20)' : 'linear-gradient(135deg, #48bb78, #38a169)'};">
+                    <div class="stat-number">${lowInteractionCount}</div>
+                    <div>本月互动少于4次</div>
+                </div>
             `;
             
             generateBalanceChart();
+            generateInteractionChart();
         }
 
         // 搜索过滤功能
@@ -1459,11 +1572,12 @@
         // Google Sheets格式导出
         function exportToGoogleSheets() {
             const studentsDataForExport = [
-                ['学生姓名', '生日', '学校', '年级', '科目', '学生电话', '家长电话', '宿管联系', '备注', '创建时间'],
+                ['学生姓名', '生日', '学校', '年级', '科目', '学生电话', '家长电话', '宿管联系', '健康记录', '备注', '创建时间'],
                 ...studentsData.map(s => [
                     s.name, s.birthday || '', s.school || '', s.grade || '', 
                     s.subjects || '', s.phone || '', s.parentPhone || '', 
-                    s.dormContact || '', s.notes || '', new Date(s.createdAt).toLocaleString()
+                    s.dormContact || '', s.healthRecords || '', s.notes || '', 
+                    new Date(s.createdAt).toLocaleString()
                 ])
             ];
             
@@ -1502,6 +1616,14 @@
                 })
             ];
             
+            // 本月互动统计
+            const interactionStatsForExport = [
+                ['学生姓名', '本月互动次数', '状态'],
+                ...getMonthlyInteractionCounts().map(s => [
+                    s.name, s.count, s.count < 4 ? '需要关注' : '正常'
+                ])
+            ];
+            
             function arrayToCSV(data) {
                 return data.map(row => 
                     row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
@@ -1511,7 +1633,8 @@
             const csvContent = `学生信息表\n${arrayToCSV(studentsDataForExport)}\n\n` +
                               `互动记录表\n${arrayToCSV(interactionsDataForExport)}\n\n` +
                               `零用钱记录表\n${arrayToCSV(moneyDataForExport)}\n\n` +
-                              `学生余额汇总表\n${arrayToCSV(balanceDataForExport)}`;
+                              `学生余额汇总表\n${arrayToCSV(balanceDataForExport)}\n\n` +
+                              `本月互动统计表\n${arrayToCSV(interactionStatsForExport)}`;
             
             const BOM = '\uFEFF';
             const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1642,7 +1765,7 @@
                                 nextMoneyId = data.nextMoneyId || 1;
                                 
                                 saveToLocalStorage();
-                                saveDataToGitHub();
+                                // saveDataToGitHub();
                                 updateDisplay();
                                 alert('✅ 数据导入成功！');
                             }
@@ -1665,7 +1788,8 @@
                 nextStudentId,
                 nextInteractionId,
                 nextMoneyId,
-                exportDate: new Date().toISOString()
+                exportDate: new Date().toISOString(),
+                version: "2.0" // 版本标识，包含健康记录功能
             };
             
             const dataStr = JSON.stringify(data, null, 2);
@@ -1675,6 +1799,8 @@
             link.href = URL.createObjectURL(dataBlob);
             link.download = `student_database_${new Date().toISOString().split('T')[0]}.json`;
             link.click();
+            
+            alert('✅ 数据已导出！文件包含所有学生信息、互动记录和零用钱数据。');
         }
 
         // 清空所有数据
@@ -1689,7 +1815,7 @@
                     nextMoneyId = 1;
                     
                     localStorage.removeItem('studentDatabase');
-                    saveDataToGitHub();
+                    // saveDataToGitHub();
                     
                     updateDisplay();
                     alert('✅ 所有数据已清空');
@@ -1716,11 +1842,14 @@
                 updateStats();
             }
             
+            // 暂时禁用GitHub同步以防止数据丢失
+            /*
             if (GITHUB_CONFIG.token && !isLoading) {
                 loadDataFromGitHub().then(() => {
                     updateDisplay();
                 });
             }
+            */
         }
 
         // 点击模态框外部关闭
@@ -1749,17 +1878,12 @@
             
             document.getElementById('login-form').addEventListener('submit', login);
             
-            if (GITHUB_CONFIG.token) {
-                loadDataFromGitHub().then(() => {
-                    updateDisplay();
-                });
-            } else {
-                const loaded = loadFromLocalStorage();
-                if (loaded) {
-                    console.log('已加载本地存储的数据');
-                }
-                updateDisplay();
+            // 暂时只使用本地存储，避免GitHub同步问题
+            const loaded = loadFromLocalStorage();
+            if (loaded) {
+                console.log('已加载本地存储的数据');
             }
+            updateDisplay();
             
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('interaction-date').value = today;
@@ -1773,11 +1897,13 @@
             document.getElementById('interaction-search').addEventListener('input', filterInteractions);
             document.getElementById('money-search').addEventListener('input', filterMoneyRecords);
             
+            // 只保存到本地存储，暂时禁用GitHub自动同步
             setInterval(() => {
                 saveToLocalStorage();
-                if (GITHUB_CONFIG.token && !isLoading) {
-                    saveDataToGitHub();
-                }
+                // 暂时禁用自动GitHub同步
+                // if (GITHUB_CONFIG.token && !isLoading) {
+                //     saveDataToGitHub();
+                // }
             }, 60000);
         });
     </script>
