@@ -445,6 +445,7 @@
                 <div class="stats-grid" id="stats-grid"></div>
                 
                 <div class="form-group">
+                    <button class="btn" onclick="showGitHubConfig()">GitHub数据同步设置</button>
                     <button class="btn btn-warning" onclick="exportData()">导出JSON数据</button>
                     <button class="btn btn-success" onclick="importData()">导入数据</button>
                     <button class="btn btn-danger" onclick="clearAllData()">清空所有数据</button>
@@ -1013,6 +1014,77 @@
                     updateDisplay();
                     alert('所有数据已清空');
                 }
+            }
+        }
+
+        function showGitHubConfig() {
+            const modal = document.createElement('div');
+            modal.style.cssText = 
+                'position: fixed; top: 0; left: 0; width: 100%; height: 100%; ' +
+                'background: rgba(0,0,0,0.8); display: flex; justify-content: center; ' +
+                'align-items: center; z-index: 2000;';
+            
+            modal.innerHTML = 
+                '<div style="background: white; border-radius: 15px; padding: 30px; max-width: 600px; width: 90%;">' +
+                    '<h3 style="margin-bottom: 20px; color: #4a5568;">GitHub数据同步设置</h3>' +
+                    '<div style="margin-bottom: 15px;">' +
+                        '<label style="display: block; margin-bottom: 5px; font-weight: 600;">GitHub用户名:</label>' +
+                        '<input type="text" id="config-username" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;" placeholder="your-username">' +
+                    '</div>' +
+                    '<div style="margin-bottom: 15px;">' +
+                        '<label style="display: block; margin-bottom: 5px; font-weight: 600;">仓库名称:</label>' +
+                        '<input type="text" id="config-repository" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;" placeholder="student-data-storage">' +
+                    '</div>' +
+                    '<div style="margin-bottom: 15px;">' +
+                        '<label style="display: block; margin-bottom: 5px; font-weight: 600;">Personal Access Token:</label>' +
+                        '<input type="password" id="config-token" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;" placeholder="ghp_xxxxxxxxxxxxx">' +
+                        '<small style="color: #666;">需要repo权限的Token</small>' +
+                    '</div>' +
+                    '<div style="margin-top: 25px; text-align: center;">' +
+                        '<button onclick="saveGitHubConfig()" style="background: #48bb78; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">保存配置</button>' +
+                        '<button onclick="closeGitHubConfig()" style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">取消</button>' +
+                    '</div>' +
+                    '<div id="config-status" style="margin-top: 15px; text-align: center;"></div>' +
+                '</div>';
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeGitHubConfig();
+            });
+            
+            document.body.appendChild(modal);
+            window.configModal = modal;
+        }
+        
+        function saveGitHubConfig() {
+            const username = document.getElementById('config-username').value;
+            const repository = document.getElementById('config-repository').value;
+            const token = document.getElementById('config-token').value;
+            
+            if (!username || !repository || !token) {
+                document.getElementById('config-status').innerHTML = '<div style="color: #e53e3e;">请填写完整信息</div>';
+                return;
+            }
+            
+            const config = {
+                username: username,
+                repository: repository,
+                token: token
+            };
+            
+            localStorage.setItem('githubConfig', JSON.stringify(config));
+            
+            document.getElementById('config-status').innerHTML = '<div style="color: #48bb78;">配置已保存！</div>';
+            
+            setTimeout(function() {
+                closeGitHubConfig();
+                alert('GitHub配置保存成功！');
+            }, 1000);
+        }
+        
+        function closeGitHubConfig() {
+            if (window.configModal) {
+                window.configModal.remove();
+                window.configModal = null;
             }
         }
 
