@@ -1177,14 +1177,58 @@
             }
         }
 
+        // 修复删除学生功能
         function deleteStudent(id) {
-            if (confirm('确定要删除这个学生吗？相关的互动记录和零用钱记录也会被删除。')) {
-                studentsData = studentsData.filter(s => s.id !== id);
-                interactionsData = interactionsData.filter(i => i.studentId !== id);
-                moneyRecordsData = moneyRecordsData.filter(m => m.studentId !== id);
-                saveToLocalStorage();
-                saveDataToGitHub();
-                updateDisplay();
+            console.log('尝试删除学生，ID:', id);
+            
+            // 确保id是数字
+            const studentId = parseInt(id);
+            console.log('转换后的ID:', studentId);
+            
+            // 查找学生
+            const student = studentsData.find(s => s.id === studentId);
+            console.log('找到的学生:', student);
+            
+            if (!student) {
+                alert('错误：找不到该学生记录');
+                console.error('学生不存在，ID:', studentId);
+                return;
+            }
+            
+            // 确认删除
+            if (confirm(`确定要删除学生 "${student.name}" 吗？相关的互动记录和零用钱记录也会被删除。`)) {
+                try {
+                    console.log('开始删除学生及相关数据...');
+                    
+                    // 删除学生记录
+                    const originalStudentCount = studentsData.length;
+                    studentsData = studentsData.filter(s => s.id !== studentId);
+                    console.log(`学生删除结果: ${originalStudentCount} -> ${studentsData.length}`);
+                    
+                    // 删除相关互动记录
+                    const originalInteractionCount = interactionsData.length;
+                    interactionsData = interactionsData.filter(i => i.studentId !== studentId);
+                    console.log(`互动记录删除结果: ${originalInteractionCount} -> ${interactionsData.length}`);
+                    
+                    // 删除相关金钱记录
+                    const originalMoneyCount = moneyRecordsData.length;
+                    moneyRecordsData = moneyRecordsData.filter(m => m.studentId !== studentId);
+                    console.log(`金钱记录删除结果: ${originalMoneyCount} -> ${moneyRecordsData.length}`);
+                    
+                    // 保存更改
+                    saveToLocalStorage();
+                    saveDataToGitHub();
+                    
+                    // 更新显示
+                    updateDisplay();
+                    
+                    alert(`✅ 学生 "${student.name}" 及相关记录已删除`);
+                    console.log('删除操作完成');
+                    
+                } catch (error) {
+                    console.error('删除操作失败:', error);
+                    alert('删除操作失败，请重试');
+                }
             }
         }
 
@@ -1756,399 +1800,4 @@
             const totalStudents = studentsData.length;
             
             // 计算余额低于£200的学生数量
-            const lowBalanceCount = studentsData.filter(s => getStudentBalance(s.id) < 200).length;
-            
-            // 计算本月互动少于4次的学生数量
-            const interactionCounts = getMonthlyInteractionCounts();
-            const lowInteractionCount = interactionCounts.filter(s => s.count < 4).length;
-            
-            container.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-number">${totalStudents}</div>
-                    <div>学生总数</div>
-                </div>
-                <div class="stat-card" style="background: ${lowBalanceCount > 0 ? 'linear-gradient(135deg, #f56565, #e53e3e)' : 'linear-gradient(135deg, #48bb78, #38a169)'};">
-                    <div class="stat-number">${lowBalanceCount}</div>
-                    <div>余额低于£200学生</div>
-                </div>
-                <div class="stat-card" style="background: ${lowInteractionCount > 0 ? 'linear-gradient(135deg, #ed8936, #dd6b20)' : 'linear-gradient(135deg, #48bb78, #38a169)'};">
-                    <div class="stat-number">${lowInteractionCount}</div>
-                    <div>本月互动少于4次</div>
-                </div>
-            `;
-            
-            generateBalanceChart();
-            generateInteractionChart();
-        }
-
-        // 搜索过滤功能
-        function filterStudents() {
-            displayStudents();
-        }
-
-        function filterInteractions() {
-            document.getElementById('interaction-filter-student').value = '';
-            displayInteractions();
-        }
-
-        function filterMoneyRecords() {
-            displayMoneyRecords();
-        }
-
-        // Google Sheets格式导出
-        function exportToGoogleSheets() {
-            const studentsDataForExport = [
-                ['学生姓名', '生日', '学校', '年级', '科目', '学生电话', '家长电话', '宿管联系', '健康记录', '备注', '创建时间'],
-                ...studentsData.map(s => [
-                    s.name, s.birthday || '', s.school || '', s.grade || '', 
-                    s.subjects || '', s.phone || '', s.parentPhone || '', 
-                    s.dormContact || '', s.healthRecords || '', s.notes || '', 
-                    new Date(s.createdAt).toLocaleString()
-                ])
-            ];
-            
-            const interactionsDataForExport = [
-                ['学生姓名', '互动类型', '日期', '时长(分钟)', '摘要', '创建时间'],
-                ...interactionsData.map(i => {
-                    const student = studentsData.find(s => s.id === i.studentId);
-                    return [
-                        student ? student.name : '未知学生',
-                        i.type, i.date, i.duration || '', i.summary,
-                        new Date(i.createdAt).toLocaleString()
-                    ];
-                })
-            ];
-            
-            const moneyDataForExport = [
-                ['学生姓名', '类型', '金额(£)', '日期', '分类', '描述', '创建时间'],
-                ...moneyRecordsData.map(m => {
-                    const student = studentsData.find(s => s.id === m.studentId);
-                    return [
-                        student ? student.name : '未知学生',
-                        m.type, m.amount, m.date, m.category, m.description || '',
-                        new Date(m.createdAt).toLocaleString()
-                    ];
-                })
-            ];
-            
-            const balanceDataForExport = [
-                ['学生姓名', '当前余额(£)', '状态'],
-                ...studentsData.map(s => {
-                    const balance = getStudentBalance(s.id);
-                    return [
-                        s.name, balance.toFixed(2), 
-                        balance < 200 ? '低于200磅' : '正常'
-                    ];
-                })
-            ];
-            
-            // 本月互动统计
-            const interactionStatsForExport = [
-                ['学生姓名', '本月互动次数', '状态'],
-                ...getMonthlyInteractionCounts().map(s => [
-                    s.name, s.count, s.count < 4 ? '需要关注' : '正常'
-                ])
-            ];
-            
-            function arrayToCSV(data) {
-                return data.map(row => 
-                    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
-                ).join('\n');
-            }
-            
-            const csvContent = `学生信息表\n${arrayToCSV(studentsDataForExport)}\n\n` +
-                              `互动记录表\n${arrayToCSV(interactionsDataForExport)}\n\n` +
-                              `零用钱记录表\n${arrayToCSV(moneyDataForExport)}\n\n` +
-                              `学生余额汇总表\n${arrayToCSV(balanceDataForExport)}\n\n` +
-                              `本月互动统计表\n${arrayToCSV(interactionStatsForExport)}`;
-            
-            const BOM = '\uFEFF';
-            const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `student_database_for_google_sheets_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
-            
-            alert('📋 CSV文件已下载！可以直接导入Google Sheets');
-        }
-
-        // GitHub配置功能
-        function showGitHubConfig() {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.8); display: flex; justify-content: center; 
-                align-items: center; z-index: 2000;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: white; border-radius: 15px; padding: 30px; max-width: 600px; width: 90%;">
-                    <h3 style="margin-bottom: 20px; color: #4a5568;">🔧 GitHub数据同步设置</h3>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">GitHub用户名:</label>
-                        <input type="text" id="config-username" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;" placeholder="your-username">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">仓库名称:</label>
-                        <input type="text" id="config-repository" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;" placeholder="student-data-storage">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Personal Access Token:</label>
-                        <input type="password" id="config-token" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;" placeholder="ghp_xxxxxxxxxxxxx">
-                        <small style="color: #666;">需要repo权限的Token</small>
-                    </div>
-                    <div style="margin-top: 25px; text-align: center;">
-                        <button onclick="saveGitHubConfig()" style="background: #48bb78; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">💾 保存配置</button>
-                        <button onclick="closeGitHubConfig()" style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">取消</button>
-                        <button onclick="testGitHubConnection()" style="background: #ed8936; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">🔍 测试连接</button>
-                    </div>
-                    <div id="config-status" style="margin-top: 15px; text-align: center;"></div>
-                </div>
-            `;
-            
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeGitHubConfig();
-            });
-            
-            document.body.appendChild(modal);
-            window.configModal = modal;
-            
-            setTimeout(() => {
-                document.getElementById('config-username').value = GITHUB_CONFIG.username;
-                document.getElementById('config-repository').value = GITHUB_CONFIG.repository;
-                document.getElementById('config-token').value = GITHUB_CONFIG.token;
-            }, 100);
-        }
-        
-        function saveGitHubConfig() {
-            GITHUB_CONFIG.username = document.getElementById('config-username').value;
-            GITHUB_CONFIG.repository = document.getElementById('config-repository').value;
-            GITHUB_CONFIG.token = document.getElementById('config-token').value;
-            
-            localStorage.setItem('githubConfig', JSON.stringify(GITHUB_CONFIG));
-            
-            document.getElementById('config-status').innerHTML = '<div style="color: #48bb78;">✅ 配置已保存！正在同步数据...</div>';
-            
-            setTimeout(async () => {
-                closeGitHubConfig();
-                // 重新初始化数据，进行智能同步
-                await initializeData();
-                alert('✅ GitHub配置保存成功！数据同步已启用。');
-            }, 1000);
-        }
-        
-        function closeGitHubConfig() {
-            if (window.configModal) {
-                window.configModal.remove();
-            }
-        }
-        
-        async function testGitHubConnection() {
-            const username = document.getElementById('config-username').value;
-            const repository = document.getElementById('config-repository').value;
-            const token = document.getElementById('config-token').value;
-            
-            if (!username || !repository || !token) {
-                document.getElementById('config-status').innerHTML = '<div style="color: #e53e3e;">❌ 请填写完整信息</div>';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`https://api.github.com/repos/${username}/${repository}`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-                
-                if (response.ok) {
-                    document.getElementById('config-status').innerHTML = '<div style="color: #48bb78;">✅ 连接成功！</div>';
-                } else {
-                    document.getElementById('config-status').innerHTML = '<div style="color: #e53e3e;">❌ 连接失败，请检查配置</div>';
-                }
-            } catch (error) {
-                document.getElementById('config-status').innerHTML = '<div style="color: #e53e3e;">❌ 网络错误</div>';
-            }
-        }
-
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        try {
-                            const data = JSON.parse(e.target.result);
-                            if (confirm('确定要导入数据吗？这会覆盖当前所有数据！')) {
-                                studentsData = data.students || [];
-                                interactionsData = data.interactions || [];
-                                moneyRecordsData = data.moneyRecords || [];
-                                nextStudentId = data.nextStudentId || 1;
-                                nextInteractionId = data.nextInteractionId || 1;
-                                nextMoneyId = data.nextMoneyId || 1;
-                                
-                                saveToLocalStorage();
-                                // saveDataToGitHub();
-                                updateDisplay();
-                                alert('✅ 数据导入成功！');
-                            }
-                        } catch (error) {
-                            alert('❌ 文件格式错误，导入失败！');
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            };
-            input.click();
-        }
-
-        // 数据导出功能
-        function exportData() {
-            const data = {
-                students: studentsData,
-                interactions: interactionsData,
-                moneyRecords: moneyRecordsData,
-                nextStudentId,
-                nextInteractionId,
-                nextMoneyId,
-                exportDate: new Date().toISOString(),
-                version: "2.0" // 版本标识，包含健康记录功能
-            };
-            
-            const dataStr = JSON.stringify(data, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(dataBlob);
-            link.download = `student_database_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            
-            alert('✅ 数据已导出！文件包含所有学生信息、互动记录和零用钱数据。');
-        }
-
-        // 清空所有数据
-        function clearAllData() {
-            if (confirm('⚠️ 确定要清空所有数据吗？此操作不可恢复！')) {
-                if (confirm('最后确认：真的要删除所有学生、互动记录和交易记录吗？')) {
-                    studentsData = [];
-                    interactionsData = [];
-                    moneyRecordsData = [];
-                    nextStudentId = 1;
-                    nextInteractionId = 1;
-                    nextMoneyId = 1;
-                    
-                    localStorage.removeItem('studentDatabase');
-                    // saveDataToGitHub();
-                    
-                    updateDisplay();
-                    alert('✅ 所有数据已清空');
-                }
-            }
-        }
-
-        // 标签页切换 - 优化同步策略
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(tabName + '-tab').classList.remove('hidden');
-            event.target.classList.add('active');
-            
-            updateStudentSelects();
-            
-            if (tabName === 'reports') {
-                updateStats();
-            }
-            
-            // 优化：只在切换到重要页面时同步，避免频繁同步
-            if (GITHUB_CONFIG.token && !isLoading && ['reports', 'students'].includes(tabName)) {
-                loadDataFromGitHub().then(() => {
-                    updateDisplay();
-                });
-            }
-        }
-
-        // 点击模态框外部关闭
-        window.onclick = function(event) {
-            const modal = document.getElementById('file-modal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-        
-        // ESC键关闭模态框
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // 初始化 - 改进版
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedConfig = localStorage.getItem('githubConfig');
-            if (savedConfig) {
-                GITHUB_CONFIG = {...GITHUB_CONFIG, ...JSON.parse(savedConfig)};
-            }
-            
-            checkAuth();
-            
-            document.getElementById('login-form').addEventListener('submit', login);
-            
-            // 改进的初始化流程
-            initializeData();
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('interaction-date').value = today;
-            document.getElementById('money-date').value = today;
-            
-            document.getElementById('student-form').addEventListener('submit', addStudent);
-            document.getElementById('interaction-form').addEventListener('submit', addInteraction);
-            document.getElementById('money-form').addEventListener('submit', addMoneyRecord);
-            
-            document.getElementById('student-search').addEventListener('input', filterStudents);
-            document.getElementById('interaction-search').addEventListener('input', filterInteractions);
-            document.getElementById('money-search').addEventListener('input', filterMoneyRecords);
-            
-            // 重新启用自动保存，但降低频率避免冲突
-            setInterval(() => {
-                saveToLocalStorage();
-                if (GITHUB_CONFIG.token && !isLoading) {
-                    saveDataToGitHub();
-                }
-            }, 120000); // 每2分钟自动同步一次
-        });
-
-        // 初始化数据函数
-        async function initializeData() {
-            // 先加载本地数据
-            const localLoaded = loadFromLocalStorage();
-            
-            if (GITHUB_CONFIG.token) {
-                // 如果有GitHub配置，尝试同步云端数据
-                const githubLoaded = await loadDataFromGitHub();
-                
-                if (!githubLoaded && !localLoaded) {
-                    // 首次使用，创建初始数据
-                    console.log('首次使用，创建初始数据结构');
-                }
-            } else {
-                if (localLoaded) {
-                    console.log('已加载本地存储的数据');
-                } else {
-                    console.log('使用默认空数据');
-                }
-            }
-            
-            updateDisplay();
-        }
-    </script>
-</body>
-</html>
+            const lowBalanceCount =
