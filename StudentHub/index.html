@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest London - 雲端監護系統</title>
+    <title>StudyNest Student Hub - 雲端管理系統</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; }
         
-        /* 基礎佈局 */
+        /* 登入頁面美化 */
+        .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .login-box { background: white; padding: 40px; border-radius: 20px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .login-box h1 { margin-bottom: 10px; color: var(--primary); font-size: 1.8rem; }
+        .login-box p { color: #666; margin-bottom: 25px; font-size: 0.9rem; }
+        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; outline: none; }
+        .login-input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(102,126,234,0.3); }
+
+        /* 主介面佈局 */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; display: none; }
         .header { background: white; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -19,7 +27,6 @@
         .content-section { display: none; }
         .content-section.active { display: block; }
 
-        /* 表格與過濾器 */
         .filter-area { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; display: flex; gap: 10px; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; margin-top: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
@@ -30,7 +37,7 @@
         .alert-low { color: white; background: var(--danger); padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; }
         .badge-info { background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; color: #4a5568; }
 
-        /* 彈窗與卡片 */
+        /* 彈窗 */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
         .modal-content { background:white; width:95%; max-width:700px; margin:30px auto; padding:30px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -39,29 +46,40 @@
         .form-group label { display:block; margin-bottom:5px; font-weight:bold; color: #555; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size: 1rem; }
 
-        .detail-card h4 { border-left: 4px solid var(--primary); padding-left: 10px; margin: 15px 0 10px 0; color: var(--primary); }
-        .detail-item { margin-bottom: 8px; font-size: 1rem; }
-        .detail-item b { color: #666; width: 120px; display: inline-block; }
-
         .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-danger { background: var(--danger); color: white; }
+        .btn-mini { padding: 4px 8px; font-size: 0.75rem; border-radius: 5px; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" style="height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, var(--primary), var(--secondary));">
-        <div style="background:white; padding:40px; border-radius:20px; text-align:center; width:350px;">
-            <h1>StudyNest</h1>
-            <input type="password" id="admin-password" placeholder="密碼" style="width:100%; padding:10px; margin:20px 0; border-radius:8px; border:1px solid #ddd;">
-            <button class="btn btn-primary" style="width:100%;" onclick="login()">登入系統</button>
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <h1>StudyNest Student Hub</h1>
+            <p>London Cloud Guardianship System</p>
+            
+            <label style="display:block; text-align:left; margin-bottom:5px; font-weight:bold; color:#555;">Login Role</label>
+            <select id="login-role" class="login-input">
+                <option value="Admin">Admin</option>
+                <option value="Guardian">Guardian</option>
+                <option value="Manager">Manager</option>
+            </select>
+
+            <label style="display:block; text-align:left; margin-bottom:5px; font-weight:bold; color:#555;">Access Key</label>
+            <input type="password" id="admin-password" placeholder="Enter Password" class="login-input">
+            
+            <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="login()">Sign In</button>
         </div>
     </div>
 
     <div id="main-container" class="container">
         <div class="header">
-            <h2>StudyNest 雲端監護系統</h2>
-            <button class="btn btn-danger" style="padding:8px 15px;" onclick="location.reload()">登出</button>
+            <div>
+                <h2 id="hub-title">StudyNest Student Hub</h2>
+                <span id="user-display" style="font-size: 0.8rem; color: #764ba2; font-weight: bold;"></span>
+            </div>
+            <button class="btn btn-danger" style="padding:8px 15px;" onclick="location.reload()">Logout</button>
         </div>
 
         <div class="nav-tabs">
@@ -78,8 +96,8 @@
 
         <section id="interactions-section" class="content-section">
             <div class="filter-area">
-                <label>按學生篩選：</label>
-                <select id="filter-int-student" onchange="render()"><option value="all">顯示全部學生</option></select>
+                <label>篩選學生：</label>
+                <select id="filter-int-student" onchange="render()"><option value="all">顯示全部</option></select>
                 <button class="btn btn-primary" style="margin-left:auto;" onclick="openModal('interaction-modal')">+ 新增互動</button>
             </div>
             <div id="interaction-list"></div>
@@ -87,8 +105,8 @@
 
         <section id="money-section" class="content-section">
             <div class="filter-area">
-                <label>按學生篩選：</label>
-                <select id="filter-money-student" onchange="render()"><option value="all">顯示全部學生</option></select>
+                <label>篩選學生：</label>
+                <select id="filter-money-student" onchange="render()"><option value="all">顯示全部</option></select>
                 <button class="btn btn-primary" style="margin-left:auto;" onclick="openModal('money-modal')">+ 新增帳目</button>
             </div>
             <div id="money-list"></div>
@@ -102,23 +120,10 @@
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <h2 id="det-name" style="color:var(--primary); margin-bottom:20px;"></h2>
-            <div class="detail-card">
-                <h4>基本資料</h4>
-                <div class="detail-item"><b>英文名:</b> <span id="det-eng-name"></span></div>
-                <div class="detail-item"><b>學校:</b> <span id="det-school"></span></div>
-                <div class="detail-item"><b>年級:</b> <span id="det-grade"></span></div>
-                <div class="detail-item"><b>生日:</b> <span id="det-birthday"></span></div>
-                <h4>聯絡資訊</h4>
-                <div class="detail-item"><b>學生電話:</b> <span id="det-phone"></span></div>
-                <div class="detail-item"><b>家長聯繫:</b> <span id="det-parent"></span></div>
-                <div class="detail-item"><b>英國住址:</b> <span id="det-address"></span></div>
-                <h4>重要紀錄</h4>
-                <div class="detail-item"><b>醫療/過敏:</b> <span id="det-medical" style="color:red;"></span></div>
-                <div class="detail-item"><b>備註事項:</b> <span id="det-notes"></span></div>
-            </div>
+            <div id="detail-content-area"></div>
             <div style="margin-top:30px; display:flex; gap:10px;">
                 <button class="btn" onclick="closeModal('detail-modal')">關閉</button>
-                <button id="det-delete-btn" class="btn btn-danger">永久刪除此學生</button>
+                <button id="det-delete-btn" class="btn btn-danger">永久刪除學生檔案</button>
             </div>
         </div>
     </div>
@@ -133,7 +138,7 @@
                 <div class="form-group"><label>年級</label><input type="text" id="s-grade"></div>
                 <div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div>
                 <div class="form-group"><label>電話</label><input type="text" id="s-phone"></div>
-                <div class="form-group full"><label>家長聯絡資訊 (姓名/微信/電話)</label><input type="text" id="s-parent"></div>
+                <div class="form-group full"><label>家長聯絡資訊</label><input type="text" id="s-parent"></div>
                 <div class="form-group full"><label>英國住址</label><input type="text" id="s-address"></div>
                 <div class="form-group full"><label>醫療/過敏提醒</label><textarea id="s-medical" rows="2"></textarea></div>
                 <div class="form-group full"><label>其他備註</label><textarea id="s-notes" rows="2"></textarea></div>
@@ -150,10 +155,10 @@
             <div class="form-group"><label>日期</label><input type="date" id="int-date" required></div>
             <div class="form-group"><label>類型</label>
                 <select id="int-type">
-                    <option value="School Visit">School Visit (校訪)</option>
-                    <option value="Term Report">Term Report (學期報告)</option>
-                    <option value="Life Support">Life Support (生活協助)</option>
-                    <option value="Emergency">Emergency (緊急事件)</option>
+                    <option value="School Visit">School Visit</option>
+                    <option value="Term Report">Term Report</option>
+                    <option value="Life Support">Life Support</option>
+                    <option value="Emergency">Emergency</option>
                 </select>
             </div>
             <div class="form-group"><label>內容詳情</label><textarea id="int-content" rows="4" required></textarea></div>
@@ -163,7 +168,7 @@
     </div></div>
 
     <div id="money-modal" class="modal"><div class="modal-content">
-        <h3>新增零用錢帳目</h3>
+        <h3>新增帳目</h3>
         <form id="money-form">
             <div class="form-group"><label>學生</label><select id="money-student-select"></select></div>
             <div class="form-group"><label>日期</label><input type="date" id="money-date" required></div>
@@ -171,13 +176,13 @@
             <div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div>
             <div class="form-group"><label>分類</label>
                 <select id="money-cat">
-                    <option value="Top-up">Top-up (補款)</option>
-                    <option value="Daily Expense">Daily Expense (日常開銷)</option>
-                    <option value="Medical/Insurance">Medical/Insurance (醫療保險)</option>
-                    <option value="Tuition/Activity">Tuition/Activity (學費活動)</option>
+                    <option value="Top-up">Top-up</option>
+                    <option value="Daily Expense">Daily Expense</option>
+                    <option value="Medical/Insurance">Medical/Insurance</option>
+                    <option value="Tuition/Activity">Tuition/Activity</option>
                 </select>
             </div>
-            <div class="form-group"><label>備註詳情 (Details)</label><input type="text" id="money-detail" placeholder="例如：購買火車票"></div>
+            <div class="form-group"><label>詳情</label><input type="text" id="money-detail"></div>
             <button type="submit" class="btn btn-primary">儲存帳目</button>
             <button type="button" class="btn" onclick="closeModal('money-modal')">取消</button>
         </form>
@@ -208,37 +213,39 @@
         }
 
         function render() {
-            // 1. 學生列表
+            // 學生清單
             document.getElementById('student-list-table').innerHTML = `<table><tr><th>學生姓名</th><th>學校</th><th>年級</th></tr>` + 
                 students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b> <small>(${s.engName || '-'})</small></td><td>${s.school || '-'}</td><td>${s.grade || '-'}</td></tr>`).join('') + `</table>`;
 
-            // 2. 篩選器與下拉選單更新
-            const studentOptions = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            ['int-student-select', 'money-student-select'].forEach(id => document.getElementById(id).innerHTML = studentOptions);
-            
-            const filterOpts = `<option value="all">顯示全部學生</option>` + studentOptions;
+            // 下拉選單更新
+            const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            document.getElementById('int-student-select').innerHTML = opts;
+            document.getElementById('money-student-select').innerHTML = opts;
+            const filterBase = `<option value="all">顯示全部學生</option>` + opts;
             ['filter-int-student', 'filter-money-student'].forEach(id => {
-                const current = document.getElementById(id).value;
-                document.getElementById(id).innerHTML = filterOpts;
-                document.getElementById(id).value = current;
+                const cur = document.getElementById(id).value;
+                document.getElementById(id).innerHTML = filterBase;
+                document.getElementById(id).value = cur || 'all';
             });
 
-            // 3. 互動紀錄 (帶篩選)
-            const intFilt = document.getElementById('filter-int-student').value;
-            const filteredInts = intFilt === 'all' ? interactions : interactions.filter(i => i.studentId === intFilt);
-            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>類型</th><th>內容</th></tr>` + 
+            // 互動紀錄
+            const intF = document.getElementById('filter-int-student').value;
+            const filteredInts = intF === 'all' ? interactions : interactions.filter(i => i.studentId === intF);
+            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>類型</th><th>內容</th><th>管理</th></tr>` + 
                 filteredInts.map(i => {
                     const s = students.find(x => x.id === i.studentId);
-                    return `<tr><td>${i.date}</td><td>${s?s.name:'-'}</td><td><span class="badge-info">${i.type}</span></td><td>${i.content}</td></tr>`;
+                    return `<tr><td>${i.date}</td><td>${s?s.name:'-'}</td><td><span class="badge-info">${i.type}</span></td><td>${i.content}</td>
+                    <td><button class="btn btn-danger btn-mini" onclick="deleteRecord('interactions','${i.id}')">刪除</button></td></tr>`;
                 }).join('') + `</table>`;
 
-            // 4. 零用錢紀錄 (帶篩選)
-            const monFilt = document.getElementById('filter-money-student').value;
-            const filteredMons = monFilt === 'all' ? money : money.filter(m => m.studentId === monFilt);
-            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>類型</th><th>金額</th><th>項目分類</th><th>詳情</th></tr>` + 
+            // 零用錢紀錄
+            const monF = document.getElementById('filter-money-student').value;
+            const filteredMons = monF === 'all' ? money : money.filter(m => m.studentId === monF);
+            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th>分類</th><th>管理</th></tr>` + 
                 filteredMons.map(m => {
                     const s = students.find(x => x.id === m.studentId);
-                    return `<tr><td>${m.date}</td><td>${s?s.name:'-'}</td><td style="color:${m.type==='收入'?'green':'red'}">${m.type}</td><td>£${m.amount}</td><td>${m.cat}</td><td>${m.detail || '-'}</td></tr>`;
+                    return `<tr><td>${m.date}</td><td>${s?s.name:'-'}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td>${m.cat}</td>
+                    <td><button class="btn btn-danger btn-mini" onclick="deleteRecord('money','${m.id}')">刪除</button></td></tr>`;
                 }).join('') + `</table>`;
 
             renderSummary();
@@ -246,19 +253,30 @@
 
         function renderSummary() {
             const now = new Date();
-            let html = `<table><tr><th>學生</th><th>當前餘額 (Threshold £300)</th><th>本月互動次數 (Min 4)</th></tr>`;
+            let html = `<table><tr><th>學生</th><th>當前餘額</th><th>本月互動</th></tr>`;
             students.forEach(s => {
-                const balance = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
-                const intCount = interactions.filter(i => i.studentId === s.id && new Date(i.date).getMonth() === now.getMonth()).length;
-                html += `<tr><td>${s.name}</td>
-                    <td>${balance < 300 ? `<span class="alert-low">£${balance.toFixed(2)} 危險</span>` : `<span style="color:green; font-weight:bold;">£${balance.toFixed(2)}</span>`}</td>
-                    <td>${intCount < 4 ? `<span class="alert-low">${intCount} 次 (不足)</span>` : `<span style="color:green; font-weight:bold;">${intCount} 次</span>`}</td></tr>`;
+                const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
+                const cnt = interactions.filter(i => i.studentId === s.id && new Date(i.date).getMonth() === now.getMonth()).length;
+                html += `<tr><td>${s.name}</td><td>${bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td>
+                    <td>${cnt < 4 ? `<span class="alert-low">${cnt}次</span>` : `${cnt}次`}</td></tr>`;
             });
             document.getElementById('summary-table').innerHTML = html + `</table>`;
         }
 
-        // --- 功能模組 ---
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } };
+        // --- 登入與管理功能 ---
+        window.login = () => { 
+            const pass = document.getElementById('admin-password').value;
+            const role = document.getElementById('login-role').value;
+            if(pass === '1234') { 
+                document.getElementById('login-screen').style.display='none'; 
+                document.getElementById('main-container').style.display='block'; 
+                document.getElementById('user-display').innerText = "Logged in as: " + role;
+                startSync(); 
+            } else {
+                alert("Incorrect Access Key.");
+            }
+        };
+
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
         window.openModal = id => { 
             document.getElementById(id).style.display='block'; 
@@ -272,62 +290,33 @@
             const s = students.find(x => x.id === id);
             if(!s) return;
             document.getElementById('det-name').innerText = s.name;
-            document.getElementById('det-eng-name').innerText = s.engName || '-';
-            document.getElementById('det-school').innerText = s.school || '-';
-            document.getElementById('det-grade').innerText = s.grade || '-';
-            document.getElementById('det-birthday').innerText = s.birthday || '-';
-            document.getElementById('det-phone').innerText = s.phone || '-';
-            document.getElementById('det-parent').innerText = s.parent || '-';
-            document.getElementById('det-address').innerText = s.address || '-';
-            document.getElementById('det-medical').innerText = s.medical || '無特別紀錄';
-            document.getElementById('det-notes').innerText = s.notes || '-';
-            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('確定要永久刪除此學生及其資料嗎？')) { await deleteDoc(doc(db, "students", id)); closeModal('detail-modal'); } };
+            document.getElementById('detail-content-area').innerHTML = `
+                <p><b>英文名:</b> ${s.engName || '-'}</p><p><b>學校:</b> ${s.school || '-'}</p><p><b>年級:</b> ${s.grade || '-'}</p>
+                <p><b>生日:</b> ${s.birthday || '-'}</p><p><b>電話:</b> ${s.phone || '-'}</p>
+                <p><b>地址:</b> ${s.address || '-'}</p><p style="color:red;"><b>醫療紀錄:</b> ${s.medical || '-'}</p><p><b>其他備註:</b> ${s.notes || '-'}</p>`;
+            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除學生檔案？')) { await deleteDoc(doc(db, "students", id)); closeModal('detail-modal'); } };
             openModal('detail-modal');
         };
+
+        window.deleteRecord = async (col, id) => { if(confirm('確定要刪除這筆紀錄嗎？')) await deleteDoc(doc(db, col, id)); };
 
         // --- 表單提交 ---
         document.getElementById('student-form').onsubmit = async e => {
             e.preventDefault();
-            await addDoc(collection(db, "students"), {
-                name: document.getElementById('s-name').value,
-                engName: document.getElementById('s-eng-name').value,
-                school: document.getElementById('s-school').value,
-                grade: document.getElementById('s-grade').value,
-                birthday: document.getElementById('s-birthday').value,
-                phone: document.getElementById('s-phone').value,
-                parent: document.getElementById('s-parent').value,
-                address: document.getElementById('s-address').value,
-                medical: document.getElementById('s-medical').value,
-                notes: document.getElementById('s-notes').value
-            });
+            await addDoc(collection(db, "students"), { name:document.getElementById('s-name').value, engName:document.getElementById('s-eng-name').value, school:document.getElementById('s-school').value, grade:document.getElementById('s-grade').value, birthday:document.getElementById('s-birthday').value, phone:document.getElementById('s-phone').value, parent:document.getElementById('s-parent').value, address:document.getElementById('s-address').value, medical:document.getElementById('s-medical').value, notes:document.getElementById('s-notes').value });
             closeModal('student-modal'); document.getElementById('student-form').reset();
         };
-
         document.getElementById('interaction-form').onsubmit = async e => {
             e.preventDefault();
-            await addDoc(collection(db, "interactions"), {
-                studentId: document.getElementById('int-student-select').value,
-                date: document.getElementById('int-date').value,
-                type: document.getElementById('int-type').value,
-                content: document.getElementById('int-content').value
-            });
+            await addDoc(collection(db, "interactions"), { studentId:document.getElementById('int-student-select').value, date:document.getElementById('int-date').value, type:document.getElementById('int-type').value, content:document.getElementById('int-content').value });
             closeModal('interaction-modal'); document.getElementById('interaction-form').reset();
         };
-
         document.getElementById('money-form').onsubmit = async e => {
             e.preventDefault();
-            await addDoc(collection(db, "money"), {
-                studentId: document.getElementById('money-student-select').value,
-                date: document.getElementById('money-date').value,
-                type: document.getElementById('money-type').value,
-                amount: parseFloat(document.getElementById('money-amount').value),
-                cat: document.getElementById('money-cat').value,
-                detail: document.getElementById('money-detail').value
-            });
+            await addDoc(collection(db, "money"), { studentId:document.getElementById('money-student-select').value, date:document.getElementById('money-date').value, type:document.getElementById('money-type').value, amount:parseFloat(document.getElementById('money-amount').value), cat:document.getElementById('money-cat').value, detail:document.getElementById('money-detail').value });
             closeModal('money-modal'); document.getElementById('money-form').reset();
         };
-
-        window.render = render; // 讓過濾器能觸發渲染
+        window.render = render;
     </script>
 </body>
 </html>
