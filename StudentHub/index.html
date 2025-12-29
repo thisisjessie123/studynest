@@ -9,7 +9,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; }
         
-        /* 介面排版 */
         .container { max-width: 1300px; margin: 0 auto; padding: 20px; display: none; }
         .header { background: white; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -18,28 +17,35 @@
         .content-section { display: none; }
         .content-section.active { display: block; }
 
-        /* 表格優化：為了顯示更多資訊，設定表格可橫向滑動 */
         .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; min-width: 900px; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
 
-        /* 彈窗與卡片 */
+        /* 可愛藥丸圖示樣式 */
+        .med-icon { 
+            background: #f0f2ff; 
+            border: 1px solid #c3dafe; 
+            padding: 2px 6px; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            margin-left: 6px; 
+            display: inline-flex; 
+            align-items: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
         .modal-content { background:white; width:95%; max-width:700px; margin:30px auto; padding:30px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
         .info-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px; }
         .info-card h4 { color: var(--primary); margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .info-item b { color: #666; width: 110px; display: inline-block; }
-
-        /* 表單 */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group.full { grid-column: span 2; }
         .form-group label { display:block; margin-bottom:5px; font-weight:bold; color: #555; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; }
 
-        /* 按鈕與標籤 */
         .btn { padding: 10px 18px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
@@ -48,7 +54,6 @@
         .badge-info { background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; }
         .alert-low { color: white; background: var(--danger); padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; }
         
-        /* 登入介面 */
         .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
         .login-box { background: white; padding: 40px; border-radius: 20px; text-align: center; width: 100%; max-width: 400px; }
         .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; }
@@ -122,7 +127,7 @@
                 <div class="form-group"><label>宿管姓名</label><input type="text" id="s-hm-name"></div>
                 <div class="form-group"><label>宿管電話</label><input type="text" id="s-hm-phone"></div>
                 <div class="form-group full"><label>宿管 Email</label><input type="email" id="s-hm-email"></div>
-                <div class="form-group full"><label>醫療/過敏提醒</label><textarea id="s-medical" rows="2"></textarea></div>
+                <div class="form-group full"><label>醫療/過敏提醒 (有內容會顯示 💊)</label><textarea id="s-medical" rows="2"></textarea></div>
                 <div class="form-group full"><label>備註事項</label><textarea id="s-notes" rows="2"></textarea></div>
             </div>
             <button type="submit" class="btn btn-primary">儲存檔案</button>
@@ -194,29 +199,22 @@
             onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { money = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
         }
 
+        // 修改為可愛藥丸圖示
+        function getNameWithIcon(student) {
+            const hasMedical = student.medical && student.medical.trim() !== "";
+            return `<b>${student.name}</b>${hasMedical ? '<span class="med-icon">💊 醫</span>' : ''}`;
+        }
+
         function render() {
-            // 學生清單 (Overall 介面)
             document.getElementById('student-list-table').innerHTML = `
                 <table>
-                    <tr>
-                        <th>姓名</th>
-                        <th>學校</th>
-                        <th>生日</th>
-                        <th>學生電話</th>
-                        <th>宿管</th>
-                        <th>宿管電話</th>
-                    </tr>` + 
+                    <tr><th>姓名</th><th>學校</th><th>生日</th><th>學生電話</th><th>宿管</th><th>宿管電話</th></tr>` + 
                 students.map(s => `
                     <tr class="clickable" onclick="showStudentDetail('${s.id}')">
-                        <td><b>${s.name}</b><br><small>${s.engName||''}</small></td>
-                        <td>${s.school || '-'}</td>
-                        <td>${s.birthday || '-'}</td>
-                        <td>${s.phone || '-'}</td>
-                        <td>${s.hmName || '-'}</td>
-                        <td>${s.hmPhone || '-'}</td>
+                        <td>${getNameWithIcon(s)}<br><small>${s.engName||''}</small></td>
+                        <td>${s.school || '-'}</td><td>${s.birthday || '-'}</td><td>${s.phone || '-'}</td><td>${s.hmName || '-'}</td><td>${s.hmPhone || '-'}</td>
                     </tr>`).join('') + `</table>`;
 
-            // 下拉選單同步
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             ['int-student-select', 'money-student-select'].forEach(id => document.getElementById(id).innerHTML = opts);
             ['filter-int-student', 'filter-money-student'].forEach(id => {
@@ -225,150 +223,56 @@
                 document.getElementById(id).value = cur || 'all';
             });
 
-            // 互動紀錄
             const intF = document.getElementById('filter-int-student').value;
             const filteredInts = intF === 'all' ? interactions : interactions.filter(i => i.studentId === intF);
             document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th>管理</th></tr>` + 
-                filteredInts.map(i => `<tr class="clickable" onclick="showGenericDetail('interaction', '${i.id}')"><td>${i.date}</td><td>${(students.find(x=>x.id===i.studentId)||{}).name}</td><td><span class="badge-info">${i.type}</span></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('interactions','${i.id}')">刪除</button></td></tr>`).join('') + `</table>`;
+                filteredInts.map(i => {
+                    const s = students.find(x=>x.id===i.studentId) || {};
+                    return `<tr class="clickable" onclick="showGenericDetail('interaction', '${i.id}')"><td>${i.date}</td><td>${getNameWithIcon(s)}</td><td><span class="badge-info">${i.type}</span></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('interactions','${i.id}')">刪除</button></td></tr>`;
+                }).join('') + `</table>`;
 
-            // 零用錢
             const monF = document.getElementById('filter-money-student').value;
             const filteredMons = monF === 'all' ? money : money.filter(m => m.studentId === monF);
             document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th>分類</th><th>管理</th></tr>` + 
-                filteredMons.map(m => `<tr class="clickable" onclick="showGenericDetail('money', '${m.id}')"><td>${m.date}</td><td>${(students.find(x=>x.id===m.studentId)||{}).name}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td><span class="badge-info">${m.cat}</span></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('money','${m.id}')">刪除</button></td></tr>`).join('') + `</table>`;
+                filteredMons.map(m => {
+                    const s = students.find(x=>x.id===m.studentId) || {};
+                    return `<tr class="clickable" onclick="showGenericDetail('money', '${m.id}')"><td>${m.date}</td><td>${getNameWithIcon(s)}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td><span class="badge-info">${m.cat}</span></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('money','${m.id}')">刪除</button></td></tr>`;
+                }).join('') + `</table>`;
 
             renderSummary();
         }
 
-        // 學生全信息卡片
         window.showStudentDetail = id => {
             const s = students.find(x => x.id === id);
             if(!s) return;
-            document.getElementById('det-name').innerText = s.name + (s.engName ? ` (${s.engName})` : '');
+            document.getElementById('det-name').innerHTML = getNameWithIcon(s) + (s.engName ? ` (${s.engName})` : '');
             document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
             document.getElementById('student-detail-body').innerHTML = `
-                <div class="info-card">
-                    <h4>基本與學校信息</h4>
-                    <div class="info-grid">
-                        <p class="info-item"><b>生日:</b> ${s.birthday || '-'}</p>
-                        <p class="info-item"><b>年級:</b> ${s.grade || '-'}</p>
-                        <p class="info-item"><b>就讀學校:</b> ${s.school || '-'}</p>
-                        <p class="info-item"><b>學生電話:</b> ${s.phone || '-'}</p>
-                        <p class="info-item" style="grid-column: span 2;"><b>英國地址:</b> ${s.address || '-'}</p>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <h4>家長資訊</h4>
-                    <div class="info-grid">
-                        <p class="info-item"><b>父親姓名:</b> ${s.fatherName || '-'}</p>
-                        <p class="info-item"><b>父親電話:</b> ${s.fatherPhone || '-'}</p>
-                        <p class="info-item"><b>母親姓名:</b> ${s.motherName || '-'}</p>
-                        <p class="info-item"><b>母親電話:</b> ${s.motherPhone || '-'}</p>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <h4>學校宿管 (HM)</h4>
-                    <div class="info-grid">
-                        <p class="info-item"><b>宿管姓名:</b> ${s.hmName || '-'}</p>
-                        <p class="info-item"><b>宿管電話:</b> ${s.hmPhone || '-'}</p>
-                        <p class="info-item" style="grid-column: span 2;"><b>宿管 Email:</b> ${s.hmEmail || '-'}</p>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <h4>醫療與備註</h4>
-                    <p style="color:var(--danger); margin-bottom:5px;"><b>醫療提醒:</b> ${s.medical || '無'}</p>
-                    <p><b>其他備註:</b> ${s.notes || '-'}</p>
-                </div>`;
+                <div class="info-card"><h4>基本與學校信息</h4><div class="info-grid"><p class="info-item"><b>生日:</b> ${s.birthday || '-'}</p><p class="info-item"><b>年級:</b> ${s.grade || '-'}</p><p class="info-item"><b>就讀學校:</b> ${s.school || '-'}</p><p class="info-item"><b>學生電話:</b> ${s.phone || '-'}</p><p class="info-item" style="grid-column: span 2;"><b>英國地址:</b> ${s.address || '-'}</p></div></div>
+                <div class="info-card"><h4>家長資訊</h4><div class="info-grid"><p class="info-item"><b>父親姓名:</b> ${s.fatherName || '-'}</p><p class="info-item"><b>父親電話:</b> ${s.fatherPhone || '-'}</p><p class="info-item"><b>母親姓名:</b> ${s.motherName || '-'}</p><p class="info-item"><b>母親電話:</b> ${s.motherPhone || '-'}</p></div></div>
+                <div class="info-card"><h4>學校宿管 (HM)</h4><div class="info-grid"><p class="info-item"><b>宿管姓名:</b> ${s.hmName || '-'}</p><p class="info-item"><b>宿管電話:</b> ${s.hmPhone || '-'}</p><p class="info-item" style="grid-column: span 2;"><b>宿管 Email:</b> ${s.hmEmail || '-'}</p></div></div>
+                <div class="info-card"><h4>醫療與備註</h4><p style="color:var(--danger); margin-bottom:5px;"><b>醫療提醒:</b> ${s.medical || '無'}</p><p><b>其他備註:</b> ${s.notes || '-'}</p></div>`;
             document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除該學生所有資料？')) await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); };
             openModal('student-detail-modal');
         };
 
-        // 下載個人完整報告 (包含基本資料、互動、零用錢)
         window.downloadPersonalFullReport = id => {
             const s = students.find(x => x.id === id);
             const sInts = interactions.filter(i => i.studentId === id);
             const sMons = money.filter(m => m.studentId === id);
-            
-            let rows = [
-                [`${s.name} 個人完整檔案報告`],
-                ["中文姓名", s.name, "英文姓名", s.engName],
-                ["學校", s.school, "年級", s.grade, "生日", s.birthday],
-                ["父親", s.fatherName, "電話", s.fatherPhone],
-                ["母親", s.motherName, "電話", s.motherPhone],
-                ["宿管", s.hmName, "電話", s.hmPhone],
-                ["英國地址", s.address],
-                ["醫療備註", s.medical],
-                [""],
-                ["=== 互動紀錄歷史 ==="],
-                ["日期", "互動方式", "內容詳情"]
-            ];
+            let rows = [[`${s.name} 個人完整檔案報告`],["中文姓名", s.name, "英文姓名", s.engName],["學校", s.school, "年級", s.grade, "生日", s.birthday],["父親", s.fatherName, "電話", s.fatherPhone],["母親", s.motherName, "電話", s.motherPhone],["宿管", s.hmName, "電話", s.hmPhone],["英國地址", s.address],["醫療備註", s.medical],[""],["=== 互動紀錄歷史 ==="],["日期", "互動方式", "內容詳情"]];
             sInts.forEach(i => rows.push([i.date, i.type, i.content]));
             rows.push([""], ["=== 零用錢帳目明細 ==="], ["日期", "收支類型", "金額", "費用分類", "備註詳情"]);
             sMons.forEach(m => rows.push([m.date, m.type, `£${m.amount}`, m.cat, m.detail]));
-            
             let csvContent = "\uFEFF"; 
             rows.forEach(row => { csvContent += row.map(cell => `"${(cell||'').toString().replace(/"/g, '""')}"`).join(",") + "\n"; });
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `${s.name}_完整報告.csv`;
-            link.click();
+            link.href = URL.createObjectURL(blob); link.download = `${s.name}_完整報告.csv`; link.click();
         };
 
-        // 摘要渲染
         function renderSummary() {
             let html = `<table><tr><th>學生</th><th>當前餘額</th><th>本月互動次數</th></tr>`;
             students.forEach(s => {
                 const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
                 const cnt = interactions.filter(i => i.studentId === s.id && new Date(i.date).getMonth() === new Date().getMonth()).length;
-                html += `<tr><td>${s.name}</td><td>${bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td><td>${cnt} 次</td></tr>`;
-            });
-            document.getElementById('summary-table').innerHTML = html + `</table>`;
-        }
-
-        // 基礎功能
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error Key"); };
-        window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        window.openModal = id => { document.getElementById(id).style.display='block'; const t = new Date().toISOString().split('T')[0]; if(document.getElementById('int-date')) document.getElementById('int-date').value=t; if(document.getElementById('money-date')) document.getElementById('money-date').value=t; };
-        window.closeModal = id => document.getElementById(id).style.display='none';
-        window.deleteRecord = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
-
-        // 明細彈窗
-        window.showGenericDetail = (mode, id) => {
-            const body = document.getElementById('generic-body');
-            const title = document.getElementById('generic-title');
-            if(mode === 'interaction') {
-                const i = interactions.find(x => x.id === id);
-                title.innerText = "互動詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${i.date}</p><p><b>方式:</b> ${i.type}</p><p style="white-space:pre-wrap; margin-top:10px;">${i.content}</p></div>`;
-            } else {
-                const m = money.find(x => x.id === id);
-                title.innerText = "帳目詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${m.date}</p><p><b>類型:</b> ${m.type} £${m.amount}</p><p><b>分類:</b> ${m.cat}</p><p><b>備註:</b> ${m.detail || '無'}</p></div>`;
-            }
-            openModal('generic-detail-modal');
-        };
-
-        // 表單提交
-        document.getElementById('student-form').onsubmit = async e => {
-            e.preventDefault();
-            await addDoc(collection(db, "students"), { 
-                name: document.getElementById('s-name').value, engName: document.getElementById('s-eng-name').value, school: document.getElementById('s-school').value, grade: document.getElementById('s-grade').value, birthday: document.getElementById('s-birthday').value, phone: document.getElementById('s-phone').value, address: document.getElementById('s-address').value, fatherName: document.getElementById('s-father-name').value, fatherPhone: document.getElementById('s-father-phone').value, motherName: document.getElementById('s-mother-name').value, motherPhone: document.getElementById('s-mother-phone').value, hmName: document.getElementById('s-hm-name').value, hmPhone: document.getElementById('s-hm-phone').value, hmEmail: document.getElementById('s-hm-email').value, medical: document.getElementById('s-medical').value, notes: document.getElementById('s-notes').value 
-            });
-            closeModal('student-modal'); e.target.reset();
-        };
-        document.getElementById('interaction-form').onsubmit = async e => {
-            e.preventDefault();
-            await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value });
-            closeModal('interaction-modal'); e.target.reset();
-        };
-        document.getElementById('money-form').onsubmit = async e => {
-            e.preventDefault();
-            await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), cat: document.getElementById('money-cat').value, detail: document.getElementById('money-detail').value });
-            closeModal('money-modal'); e.target.reset();
-        };
-
-        window.render = render;
-    </script>
-</body>
-</html>
