@@ -306,16 +306,38 @@
             }
         };
 
-        window.handleStChange = async (id, val) => {
-            await updateDoc(doc(db, 'transport', id), { status: val });
-            if(val === 'done') {
-                const t = transports.find(x => x.id === id);
-                const tot = Number(t.transGross||0) + Number(t.stayGross||0);
-                if(tot > 0 && confirm(`行程完成！是否扣款 £${tot}？`)) {
-                    await addDoc(collection(db, "money"), { studentId: t.studentId, date: new Date().toISOString().split('T')[0], amount: tot, type: '支出', detail: `[自動扣款] ${t.type} (${fmtDate(t.time)})` });
-                }
+       window.handleStChange = async (id, val) => {
+    // 1. 先更新資料庫中的任務狀態
+    await updateDoc(doc(db, 'transport', id), { status: val });
+
+    // 2. 如果狀態改為「完成」，觸發扣款邏輯
+    if(val === 'done') {
+        const t = transports.find(x => x.id === id);
+        const transAmt = Number(t.transGross || 0);
+        const stayAmt = Number(t.stayGross || 0);
+        const total = transAmt + stayAmt;
+
+        if(total > 0) {
+            // 💡 修正點：根據是否有住宿動態組合備註文字
+            let detailItems = [];
+            if(transAmt > 0) detailItems.push(`${t.type}`);
+            if(t.hasStay && stayAmt > 0) detailItems.push(`住宿`);
+            
+            const detailStr = `[自動扣款] ${detailItems.join('+')} (${fmtDate(t.time)})`;
+
+            // 彈出確認視窗，顯示完整金額與明細
+            if(confirm(`行程已完成！是否扣款總計 £${total}？\n明細：${detailStr}`)) {
+                await addDoc(collection(db, "money"), { 
+                    studentId: t.studentId, 
+                    date: new Date().toISOString().split('T')[0], 
+                    amount: total, 
+                    type: '支出', 
+                    detail: detailStr 
+                });
             }
-        };
+        }
+    }
+};
 
         // --- 表單儲存 ---
         document.getElementById('student-form').onsubmit = async e => {
