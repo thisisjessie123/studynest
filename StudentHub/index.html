@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Hub - Financial Pro Edition</title>
+    <title>StudyNest Hub - Premium Financial Edition</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,19 +21,19 @@
         th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
         
-        /* 列表詳情排版 */
+        /* 雙排字顯示 */
         .text-detail { font-size: 0.75rem; color: #666; line-height: 1.3; max-width: 280px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; }
         .inline-select { padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; border: 1px solid #ddd; cursor: pointer; }
         .status-todo { background: #fff5f5 !important; color: #c53030; }
         .status-booked { background: #fffaf0 !important; color: #975a16; }
         .status-done { background: #f0fff4 !important; color: #276749; }
         
-        /* 月度結算卡 */
+        /* 月度財務統計卡 */
         .profit-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 10px; box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3); }
         .profit-card div span { display: block; font-size: 0.7rem; opacity: 0.9; margin-bottom: 4px; }
         .profit-card div b { font-size: 1.1rem; letter-spacing: 0.5px; }
 
-        /* 住宿區塊真滿版 */
+        /* 住宿資訊框 - 滿版設計修正 */
         #hm-fields { 
             grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
             background: #f0f4ff; padding: 15px; border-radius: 12px; border: 1px solid #c3dafe; width: 100%; margin-top: 5px; 
@@ -52,8 +52,7 @@
         .form-group.full { grid-column: span 2; width: 100%; }
         .form-group label { display:block; margin-bottom:3px; font-weight:bold; color: #555; font-size: 0.8rem; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 0.95rem; }
-        .form-group input:disabled { background: #f0f0f0; cursor: not-allowed; }
-
+        
         .compact-checkbox { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: #555; font-size: 0.85rem; width: fit-content; }
         .compact-checkbox input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
 
@@ -127,7 +126,7 @@
     <div id="student-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('student-modal')">&times;</span>
-            <h3 id="student-modal-title">學生檔案詳細資料</h3>
+            <h3 id="student-modal-title">新增學生檔案</h3>
             <form id="student-form">
                 <input type="hidden" id="s-id">
                 <div class="form-grid">
@@ -164,7 +163,7 @@
             <div id="student-detail-body"></div>
             <div style="margin-top:20px; display:flex; gap:10px;">
                 <button class="btn" style="flex:1; background:#eee;" onclick="closeModal('student-detail-modal')">關閉</button>
-                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除</button>
+                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除檔案</button>
             </div>
         </div>
     </div>
@@ -229,7 +228,7 @@
     <div id="holiday-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('holiday-modal')">&times;</span>
-            <h3 id="holiday-modal-title">假期、交通與住宿安排</h3>
+            <h3 id="holiday-modal-title">假期與交通/住宿安排</h3>
             <form id="holiday-form">
                 <input type="hidden" id="h-id">
                 <div class="form-grid">
@@ -243,7 +242,7 @@
                         </select>
                     </div>
                     <div class="form-group"><label>日期時間</label><input type="datetime-local" id="h-datetime" required></div>
-                    <div class="form-group"><label>行程狀態</label><select id="h-status"><option value="🔴 待辦">🔴 待辦</option><option value="🟡 預約">🟡 預約</option><option value="🟢 完成">🟢 完成</option></select></div>
+                    <div class="form-group"><label>狀態</label><select id="h-status"><option value="🔴 待辦">🔴 待辦</option><option value="🟡 預約">🟡 預約</option><option value="🟢 完成">🟢 完成</option></select></div>
                     
                     <div class="form-group"><label>航班 (Flight No.)</label><input type="text" id="h-flight"></div>
                     <div class="form-group"><label>目的地 (Destination)</label>
@@ -294,6 +293,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // Firebase Config - 確保此部分不被覆蓋
         const firebaseConfig = { apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", authDomain: "studynest-database.firebaseapp.com", projectId: "studynest-database", storageBucket: "studynest-database.firebasestorage.app", messagingSenderId: "193833641970", appId: "1:193833641970:web:e2063f85f52c4bc891ed6b" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -310,11 +310,11 @@
         const getToday = () => new Date().toISOString().split('T')[0];
 
         function render() {
-            // 學生
+            // 學生列表
             document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th>宿管/電話</th></tr>` + 
                 students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?' 💊':''}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td>${s.hmName || '-'}<br><small>${s.hmPhone || '-'}</small></td></tr>`).join('') + `</table>`;
             
-            // 互動篩選與詳情 (40字雙行)
+            // 互動列表 (40字雙行)
             const intF = document.getElementById('filter-int-student')?.value || 'all';
             const filteredInts = intF === 'all' ? interactions : interactions.filter(i => i.studentId === intF);
             document.getElementById('interaction-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>方式/日期</th><th>互動詳情 (40字)</th><th>刪</th></tr>` + 
@@ -323,7 +323,7 @@
                     return `<tr><td><b>${s.name || '-'}</b></td><td><span class="badge-mini" style="background:#eee; padding:2px 4px; border-radius:4px; font-size:0.7rem;">${i.type}</span><br><small>${i.date}</small></td><td><div class="text-detail">${i.content}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('interactions','${i.id}')">X</button></td></tr>`;
                 }).join('') + `</table></div>`;
             
-            // 零用錢篩選與詳情
+            // 零用錢列表
             const monF = document.getElementById('filter-money-student')?.value || 'all';
             const filteredMons = monF === 'all' ? money : money.filter(m => m.studentId === monF);
             document.getElementById('money-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>金額/日期</th><th>分類備註</th><th>刪</th></tr>` + 
@@ -332,14 +332,13 @@
                     return `<tr><td><b>${s.name || '-'}</b></td><td><span style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</span><br><small>${m.date}</small></td><td><div class="text-detail"><b>${m.cat}:</b> ${m.detail || '無'}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('money','${m.id}')">X</button></td></tr>`;
                 }).join('') + `</table></div>`;
             
-            // 下拉選單更新
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             ['int-student-select', 'money-student-select', 'h-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
             ['filter-int-student', 'filter-money-student'].forEach(id => { const el = document.getElementById(id); const cur = el.value; el.innerHTML = `<option value="all">全部學生</option>` + opts; el.value = cur || 'all'; });
             renderSummary();
         }
 
-        // 月份篩選、利潤統計與雙層財務列表
+        // 月度結算與雙層財務列表
         function renderHolidays() {
             const hMonth = document.getElementById('filter-h-month').value;
             let filteredH = holidays;
@@ -350,7 +349,7 @@
 
             let totalC = 0, totalQ = 0;
 
-            const tableHtml = (list, isHist) => `<div class="table-container"><table><tr><th>任務</th><th>學生/時間/航班</th><th>狀態</th><th>支付</th>${isHist ? '<th>收支明細 (Net/Quote)</th>' : '<th>刪</th>'}</tr>` + 
+            const tableHtml = (list, isHist) => `<div class="table-container"><table><tr><th>任務</th><th>學生/時間/目的地</th><th>狀態</th><th>支付</th>${isHist ? '<th>收支明細 (Net/Quote)</th>' : '<th>刪</th>'}</tr>` + 
                 list.map(h => {
                     const s = students.find(x => x.id === h.studentId) || {};
                     const sClass = h.status.includes('待辦') ? 'status-todo' : (h.status.includes('預約') ? 'status-booked' : 'status-done');
@@ -391,13 +390,13 @@
             if (field === 'status' && value === '🟢 完成') {
                 const nights = parseInt(h.nights) || 0;
                 const total = (h.transQuote || 0) + ((h.stayQuote || 0) * nights);
-                if (confirm(`行程已完成！是否從零用錢自動扣款 £${total.toFixed(2)}？`)) {
+                if (confirm(`行程已完成！是否自動扣款 £${total.toFixed(2)}？`)) {
                     await addDoc(collection(db, "money"), { studentId: h.studentId, date: getToday(), type: "支出", amount: total, cat: "🏠 生活交通", detail: `${h.task} ${h.datetime.split('T')[0]} ✈️:${h.flight||'-'} 📍:${h.location||'-'}` });
                 }
             }
         };
 
-        window.toggleParentOption = (loc) => { if(loc.includes('家長安排')) { document.getElementById('h-use-hm').checked = true; toggleHm(true); document.getElementById('h-stay-quote').value = 0; } };
+        window.toggleParentOption = (loc) => { if(loc.includes('Other')) { document.getElementById('h-use-hm').checked = true; toggleHm(true); document.getElementById('h-stay-quote').value = 0; } };
         window.toggleHm = (show) => { document.getElementById('hm-fields').style.display = show ? 'grid' : 'none'; };
         window.calcNights = () => {
             const s = new Date(document.getElementById('h-datetime').value);
@@ -411,7 +410,7 @@
             document.getElementById('h-id').value = h.id;
             document.getElementById('h-student-select').value = h.studentId;
             ['task','datetime','status','flight','location','driverName','driverPhone','transCost','transQuote','hmName','hmPhone','hmAddress','checkout','nights','stayCost','stayQuote','payment'].forEach(f => {
-                const el = document.getElementById('h-' + f.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`));
+                const el = document.getElementById('h-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`));
                 if(el) el.value = h[f] || '';
             });
             document.getElementById('h-use-hm').checked = h.useHm;
@@ -434,9 +433,9 @@
             const hid = document.getElementById('h-id').value;
             hid ? await updateDoc(doc(db, "holidays", hid), data) : await addDoc(collection(db, "holidays"), data);
             if(!hid) {
-                let n = `假期：${data.task}, 目的地：${data.location}`;
-                if(data.location.includes('家長安排')) n += " (需簽同意書)";
-                await addDoc(collection(db, "interactions"), { studentId: sid, date: getToday(), type: "🤝 其他協助", content: n });
+                let note = `假期：${data.task}, 目的地：${data.location}`;
+                if(data.location.includes('家長安排')) note += " (需免責書)";
+                await addDoc(collection(db, "interactions"), { studentId: sid, date: getToday(), type: "🤝 其他協助", content: note });
             }
             closeModal('holiday-modal'); e.target.reset(); document.getElementById('h-id').value = "";
         };
@@ -446,11 +445,10 @@
             e.preventDefault();
             const sid = document.getElementById('int-student-select').value;
             const content = document.getElementById('int-content').value;
-            const date = document.getElementById('int-date').value;
-            await addDoc(collection(db, "interactions"), { studentId: sid, date, type: document.getElementById('int-type').value, content });
+            await addDoc(collection(db, "interactions"), { studentId: sid, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content });
             if(document.getElementById('int-sync-money').checked) {
                 const amount = parseFloat(document.getElementById('int-sync-amount').value || 0);
-                if(amount > 0) await addDoc(collection(db, "money"), { studentId: sid, date, type: "支出", amount, cat: document.getElementById('int-sync-cat').value, detail: "(同步) " + content.substring(0, 30) });
+                if(amount > 0) await addDoc(collection(db, "money"), { studentId: sid, date: document.getElementById('int-date').value, type: "支出", amount, cat: document.getElementById('int-sync-cat').value, detail: "(同步) " + content.substring(0, 30) });
             }
             closeModal('interaction-modal'); e.target.reset(); toggleSyncMoney(false);
         };
@@ -463,7 +461,11 @@
             document.getElementById('det-name').innerHTML = `<b>${s.name}</b> ${s.engName?`(${s.engName})`:''}`;
             document.getElementById('det-edit-btn').onclick = () => editStudent(id);
             document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
-            document.getElementById('student-detail-body').innerHTML = `<div class="info-card"><h4>學校信息</h4><p>學校: ${s.school||'-'} (${s.grade||'-'})</p><p>生日: ${s.birthday||'-'}</p><p>地址: ${s.address||'-'}</p></div><div class="info-card"><h4>家長</h4><p>父: ${s.fatherName||'-'} (${s.fatherPhone||'-'})</p><p>母: ${s.motherName||'-'} (${s.motherPhone||'-'})</p></div><div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} | ${s.hmPhone||'-'} | ${s.hmEmail||'-'}</p></div><div class="info-card"><h4>提醒</h4><p style="color:red;">💊 ${s.medical||'無'}</p><p>備註: ${s.notes||'-'}</p></div>`;
+            document.getElementById('student-detail-body').innerHTML = `
+                <div class="info-card"><h4>學校信息</h4><p>學校: ${s.school||'-'} (${s.grade||'-'})</p><p>地址: ${s.address||'-'}</p></div>
+                <div class="info-card"><h4>家長</h4><p>父: ${s.fatherName||'-'} (${s.fatherPhone||'-'})</p><p>母: ${s.motherName||'-'} (${s.motherPhone||'-'})</p></div>
+                <div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} | ${s.hmPhone||'-'}</p></div>
+                <div class="info-card"><h4>提醒</h4><p style="color:red;">💊 ${s.medical||'無'}</p><p>備註: ${s.notes||'-'}</p></div>`;
             document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除此學生檔案？')) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
             openModal('student-detail-modal');
         };
@@ -476,7 +478,7 @@
             document.getElementById('s-name').value = s.name;
             document.getElementById('s-name').disabled = true;
             ['engName','school','grade','birthday','phone','address','fatherName','fatherPhone','motherName','motherPhone','hmName','hmPhone','hmEmail','medical','notes'].forEach(f => {
-                const el = document.getElementById('s-' + f.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`));
+                const el = document.getElementById('s-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`));
                 if(el) el.value = s[f] || '';
             });
             openModal('student-modal');
@@ -487,7 +489,7 @@
             const sid = document.getElementById('s-id').value;
             const data = {};
             ['name','engName','school','grade','birthday','phone','address','fatherName','fatherPhone','motherName','motherPhone','hmName','hmPhone','hmEmail','medical','notes'].forEach(f => {
-                const el = document.getElementById('s-' + f.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`));
+                const el = document.getElementById('s-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`));
                 if(el) data[f] = el.value;
             });
             sid ? await updateDoc(doc(db, "students", sid), data) : await addDoc(collection(db, "students"), data);
@@ -518,7 +520,7 @@
             document.getElementById('summary-table').innerHTML = h + `</table>`;
         }
 
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error Key"); };
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error"); };
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
         window.openModal = id => { document.getElementById(id).style.display='block'; };
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
