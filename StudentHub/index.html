@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Student Hub</title>
+    <title>StudyNest Student Hub - Premium Edition</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; }
-        
         .container { max-width: 1300px; margin: 0 auto; padding: 15px; display: none; }
         .header { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .nav-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
@@ -16,59 +15,43 @@
         .tab.active { background: var(--primary); color: white; }
         .content-section { display: none; }
         .content-section.active { display: block; }
-
-        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
-
-        .med-icon { background: #f0f2ff; border: 1px solid #c3dafe; padding: 2px 6px; border-radius: 20px; font-size: 0.8rem; margin-left: 4px; display: inline-flex; align-items: center; }
-
+        .med-icon { background: #f0f2ff; border: 1px solid #c3dafe; padding: 2px 6px; border-radius: 20px; font-size: 0.8rem; margin-left: 4px; }
         .desktop-only { display: table-cell; }
-        @media screen and (max-width: 768px) {
-            .container { padding: 10px; }
-            th, td { padding: 10px 6px; font-size: 0.82rem; }
-            .tab { padding: 8px 12px; font-size: 0.8rem; }
-            td { word-break: break-all; white-space: normal !important; }
-            .desktop-only { display: none !important; }
-        }
-
-        /* Modal Styles */
-        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
-        .modal-content { background:white; width:95%; max-width:700px; margin:20px auto; padding:25px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        @media screen and (max-width: 768px) { .desktop-only { display: none !important; } }
         
-        .info-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px; }
-        .info-card h4 { color: var(--primary); margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        /* Modal */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
+        .modal-content { background:white; width:95%; max-width:750px; margin:20px auto; padding:25px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .form-group.full { grid-column: span 2; }
         .form-group label { display:block; margin-bottom:5px; font-weight:bold; color: #555; font-size: 0.85rem; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 1rem; }
-        .form-group input:disabled { background: #f0f0f0; cursor: not-allowed; }
-
+        
+        /* Status Colors */
+        .status-todo { background: #fff5f5 !important; border: 1px solid #feb2b2; }
+        .status-booked { background: #fffaf0 !important; border: 1px solid #fbd38d; }
+        .status-done { background: #f0fff4 !important; border: 1px solid #9ae6b4; }
+        
         .btn { padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-mini { padding: 4px 6px; font-size: 0.7rem; border-radius: 5px; }
-        .badge-info { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; }
-        .alert-low { color: white; background: var(--danger); padding: 3px 6px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
         .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
         .login-box { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 380px; }
-        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; }
+        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <h1 style="color:var(--primary); margin-bottom:15px; font-size: 1.6rem;">StudyNest Hub</h1>
-            <select id="login-role" class="login-input">
-                <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
-                <option value="Guardian">Guardian</option>
-            </select>
+            <h1 style="color:var(--primary); margin-bottom:15px;">StudyNest Hub</h1>
             <input type="password" id="admin-password" placeholder="Access Key" class="login-input">
             <button class="btn btn-primary" style="width:100%;" onclick="login()">Sign In</button>
         </div>
@@ -76,12 +59,13 @@
 
     <div id="main-container" class="container">
         <div class="header">
-            <div><h2 style="font-size: 1.2rem;">StudyNest Hub</h2><span id="user-display" style="color:var(--secondary); font-weight:bold; font-size: 0.8rem;"></span></div>
-            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="location.reload()">Logout</button>
+            <div><h2>StudyNest Hub</h2><span id="user-display"></span></div>
+            <button class="btn btn-danger" onclick="location.reload()">Logout</button>
         </div>
 
         <div class="nav-tabs">
             <div class="tab active" onclick="switchTab('students')">學生管理</div>
+            <div class="tab" onclick="switchTab('holiday')">假期安排</div>
             <div class="tab" onclick="switchTab('interactions')">互動紀錄</div>
             <div class="tab" onclick="switchTab('money')">零用錢明細</div>
             <div class="tab" onclick="switchTab('summary')">學生概況</div> 
@@ -92,17 +76,25 @@
             <div class="table-container" id="student-list-table"></div>
         </section>
 
+        <section id="holiday-section" class="content-section">
+            <button class="btn btn-primary" style="margin-bottom:15px; width: 100%;" onclick="openModal('holiday-modal')">+ 新增假期/行程</button>
+            <h4 style="margin-bottom:10px;">🗓️ 近期行程 (待辦/預約)</h4>
+            <div class="table-container" id="holiday-list-active"></div>
+            <h4 style="margin-bottom:10px; margin-top:20px; color:#666;">📜 歷史行程</h4>
+            <div class="table-container" id="holiday-list-history"></div>
+        </section>
+
         <section id="interactions-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
-                <select id="filter-int-student" style="padding: 8px; border-radius: 8px; flex: 1;" onchange="render()"></select>
+            <div style="margin-bottom:10px; display:flex; gap:8px;">
+                <select id="filter-int-student" style="flex:1; border-radius:8px;" onchange="render()"></select>
                 <button class="btn btn-primary" onclick="openModal('interaction-modal')">+</button>
             </div>
             <div class="table-container" id="interaction-list"></div>
         </section>
 
         <section id="money-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
-                <select id="filter-money-student" style="padding: 8px; border-radius: 8px; flex: 1;" onchange="render()"></select>
+            <div style="margin-bottom:10px; display:flex; gap:8px;">
+                <select id="filter-money-student" style="flex:1; border-radius:8px;" onchange="render()"></select>
                 <button class="btn btn-primary" onclick="openModal('money-modal')">+</button>
             </div>
             <div class="table-container" id="money-list"></div>
@@ -134,7 +126,7 @@
                     <div class="form-group"><label>宿管姓名</label><input type="text" id="s-hm-name"></div>
                     <div class="form-group"><label>宿管電話</label><input type="text" id="s-hm-phone"></div>
                     <div class="form-group full"><label>宿管 Email</label><input type="email" id="s-hm-email"></div>
-                    <div class="form-group full"><label>醫療/過敏提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div>
+                    <div class="form-group full"><label>醫療提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div>
                     <div class="form-group full"><label>備註事項</label><textarea id="s-notes" rows="2"></textarea></div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%; margin-top:15px;">儲存檔案</button>
@@ -145,70 +137,80 @@
     <div id="student-detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('student-detail-modal')">&times;</span>
-            <h2 id="det-name" style="color:var(--primary); font-size: 1.4rem; margin-bottom:10px;"></h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button id="det-edit-btn" class="btn btn-primary" style="flex: 1;">📝 編輯更新</button>
-                <button id="det-download-btn" class="btn btn-success" style="flex: 1;">📥 個人報告</button>
+            <h2 id="det-name" style="color:var(--primary); margin-bottom:10px;"></h2>
+            <div style="display:flex; gap:10px; margin-bottom: 15px;">
+                <button id="det-edit-btn" class="btn btn-primary" style="flex:1;">📝 編輯更新</button>
+                <button id="det-download-btn" class="btn btn-success" style="flex:1;">📥 個人報告</button>
             </div>
             <div id="student-detail-body"></div>
             <div style="margin-top:20px; display:flex; gap:10px;">
                 <button class="btn" style="flex:1; background:#eee;" onclick="closeModal('student-detail-modal')">關閉</button>
-                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除檔案</button>
+                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除</button>
             </div>
         </div>
     </div>
 
-    <div id="interaction-modal" class="modal">
+    <div id="holiday-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('interaction-modal')">&times;</span>
-            <h3>新增互動紀錄</h3>
-            <form id="interaction-form">
-                <div class="form-group"><label>學生</label><select id="int-student-select"></select></div>
-                <div class="form-group"><label>日期</label><input type="date" id="int-date" required></div>
-                <div class="form-group"><label>方式</label>
-                    <select id="int-type">
-                        <option value="💻 線上溝通">💻 線上溝通</option>
-                        <option value="🏫 校訪家訪">🏫 校訪家訪</option>
-                        <option value="🤝 其他協助">🤝 其他協助</option>
-                    </select>
+            <span class="close-btn" onclick="closeModal('holiday-modal')">&times;</span>
+            <h3>新增假期/交通安排</h3>
+            <form id="holiday-form">
+                <input type="hidden" id="h-id">
+                <div class="form-grid">
+                    <div class="form-group"><label>學生</label><select id="h-student-select"></select></div>
+                    <div class="form-group"><label>任務類型</label>
+                        <select id="h-task">
+                            <option value="✈️接送機">✈️ 接送機</option>
+                            <option value="🏠假期住宿">🏠 假期住宿</option>
+                            <option value="🚌離校">🚌 離校</option>
+                            <option value="🏫返校">🏫 返校</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>預約日期與時間</label>
+                        <input type="datetime-local" id="h-datetime" step="900" required>
+                    </div>
+                    <div class="form-group"><label>行程狀態</label>
+                        <select id="h-status">
+                            <option value="🔴 待辦">🔴 待辦</option>
+                            <option value="🟡 預約">🟡 預約</option>
+                            <option value="🟢 完成">🟢 完成</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>司機姓名</label><input type="text" id="h-driver-name"></div>
+                    <div class="form-group"><label>司機電話</label><input type="text" id="h-driver-phone"></div>
+                    <div class="form-group"><label>交通成本 (£)</label><input type="number" id="h-trans-cost" step="0.01"></div>
+                    <div class="form-group"><label>交通報價 (£)</label><input type="number" id="h-trans-quote" step="0.01"></div>
+                    
+                    <div class="form-group full">
+                        <label><input type="checkbox" id="h-use-hm" onchange="toggleHm(this.checked)"> 安排臨時住家?</label>
+                    </div>
+
+                    <div id="hm-fields" class="form-grid full" style="display:none; background:#f0f4ff; padding:10px; border-radius:10px;">
+                        <div class="form-group"><label>住家姓名</label><input type="text" id="h-hm-name"></div>
+                        <div class="form-group"><label>住家電話</label><input type="text" id="h-hm-phone"></div>
+                        <div class="form-group full"><label>住家地址</label><input type="text" id="h-hm-address"></div>
+                        <div class="form-group"><label>Check-out Date</label><input type="date" id="h-checkout" onchange="calcNights()"></div>
+                        <div class="form-group"><label>入住晚數</label><input type="text" id="h-nights" readonly></div>
+                        <div class="form-group"><label>住宿成本/每晚 (£)</label><input type="number" id="h-stay-cost" step="0.01"></div>
+                        <div class="form-group"><label>住宿總報價 (£)</label><input type="number" id="h-stay-quote" step="0.01"></div>
+                    </div>
+
+                    <div class="form-group full"><label>支付狀態</label>
+                        <select id="h-payment">
+                            <option value="待付 ⏳">待付 ⏳</option>
+                            <option value="已付司機 🚗">已付司機 🚗</option>
+                            <option value="已付住家 🏠">已付住家 🏠</option>
+                            <option value="已結清 ✅">已結清 ✅</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group"><label>詳情</label><textarea id="int-content" rows="4" required></textarea></div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">儲存</button>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:15px;">儲存行程</button>
             </form>
         </div>
     </div>
 
-    <div id="money-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('money-modal')">&times;</span>
-            <h3>新增帳目</h3>
-            <form id="money-form">
-                <div class="form-group"><label>學生</label><select id="money-student-select"></select></div>
-                <div class="form-group"><label>日期</label><input type="date" id="money-date" required></div>
-                <div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div>
-                <div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div>
-                <div class="form-group"><label>分類</label>
-                    <select id="money-cat">
-                        <option value="💰 資金存入">💰 資金存入 (Top up)</option>
-                        <option value="🎓 教育支出">🎓 教育支出 (Education)</option>
-                        <option value="🏠 生活交通">🏠 生活交通 (Living & Transport)</option>
-                        <option value="💸 學生提領">💸 學生提領 (Withdrawal)</option>
-                        <option value="⚙️ 其他雜項">⚙️ 其他雜項 (Others)</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>備註</label><input type="text" id="money-detail"></div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">儲存</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="generic-detail-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('generic-detail-modal')">&times;</span>
-            <h3 id="generic-title"></h3>
-            <div id="generic-body"></div>
-        </div>
-    </div>
+    <div id="interaction-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('interaction-modal')">&times;</span><h3>新增互動紀錄</h3><form id="interaction-form"><div class="form-group"><label>學生</label><select id="int-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="int-date" required></div><div class="form-group"><label>方式</label><select id="int-type"><option value="💻 線上溝通">💻 線上溝通</option><option value="🏫 校訪家訪">🏫 校訪家訪</option><option value="🤝 其他協助">🤝 其他協助</option></select></div><div class="form-group"><label>詳情</label><textarea id="int-content" rows="4" required></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;">儲存</button></form></div></div>
+    <div id="money-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('money-modal')">&times;</span><h3>新增帳目</h3><form id="money-form"><div class="form-group"><label>學生</label><select id="money-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="money-date" required></div><div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div><div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div><div class="form-group"><label>分類</label><select id="money-cat"><option value="💰 資金存入">💰 資金存入 (Top up)</option><option value="🎓 教育支出">🎓 教育支出 (Education)</option><option value="🏠 生活交通">🏠 生活交通 (Living & Transport)</option><option value="💸 學生提領">💸 學生提領 (Withdrawal)</option><option value="⚙️ 其他雜項">⚙️ 其他雜項 (Others)</option></select></div><div class="form-group"><label>備註</label><input type="text" id="money-detail"></div><button type="submit" class="btn btn-primary" style="width:100%;">儲存</button></form></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -225,55 +227,66 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let students = [], interactions = [], money = [];
+        let students = [], interactions = [], money = [], holidays = [];
 
         function startSync() {
             onSnapshot(collection(db, "students"), s => { students = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { interactions = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { money = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
+            onSnapshot(query(collection(db, "holidays"), orderBy("datetime", "asc")), s => { 
+                holidays = s.docs.map(d => ({id:d.id, ...d.data()})); 
+                renderHolidays(); 
+            });
         }
 
         const getToday = () => new Date().toISOString().split('T')[0];
 
-        function getNameWithIcon(student) {
-            const hasMedical = student.medical && student.medical.trim() !== "";
-            return `<b>${student.name}</b>${hasMedical ? '<span class="med-icon">💊</span>' : ''}`;
-        }
-        
-        function getPureName(id) {
-            const s = students.find(x => x.id === id);
-            return s ? `<b>${s.name}</b>` : '-';
-        }
-
         function render() {
-            // Overall
-            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th class="desktop-only">生日</th><th>宿管/電話</th></tr>` + 
-                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td>${getNameWithIcon(s)}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td class="desktop-only">${s.birthday || '-'}</td><td>${s.hmName || '-'}<br><small>${s.hmPhone || '-'}</small></td></tr>`).join('') + `</table>`;
+            // Student List
+            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th>宿管</th></tr>` + 
+                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?' 💊':''}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td>${s.hmName || '-'}</td></tr>`).join('') + `</table>`;
 
             // Interactions
-            const intFilterVal = document.getElementById('filter-int-student')?.value || 'all';
-            const filteredInts = intFilterVal === 'all' ? interactions : interactions.filter(i => i.studentId === intFilterVal);
-            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th class="desktop-only">內容詳情</th><th>刪</th></tr>` + 
-                filteredInts.map(i => `<tr class="clickable" onclick="showGenericDetail('interaction', '${i.id}')"><td>${i.date.substring(5)}</td><td>${getPureName(i.studentId)}</td><td><span class="badge-info">${i.type}</span></td><td class="desktop-only"><small>${(i.content||'').substring(0,20)}...</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteEntry('interactions','${i.id}')">X</button></td></tr>`).join('') + `</table>`;
+            const intFilter = document.getElementById('filter-int-student')?.value || 'all';
+            const filteredInts = intFilter === 'all' ? interactions : interactions.filter(i => i.studentId === intFilter);
+            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th>內容</th><th>刪</th></tr>` + 
+                filteredInts.map(i => `<tr><td>${i.date.substring(5)}</td><td>${(students.find(s=>s.id===i.studentId)||{}).name || '-'}</td><td>${i.type}</td><td><small>${(i.content||'').substring(0,15)}...</small></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('interactions','${i.id}')">X</button></td></tr>`).join('') + `</table>`;
 
             // Money
-            const monFilterVal = document.getElementById('filter-money-student')?.value || 'all';
-            const filteredMons = monFilterVal === 'all' ? money : money.filter(m => m.studentId === monFilterVal);
-            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th class="desktop-only">分類備註</th><th>刪</th></tr>` + 
-                filteredMons.map(m => `<tr class="clickable" onclick="showGenericDetail('money', '${m.id}')"><td>${m.date.substring(5)}</td><td>${getPureName(m.studentId)}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td class="desktop-only"><small>${m.cat}: ${m.detail||''}</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteEntry('money','${m.id}')">X</button></td></tr>`).join('') + `</table>`;
+            const monFilter = document.getElementById('filter-money-student')?.value || 'all';
+            const filteredMons = monFilter === 'all' ? money : money.filter(m => m.studentId === monFilter);
+            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th>分類</th><th>刪</th></tr>` + 
+                filteredMons.map(m => `<tr><td>${m.date.substring(5)}</td><td>${(students.find(s=>s.id===m.studentId)||{}).name || '-'}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td>${m.cat}</td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('money','${m.id}')">X</button></td></tr>`).join('') + `</table>`;
 
+            // Options
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            if(document.getElementById('int-student-select')) {
-                document.getElementById('int-student-select').innerHTML = opts;
-                document.getElementById('money-student-select').innerHTML = opts;
-                ['filter-int-student', 'filter-money-student'].forEach(id => { 
-                    const el = document.getElementById(id); 
-                    const cur = el.value; 
-                    el.innerHTML = `<option value="all">全部學生</option>` + opts; 
-                    el.value = cur || 'all'; 
-                });
-            }
+            ['int-student-select', 'money-student-select', 'h-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
+            ['filter-int-student', 'filter-money-student'].forEach(id => { 
+                const el = document.getElementById(id); const cur = el.value; 
+                el.innerHTML = `<option value="all">全部學生</option>` + opts; el.value = cur || 'all'; 
+            });
             renderSummary();
+        }
+
+        function renderHolidays() {
+            const active = holidays.filter(h => h.status !== '🟢 完成');
+            const history = holidays.filter(h => h.status === '🟢 完成').sort((a,b) => b.datetime.localeCompare(a.datetime));
+
+            const tableHtml = (list, isHistory) => `<table><tr><th>任務</th><th>學生</th><th>日期</th><th>支付狀態</th>${isHistory ? '<th>財務(成本/報價)</th>' : '<th>刪</th>'}</tr>` + 
+                list.map(h => {
+                    const s = students.find(x => x.id === h.studentId) || {};
+                    let statusClass = h.status.includes('待辦') ? 'status-todo' : (h.status.includes('預約') ? 'status-booked' : 'status-done');
+                    return `<tr class="clickable ${statusClass}" onclick="editHoliday('${h.id}')">
+                        <td>${h.task}${h.useHm ? ' 🏠' : ''}</td>
+                        <td><b>${s.name || '-'}</b></td>
+                        <td>${h.datetime.replace('T',' ')}</td>
+                        <td>${h.payment}</td>
+                        ${isHistory ? `<td><small>C:£${(h.transCost||0)+(h.stayQuote||0)} / Q:£${(h.transQuote||0)+(h.stayQuote||0)}</small></td>` : `<td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteEntry('holidays','${h.id}')">X</button></td>`}
+                    </tr>`;
+                }).join('') + `</table>`;
+
+            document.getElementById('holiday-list-active').innerHTML = tableHtml(active, false);
+            document.getElementById('holiday-list-history').innerHTML = tableHtml(history, true);
         }
 
         function renderSummary() {
@@ -286,61 +299,145 @@
             document.getElementById('summary-table').innerHTML = html + `</table>`;
         }
 
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; document.getElementById('user-display').innerText = "Role: " + document.getElementById('login-role').value; startSync(); } else alert("Error Key"); };
+        // Holiday Functions
+        window.toggleHm = (show) => { document.getElementById('hm-fields').style.display = show ? 'grid' : 'none'; };
+        window.calcNights = () => {
+            const checkin = new Date(document.getElementById('h-datetime').value);
+            const checkout = new Date(document.getElementById('h-checkout').value);
+            if (checkout > checkin) {
+                const diff = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+                document.getElementById('h-nights').value = diff + " 晚";
+            }
+        };
+
+        window.editHoliday = (id) => {
+            const h = holidays.find(x => x.id === id);
+            openModal('holiday-modal');
+            document.getElementById('h-id').value = h.id;
+            document.getElementById('h-student-select').value = h.studentId;
+            document.getElementById('h-task').value = h.task;
+            document.getElementById('h-datetime').value = h.datetime;
+            document.getElementById('h-status').value = h.status;
+            document.getElementById('h-driver-name').value = h.driverName || '';
+            document.getElementById('h-driver-phone').value = h.driverPhone || '';
+            document.getElementById('h-trans-cost').value = h.transCost || 0;
+            document.getElementById('h-trans-quote').value = h.transQuote || 0;
+            document.getElementById('h-use-hm').checked = h.useHm;
+            toggleHm(h.useHm);
+            if(h.useHm) {
+                document.getElementById('h-hm-name').value = h.hmName || '';
+                document.getElementById('h-hm-phone').value = h.hmPhone || '';
+                document.getElementById('h-hm-address').value = h.hmAddress || '';
+                document.getElementById('h-checkout').value = h.checkout || '';
+                document.getElementById('h-nights').value = h.nights || '';
+                document.getElementById('h-stay-cost').value = h.stayCost || 0;
+                document.getElementById('h-stay-quote').value = h.stayQuote || 0;
+            }
+            document.getElementById('h-payment').value = h.payment;
+        };
+
+        document.getElementById('holiday-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const hid = document.getElementById('h-id').value;
+            const hStatus = document.getElementById('h-status').value;
+            const studentId = document.getElementById('h-student-select').value;
+            const studentName = (students.find(s=>s.id===studentId)||{}).name;
+
+            const data = {
+                studentId: studentId,
+                task: document.getElementById('h-task').value,
+                datetime: document.getElementById('h-datetime').value,
+                status: hStatus,
+                driverName: document.getElementById('h-driver-name').value,
+                driverPhone: document.getElementById('h-driver-phone').value,
+                transCost: parseFloat(document.getElementById('h-trans-cost').value || 0),
+                transQuote: parseFloat(document.getElementById('h-trans-quote').value || 0),
+                useHm: document.getElementById('h-use-hm').checked,
+                hmName: document.getElementById('h-hm-name').value,
+                hmPhone: document.getElementById('h-hm-phone').value,
+                hmAddress: document.getElementById('h-hm-address').value,
+                checkout: document.getElementById('h-checkout').value,
+                nights: document.getElementById('h-nights').value,
+                stayCost: parseFloat(document.getElementById('h-stay-cost').value || 0),
+                stayQuote: parseFloat(document.getElementById('h-stay-quote').value || 0),
+                payment: document.getElementById('h-payment').value
+            };
+
+            if(hid) {
+                await updateDoc(doc(db, "holidays", hid), data);
+            } else {
+                await addDoc(collection(db, "holidays"), data);
+                // 自動增加互動紀錄
+                await addDoc(collection(db, "interactions"), {
+                    studentId: studentId,
+                    date: getToday(),
+                    type: "🤝 其他協助",
+                    content: `假期安排：${data.task}，日期：${data.datetime.split('T')[0]}${data.useHm ? '，住宿：' + data.nights : ''}`
+                });
+            }
+
+            // 🟢 自動扣款詢問
+            if(hStatus === '🟢 完成' && confirm('檢測到行程已完成，是否自動在零用錢新增一筆支出？')) {
+                const totalQuote = data.transQuote + data.stayQuote;
+                await addDoc(collection(db, "money"), {
+                    studentId: studentId,
+                    date: getToday(),
+                    type: "支出",
+                    amount: totalQuote,
+                    cat: "🏠 生活交通",
+                    detail: `${data.task} ${data.datetime.split('T')[0]} ${data.useHm ? data.hmName + ' 到 ' + data.checkout : ''}`
+                });
+                alert("已自動新增支出明細！");
+            }
+
+            closeModal('holiday-modal');
+            e.target.reset();
+            document.getElementById('h-id').value = "";
+            toggleHm(false);
+        };
+
+        // Standard Actions
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error"); };
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        
         window.openModal = id => { 
             document.getElementById(id).style.display='block'; 
             if(id === 'interaction-modal') document.getElementById('int-date').value = getToday();
             if(id === 'money-modal') document.getElementById('money-date').value = getToday();
-            if(id === 'student-modal' && !document.getElementById('s-id').value) {
-                document.getElementById('student-form').reset();
-                document.getElementById('s-name').disabled = false;
-                document.getElementById('student-modal-title').innerText = "新增學生檔案";
+            if(id === 'holiday-modal') {
+                document.getElementById('holiday-form').reset();
+                document.getElementById('h-id').value = "";
+                toggleHm(false);
             }
         };
-
-        window.closeModal = id => { document.getElementById(id).style.display='none'; };
+        window.closeModal = id => document.getElementById(id).style.display='none';
         window.deleteEntry = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
 
-        // 學生詳情與修正後的刪除按鈕
+        // 學生詳情與編輯 (修正後的穩定版本)
         window.showStudentDetail = id => {
             const s = students.find(x => x.id === id);
             if(!s) return;
-            document.getElementById('det-name').innerHTML = getNameWithIcon(s) + (s.engName ? ` (${s.engName})` : '');
-            document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
+            document.getElementById('det-name').innerText = s.name + (s.engName?` (${s.engName})` : '');
             document.getElementById('det-edit-btn').onclick = () => editStudent(id);
+            document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
             document.getElementById('student-detail-body').innerHTML = `
-                <div class="info-card"><h4>學校信息</h4><p><b>生日:</b> ${s.birthday || '-'}</p><p><b>學校:</b> ${s.school || '-'}</p><p><b>年級:</b> ${s.grade || '-'}</p><p><b>電話:</b> ${s.phone || '-'}</p><p><b>地址:</b> ${s.address || '-'}</p></div>
-                <div class="info-card"><h4>家長聯繫</h4><p>父: ${s.fatherName || '-'} (${s.fatherPhone || '-'})</p><p>母: ${s.motherName || '-'} (${s.motherPhone || '-'})</p></div>
-                <div class="info-card"><h4>宿管資訊</h4><p><b>姓名:</b> ${s.hmName || '-'} | <b>電話:</b> ${s.hmPhone || '-'}</p><p><b>Email:</b> ${s.hmEmail || '-'}</p></div>
-                <div class="info-card"><h4>提醒</h4><p style="color:red;"><b>醫療:</b> ${s.medical || '無'}</p><p><b>備註:</b> ${s.notes || '-'}</p></div>`;
-            
-            // 修正刪除按鈕：直接使用傳入的 id 並確保指向 students 集合中的該文件
-            document.getElementById('det-delete-btn').onclick = async () => { 
-                if(confirm(`警告：將永久刪除學生 [${s.name}] 的所有檔案！確定嗎？`)) {
-                    try {
-                        const docRef = doc(db, "students", id);
-                        await deleteDoc(docRef);
-                        closeModal('student-detail-modal');
-                    } catch (e) { alert("刪除失敗: " + e.message); }
-                } 
-            };
+                <div class="info-card"><h4>學校信息</h4><p><b>學校:</b> ${s.school||'-'} (${s.grade||'-'})</p><p><b>地址:</b> ${s.address||'-'}</p></div>
+                <div class="info-card"><h4>家長</h4><p>父: ${s.fatherName||'-'} (${s.fatherPhone||'-'})</p><p>母: ${s.motherName||'-'} (${s.motherPhone||'-'})</p></div>
+                <div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} (${s.hmPhone||'-'})</p><p>${s.hmEmail||'-'}</p></div>`;
+            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除此學生？')) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
             openModal('student-detail-modal');
         };
 
         window.editStudent = id => {
             const s = students.find(x => x.id === id);
             closeModal('student-detail-modal');
+            openModal('student-modal');
             document.getElementById('student-modal-title').innerText = "編輯更新檔案";
             document.getElementById('s-id').value = s.id;
             document.getElementById('s-name').value = s.name;
-            document.getElementById('s-name').disabled = true; // 鎖定姓名
+            document.getElementById('s-name').disabled = true;
             document.getElementById('s-eng-name').value = s.engName || '';
             document.getElementById('s-school').value = s.school || '';
             document.getElementById('s-grade').value = s.grade || '';
-            document.getElementById('s-birthday').value = s.birthday || '';
-            document.getElementById('s-phone').value = s.phone || '';
             document.getElementById('s-address').value = s.address || '';
             document.getElementById('s-father-name').value = s.fatherName || '';
             document.getElementById('s-father-phone').value = s.fatherPhone || '';
@@ -351,36 +448,6 @@
             document.getElementById('s-hm-email').value = s.hmEmail || '';
             document.getElementById('s-medical').value = s.medical || '';
             document.getElementById('s-notes').value = s.notes || '';
-            openModal('student-modal');
-        };
-
-        window.showGenericDetail = (mode, id) => {
-            const body = document.getElementById('generic-body');
-            const title = document.getElementById('generic-title');
-            if(mode === 'interaction') {
-                const i = interactions.find(x => x.id === id);
-                title.innerText = "互動詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${i.date}</p><p><b>方式:</b> ${i.type}</p><p style="white-space:pre-wrap; margin-top:10px;">${i.content}</p></div>`;
-            } else {
-                const m = money.find(x => x.id === id);
-                title.innerText = "帳目詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${m.date}</p><p><b>類型:</b> ${m.type} £${m.amount}</p><p><b>分類:</b> ${m.cat}</p><p><b>備註:</b> ${m.detail || '無'}</p></div>`;
-            }
-            openModal('generic-detail-modal');
-        };
-
-        window.downloadPersonalFullReport = id => {
-            const s = students.find(x => x.id === id);
-            const sInts = interactions.filter(i => i.studentId === id);
-            const sMons = money.filter(m => m.studentId === id);
-            let rows = [[`${s.name} 個人報告`],["姓名", s.name],["醫療", s.medical],[""],["=== 互動紀錄 ==="],["日期", "方式", "內容"]];
-            sInts.forEach(i => rows.push([i.date, i.type, i.content]));
-            rows.push([""],["=== 帳目明細 ==="],["日期", "金額", "分類", "備註"]);
-            sMons.forEach(m => rows.push([m.date, `£${m.amount}`, m.cat, m.detail]));
-            let csv = "\uFEFF" + rows.map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(",")).join("\n");
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-            link.download = `${s.name}_Report.csv`; link.click();
         };
 
         document.getElementById('student-form').onsubmit = async e => {
@@ -391,8 +458,6 @@
                 engName: document.getElementById('s-eng-name').value,
                 school: document.getElementById('s-school').value,
                 grade: document.getElementById('s-grade').value,
-                birthday: document.getElementById('s-birthday').value,
-                phone: document.getElementById('s-phone').value,
                 address: document.getElementById('s-address').value,
                 fatherName: document.getElementById('s-father-name').value,
                 fatherPhone: document.getElementById('s-father-phone').value,
@@ -408,17 +473,9 @@
             closeModal('student-modal'); e.target.reset(); document.getElementById('s-id').value = "";
         };
 
-        document.getElementById('interaction-form').onsubmit = async e => {
-            e.preventDefault();
-            await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value });
-            closeModal('interaction-modal'); e.target.reset();
-        };
-
-        document.getElementById('money-form').onsubmit = async e => {
-            e.preventDefault();
-            await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), cat: document.getElementById('money-cat').value, detail: document.getElementById('money-detail').value });
-            closeModal('money-modal'); e.target.reset();
-        };
+        // Form for Interactions & Money
+        document.getElementById('interaction-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value }); closeModal('interaction-modal'); e.target.reset(); };
+        document.getElementById('money-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), cat: document.getElementById('money-cat').value, detail: document.getElementById('money-detail').value }); closeModal('money-modal'); e.target.reset(); };
 
         window.onkeydown = e => { if(e.key==='Escape') document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); };
     </script>
