@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Student Hub - Ultimate Sync Edition</title>
+    <title>StudyNest Student Hub - Final Stable Edition</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,7 +27,7 @@
         .status-booked { background: #fffaf0 !important; color: #975a16; }
         .status-done { background: #f0fff4 !important; color: #276749; }
         
-        /* 滿版住宿區塊樣式 */
+        /* 住宿資訊區塊：真．滿版佈局 */
         #hm-fields { 
             grid-column: span 2; 
             display: grid; 
@@ -55,8 +55,7 @@
         .form-group.full { grid-column: span 2; width: 100%; }
         .form-group label { display:block; margin-bottom:3px; font-weight:bold; color: #555; font-size: 0.8rem; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 0.95rem; }
-        .form-group input:disabled { background: #f0f0f0; cursor: not-allowed; }
-
+        
         .compact-checkbox { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: #555; font-size: 0.85rem; margin: 5px 0; width: fit-content; }
         .compact-checkbox input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
 
@@ -111,7 +110,7 @@
             <button class="btn btn-primary" style="margin-bottom:15px; width: 100%;" onclick="openModal('holiday-modal')">+ 新增假期/行程</button>
             <h4 style="margin-bottom:10px;">🗓️ 近期行程 (待辦/預約)</h4>
             <div id="holiday-list-active"></div>
-            <h4 style="margin: 20px 0 10px; color:#666;">📜 歷史行程 (已完成)</h4>
+            <h4 style="margin: 20px 0 10px; color:#666;">📜 歷史行程</h4>
             <div id="holiday-list-history"></div>
         </section>
 
@@ -246,7 +245,7 @@
                             <option value="LGW">LGW Airport</option>
                             <option value="住家">Home (住家)</option>
                             <option value="學校">School (學校)</option>
-                            <option value="Other (其他地點)">Other (其他地點)</option>
+                            <option value="Other (家長安排外宿)">Other (家長安排外宿)</option>
                         </select>
                     </div>
 
@@ -260,7 +259,7 @@
                     </div>
 
                     <div id="hm-fields" style="display:none;">
-                        <div id="parent-notice" class="notice-box">⚠️ 重要：若為家長私人安排住宿，請確認簽回「免責同意書」。</div>
+                        <div class="notice-box">⚠️ 重要：若為家長私人安排住宿，請確認簽回「免責同意書」。</div>
                         <div class="form-group"><label>住宿地點/住家名稱</label><input type="text" id="h-hm-name"></div>
                         <div class="form-group"><label>聯絡電話</label><input type="text" id="h-hm-phone"></div>
                         <div class="form-group full"><label>詳細地址 (Address)</label><input type="text" id="h-hm-address"></div>
@@ -305,15 +304,15 @@
 
         // 核心邏輯
         window.toggleParentOption = (loc) => {
-            const notice = document.getElementById('parent-notice');
             if(loc === 'Other (家長安排外宿)') {
                 document.getElementById('h-use-hm').checked = true;
                 toggleHm(true);
-                notice.style.display = 'flex';
                 document.getElementById('h-stay-quote').value = 0;
-            } else { notice.style.display = 'none'; }
+            }
         };
+
         window.toggleHm = (show) => { document.getElementById('hm-fields').style.display = show ? 'grid' : 'none'; };
+
         window.calcNights = () => {
             const s = new Date(document.getElementById('h-datetime').value);
             const e = new Date(document.getElementById('h-checkout').value);
@@ -346,7 +345,7 @@
         function renderHolidays() {
             const act = holidays.filter(h => h.status !== '🟢 完成');
             const hist = holidays.filter(h => h.status === '🟢 完成').sort((a,b) => b.datetime.localeCompare(a.datetime));
-            const tableHtml = (list, isHist) => `<div class="table-container"><table><tr><th>任務</th><th>學生/日期</th><th>狀態</th><th>支付</th>${isHist ? '<th>報價</th>' : '<th>刪</th>'}</tr>` + 
+            const tableHtml = (list, isHist) => `<div class="table-container"><table><tr><th>任務</th><th>學生/日期/航班</th><th>狀態</th><th>支付</th>${isHist ? '<th>報價合計</th>' : '<th>刪</th>'}</tr>` + 
                 list.map(h => {
                     const s = students.find(x => x.id === h.studentId) || {};
                     const sClass = h.status.includes('待辦') ? 'status-todo' : (h.status.includes('預約') ? 'status-booked' : 'status-done');
@@ -365,7 +364,7 @@
                             <option value="已付住家 🏠" ${h.payment==='已付住家 🏠'?'selected':''}>已付住家 🏠</option>
                             <option value="已結清 ✅" ${h.payment==='已結清 ✅'?'selected':''}>已結清 ✅</option>
                         </select></td>
-                        ${isHist ? `<td><small>£${((h.transQuote||0)+(h.stayQuote*nights)).toFixed(2)}</small></td>` : `<td><button class="btn btn-danger btn-mini" onclick="deleteEntry('holidays','${h.id}')">X</button></td>`}
+                        ${isHist ? `<td><small>Q: £${((h.transQuote||0)+(h.stayQuote*nights)).toFixed(2)}</small></td>` : `<td><button class="btn btn-danger btn-mini" onclick="deleteEntry('holidays','${h.id}')">X</button></td>`}
                     </tr>`;
                 }).join('') + `</table></div>`;
             document.getElementById('holiday-list-active').innerHTML = tableHtml(act, false);
@@ -378,7 +377,7 @@
             if (field === 'status' && value === '🟢 完成') {
                 const nights = parseInt(h.nights) || 0;
                 const total = (h.transQuote || 0) + ((h.stayQuote || 0) * nights);
-                if (confirm(`已完成！是否扣款 £${total.toFixed(2)}？`)) {
+                if (confirm(`行程已完成，是否自動扣款 £${total.toFixed(2)}？`)) {
                     await addDoc(collection(db, "money"), { studentId: h.studentId, date: getToday(), type: "支出", amount: total, cat: "🏠 生活交通", detail: `${h.task} ${h.datetime.split('T')[0]} ✈️:${h.flight||'-'} 📍:${h.location||'-'}` });
                 }
             }
@@ -410,7 +409,6 @@
                 document.getElementById('h-stay-quote').value = h.stayQuote || 0;
             }
             document.getElementById('h-payment').value = h.payment;
-            toggleParentOption(h.location);
         };
 
         document.getElementById('holiday-form').onsubmit = async (e) => {
@@ -430,7 +428,7 @@
             const hid = document.getElementById('h-id').value;
             hid ? await updateDoc(doc(db, "holidays", hid), data) : await addDoc(collection(db, "holidays"), data);
             if(!hid) {
-                let note = `假期：${data.task}, 目的地：${data.location}`;
+                let note = `假期：${data.task}，目的地：${data.location}`;
                 if(data.location.includes('家長安排')) note += " (需免責書)";
                 await addDoc(collection(db, "interactions"), { studentId: sid, date: getToday(), type: "🤝 其他協助", content: note });
             }
@@ -459,7 +457,11 @@
             document.getElementById('det-name').innerHTML = `<b>${s.name}</b> ${s.engName?`(${s.engName})`:''}`;
             document.getElementById('det-edit-btn').onclick = () => editStudent(id);
             document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
-            document.getElementById('student-detail-body').innerHTML = `<div class="info-card"><h4>學校信息</h4><p>學校: ${s.school||'-'}</p><p>年級: ${s.grade||'-'}</p><p>生日: ${s.birthday||'-'}</p><p>地址: ${s.address||'-'}</p></div><div class="info-card"><h4>家長</h4><p>父: ${s.fatherName||'-'} (${s.fatherPhone||'-'})</p><p>母: ${s.motherName||'-'} (${s.motherPhone||'-'})</p></div><div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} | ${s.hmPhone||'-'} | ${s.hmEmail||'-'}</p></div><div class="info-card"><h4>提醒</h4><p style="color:red;">💊 ${s.medical||'無'}</p><p>備註: ${s.notes||'-'}</p></div>`;
+            document.getElementById('student-detail-body').innerHTML = `
+                <div class="info-card"><h4>學校信息</h4><p>學校: ${s.school||'-'}</p><p>年級: ${s.grade||'-'}</p><p>生日: ${s.birthday||'-'}</p><p>地址: ${s.address||'-'}</p></div>
+                <div class="info-card"><h4>家長</h4><p>父: ${s.fatherName||'-'} (${s.fatherPhone||'-'})</p><p>母: ${s.motherName||'-'} (${s.motherPhone||'-'})</p></div>
+                <div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} | ${s.hmPhone||'-'} | ${s.hmEmail||'-'}</p></div>
+                <div class="info-card"><h4>提醒</h4><p style="color:red;">💊 ${s.medical||'無'}</p><p>備註: ${s.notes||'-'}</p></div>`;
             document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除？')) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
             openModal('student-detail-modal');
         };
@@ -512,7 +514,7 @@
             });
             document.getElementById('summary-table').innerHTML = h + `</table>`;
         }
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error Key"); };
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error"); };
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
         window.openModal = id => { document.getElementById(id).style.display='block'; };
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
