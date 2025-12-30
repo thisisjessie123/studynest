@@ -3,43 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Hub - 2026 Flagship Edition</title>
+    <title>StudyNest Hub - 2026 Flagship Final</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; --info: #3182ce; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; }
         .container { max-width: 1400px; margin: 0 auto; padding: 15px; display: none; }
         .header { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
         .nav-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
         .tab { padding: 10px 18px; background: #ddd; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
         .tab.active { background: var(--primary); color: white; }
-
         .content-section { display: none; }
         .content-section.active { display: block; }
 
+        /* 財務收益 Bar */
+        .finance-summary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 15px; display: flex; justify-content: space-around; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+        .fin-item h4 { font-size: 0.85rem; opacity: 0.9; margin-bottom: 5px; }
+        .fin-item p { font-size: 1.4rem; font-weight: bold; }
+
         .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
         th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
+        th { background: #f8f9fa; color: var(--primary); }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
 
-        /* 狀態標籤 */
-        .badge { padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #ddd; cursor: pointer; white-space: nowrap; }
-        .st-todo { background: #ebf8ff; color: var(--info); border-color: #bee3f8; }
-        .st-booked { background: #fffaf0; color: var(--warning); border-color: #fbd38d; }
-        .st-done { background: #f0fff4; color: var(--success); border-color: #c6f6d5; }
-        .pay-badge { background: #f7fafc; color: #4a5568; }
+        /* 任務狀態配色 */
+        .st-todo { background: #fff5f5 !important; color: #e53e3e !important; border: 1px solid #feb2b2 !important; }
+        .st-booked { background: #fffaf0 !important; color: #dd6b20 !important; border: 1px solid #fbd38d !important; }
+        .st-done { background: #f0fff4 !important; color: #38a169 !important; border: 1px solid #c6f6d5 !important; }
+        
+        .badge { padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #ddd; cursor: pointer; }
+        .pay-badge { background: #f7fafc; color: #4a5568; border: 1px solid #edf2f7; }
 
-        .med-icon { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 2px 6px; border-radius: 20px; font-size: 0.75rem; margin-left: 5px; }
-        .night-tag { background: #edf2f7; padding: 2px 8px; border-radius: 5px; font-weight: bold; color: var(--secondary); margin-left: 10px; }
-
-        /* 彈窗優化 */
+        /* 彈窗 UI */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(3px); }
         .modal-content { background:white; width:95%; max-width:800px; margin:30px auto; padding:25px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; animation: slideDown 0.3s; }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; font-weight: bold; }
+        .close-x { position: absolute; top: 15px; right: 20px; font-size: 26px; cursor: pointer; color: #ccc; font-weight: bold; }
         .close-x:hover { color: var(--danger); }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -50,16 +50,10 @@
         .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-mini { padding: 4px 8px; font-size: 0.7rem; }
-
-        .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-        .login-box { background: white; padding: 40px; border-radius: 25px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         
-        @media screen and (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .desktop-only { display: none; }
-            .status-col { display: flex; flex-direction: column; gap: 5px; }
-        }
+        .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .login-box { background: white; padding: 40px; border-radius: 25px; text-align: center; width: 90%; max-width: 400px; }
+        @media screen and (max-width: 768px) { .desktop-only { display: none; } .form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -67,19 +61,19 @@
     <div id="login-screen" class="login-container">
         <div class="login-box">
             <h1 style="color:var(--primary); margin-bottom:20px;">StudyNest Hub</h1>
-            <input type="password" id="admin-password" placeholder="Access Key" style="width:100%; padding:15px; margin-bottom:20px; border-radius:12px; border:1px solid #ddd; text-align:center; font-size:1.2rem;">
-            <button class="btn btn-primary" style="width:100%; font-size:1.1rem;" onclick="login()">進入系統</button>
+            <input type="password" id="admin-password" placeholder="Access Key" style="width:100%; padding:15px; margin-bottom:20px; border-radius:12px; border:1px solid #ddd; text-align:center;">
+            <button class="btn btn-primary" style="width:100%;" onclick="login()">Enter System</button>
         </div>
     </div>
 
     <div id="main-container" class="container">
         <div class="header">
-            <h2>StudyNest 監護管理系統</h2>
-            <button class="btn btn-danger" style="padding: 8px 15px;" onclick="location.reload()">登出</button>
+            <h2>StudyNest Management 2026</h2>
+            <button class="btn btn-danger" style="padding: 8px 15px;" onclick="location.reload()">Logout</button>
         </div>
 
         <div class="nav-tabs">
-            <div class="tab active" onclick="switchTab('students')">學生管理 (Overall)</div>
+            <div class="tab active" onclick="switchTab('students')">學生管理</div>
             <div class="tab" onclick="switchTab('interactions')">互動紀錄</div>
             <div class="tab" onclick="switchTab('money')">零用錢明細</div>
             <div class="tab" onclick="switchTab('transport')">接送與假期</div>
@@ -108,12 +102,17 @@
         </section>
 
         <section id="transport-section" class="content-section">
+            <div class="finance-summary">
+                <div class="fin-item"><h4>當月總成本 (Net)</h4><p>£<span id="sum-net">0</span></p></div>
+                <div class="fin-item"><h4>當月收費 (Gross)</h4><p>£<span id="sum-gross">0</span></p></div>
+                <div class="fin-item"><h4>當月淨收益</h4><p>£<span id="sum-profit">0</span></p></div>
+            </div>
             <div style="display:flex; gap:10px; margin-bottom:15px;">
-                <button class="btn btn-primary" style="flex:2" onclick="openModal('transport-modal')">+ 登記接送/假期行程</button>
+                <button class="btn btn-primary" style="flex:2" onclick="openModal('transport-modal')">+ 登記行程任務</button>
                 <input type="month" id="transport-month-filter" style="flex:1; border-radius:10px; border:1px solid #ddd; padding:5px;" onchange="render()">
             </div>
-            <div id="transport-active-list" class="table-container" style="margin-bottom:20px;"></div>
-            <div style="font-weight:bold; color:var(--secondary); margin-bottom:10px; padding-left:5px;">歷史紀錄與對帳</div>
+            <div id="transport-active-list" class="table-container"></div>
+            <div style="font-weight:bold; margin: 10px 0; padding-left:5px; color:var(--secondary);">歷史紀錄與對帳</div>
             <div id="transport-history-list" class="table-container"></div>
         </section>
 
@@ -122,44 +121,44 @@
         </section>
     </div>
 
-    <div id="student-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('student-modal')">×</span><h3 id="student-modal-title">新增學生檔案</h3><form id="student-form"><input type="hidden" id="s-id"><div class="form-grid"><div class="form-group"><label>中文姓名*</label><input type="text" id="s-name" required></div><div class="form-group"><label>英文名</label><input type="text" id="s-eng-name"></div><div class="form-group"><label>就讀學校</label><input type="text" id="s-school"></div><div class="form-group"><label>宿舍 (House)</label><input type="text" id="s-house"></div><div class="form-group"><label>年級</label><input type="text" id="s-grade"></div><div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div><div class="form-group"><label>學生電話</label><input type="text" id="s-phone"></div><div class="form-group"><label>住址</label><input type="text" id="s-address"></div><div class="form-group"><label>父親姓名</label><input type="text" id="s-f-name"></div><div class="form-group"><label>父親電話</label><input type="text" id="s-f-phone"></div><div class="form-group"><label>母親姓名</label><input type="text" id="s-m-name"></div><div class="form-group"><label>母親電話</label><input type="text" id="s-m-phone"></div><div class="form-group"><label>宿管 (HM)</label><input type="text" id="s-hm"></div><div class="form-group"><label>宿管電話</label><input type="text" id="s-hm-phone"></div><div class="form-group full"><label>宿管 Email</label><input type="email" id="s-hm-email"></div><div class="form-group full"><label>醫療提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div><div class="form-group full"><label>備註</label><textarea id="s-notes" rows="2"></textarea></div></div><div id="student-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存檔案</button></div></form></div></div>
+    <div id="student-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('student-modal')">×</span><h3 id="s-modal-title">學生檔案</h3><form id="student-form"><input type="hidden" id="s-id"><div class="form-grid"><div class="form-group"><label>中文姓名*</label><input type="text" id="s-name" required></div><div class="form-group"><label>英文名</label><input type="text" id="s-eng-name"></div><div class="form-group"><label>就讀學校</label><input type="text" id="s-school"></div><div class="form-group"><label>宿舍 (House)</label><input type="text" id="s-house"></div><div class="form-group"><label>年級</label><input type="text" id="s-grade"></div><div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div><div class="form-group"><label>父親姓名</label><input type="text" id="s-f-name"></div><div class="form-group"><label>父親電話</label><input type="text" id="s-f-phone"></div><div class="form-group"><label>母親姓名</label><input type="text" id="s-m-name"></div><div class="form-group"><label>母親電話</label><input type="text" id="s-m-phone"></div><div class="form-group"><label>宿管 (HM)</label><input type="text" id="s-hm"></div><div class="form-group"><label>宿管電話</label><input type="text" id="s-hm-phone"></div><div class="form-group full"><label>宿管 Email</label><input type="email" id="s-hm-email"></div><div class="form-group full"><label>醫療提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div><div class="form-group full"><label>備註</label><textarea id="s-notes" rows="2"></textarea></div></div><div id="s-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存</button></div></form></div></div>
 
-    <div id="interaction-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('interaction-modal')">×</span><h3 id="int-modal-title">新增互動紀錄</h3><form id="interaction-form"><input type="hidden" id="int-id"><div class="form-grid"><div class="form-group"><label>學生</label><select id="int-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="int-date" required></div><div class="form-group full"><label>溝通類別</label><select id="int-type"><option value="💻 線上溝通">💻 線上溝通</option><option value="🏫 家訪校訪">🏫 家訪校訪</option><option value="🤝 其他聯繫">🤝 其他聯繫</option></select></div><div class="form-group full"><label>內容詳情</label><textarea id="int-content" rows="5" required></textarea></div></div><div id="int-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存紀錄</button></div></form></div></div>
+    <div id="interaction-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('interaction-modal')">×</span><h3 id="int-modal-title">互動紀錄</h3><form id="interaction-form"><input type="hidden" id="int-id"><div class="form-grid"><div class="form-group"><label>學生</label><select id="int-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="int-date" required></div><div class="form-group full"><label>類別</label><select id="int-type"><option value="💻 線上溝通">💻 線上溝通</option><option value="🏫 家訪校訪">🏫 家訪校訪</option><option value="🤝 其他聯繫">🤝 其他聯繫</option></select></div><div class="form-group full"><label>內容</label><textarea id="int-content" rows="5" required></textarea></div></div><div id="int-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存</button></div></form></div></div>
 
-    <div id="money-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('money-modal')">×</span><h3 id="money-modal-title">新增帳目</h3><form id="money-form"><input type="hidden" id="money-id"><div class="form-grid"><div class="form-group"><label>學生</label><select id="money-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="money-date" required></div><div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div><div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div><div class="form-group full"><label>備註項目</label><input type="text" id="money-detail" required></div></div><div id="money-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存帳目</button></div></form></div></div>
+    <div id="money-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('money-modal')">×</span><h3 id="money-modal-title">帳目管理</h3><form id="money-form"><input type="hidden" id="money-id"><div class="form-grid"><div class="form-group"><label>學生</label><select id="money-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="money-date" required></div><div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div><div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div><div class="form-group full"><label>備註項目</label><input type="text" id="money-detail" required></div></div><div id="money-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存</button></div></form></div></div>
 
-    <div id="transport-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('transport-modal')">×</span><h3 id="tr-modal-title">登記行程任務</h3><form id="transport-form"><input type="hidden" id="tr-id"><div class="form-grid">
-        <div class="form-group"><label>學生</label><select id="tr-student" onchange="updateHMInfo(this.value)"></select></div>
-        <div class="form-group"><label>任務類型</label><select id="tr-type" onchange="autoSuggestDest(this.value)"><option value="✈️ 接機">✈️ 接機 (Arrival)</option><option value="🛫 送機">🛫 送機 (Departure)</option><option value="🏠 假期寄宿">🏠 假期寄宿 (HF Stay)</option><option value="🚌 出校">🚌 出校行程 (Exeat Out)</option><option value="🏫 返校">🏫 返校行程 (Back to School)</option></select></div>
-        <div class="form-group"><label>行程日期與時間</label><input type="datetime-local" id="tr-time" required onchange="calcNights()"></div>
-        <div class="form-group"><label>目的地/地點</label><input id="tr-loc" required></div>
-        <div class="form-group"><label>航班/備註資訊</label><input type="text" id="tr-info" placeholder="航班編號等"></div>
-        <div class="form-group"><label>司機姓名</label><input type="text" id="tr-driver"></div>
-        <div class="form-group"><label>司機電話</label><input type="text" id="tr-driver-phone"></div>
-        
-        <div class="form-group full" style="background:#f9f9f9; padding:12px; border-radius:12px; border:1px solid #eee;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" id="tr-has-stay" onchange="toggleStayFields(this.checked)"> <b>此行程包含住宿 (Holiday Stay)</b></label>
-        </div>
-
-        <div id="tr-stay-fields" class="form-group full form-grid" style="display:none; border-left:4px solid var(--primary); padding-left:15px; margin-top:-10px;">
-            <div class="form-group"><label>退房日期 (Check-out) <span id="night-display" class="night-tag"></span></label><input type="date" id="tr-checkout" onchange="calcNights()"></div>
+    <div id="transport-modal" class="modal"><div class="modal-content"><span class="close-x" onclick="closeModal('transport-modal')">×</span><h3 id="tr-modal-title">行程任務</h3><form id="transport-form"><input type="hidden" id="tr-id"><div class="form-grid">
+        <div class="form-group"><label>學生</label><select id="tr-student"></select></div>
+        <div class="form-group"><label>任務</label><select id="tr-type" onchange="autoSuggestDest(this.value)"><option value="✈️ 接機">✈️ 接機</option><option value="🛫 送機">🛫 送機</option><option value="🏠 假期寄宿">🏠 假期寄宿</option><option value="🚌 出校">🚌 出校</option><option value="🏫 返校">🏫 返校</option></select></div>
+        <div class="form-group"><label>日期時間</label><input type="datetime-local" id="tr-time" required onchange="calcNights()"></div>
+        <div class="form-group"><label>地點</label><input id="tr-loc" required></div>
+        <div class="form-group full"><label><input type="checkbox" id="tr-has-stay" onchange="toggleStay(this.checked)"> 包含住宿 (Holiday Stay)</label></div>
+        <div id="stay-fields" class="form-group full form-grid" style="display:none; border-left:4px solid var(--primary); padding-left:15px;">
+            <div class="form-group"><label>退房日期 <span id="night-disp" style="color:var(--secondary); font-weight:bold;"></span></label><input type="date" id="tr-checkout" onchange="calcNights()"></div>
             <div class="form-group"><label>住家姓名</label><input type="text" id="tr-hname"></div>
             <div class="form-group full"><label>住家聯繫方式</label><input type="text" id="tr-hcontact"></div>
             <div class="form-group"><label>住宿成本 £</label><input type="number" id="tr-stay-net" value="0"></div><div class="form-group"><label>住宿報價 £</label><input type="number" id="tr-stay-gross" value="0"></div>
         </div>
-        
         <div class="form-group"><label>交通成本 £</label><input type="number" id="tr-trans-net" value="0"></div><div class="form-group"><label>交通報價 £</label><input type="number" id="tr-trans-gross" value="0"></div>
-    </div><div id="tr-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存行程</button></div></form></div></div>
+    </div><div id="tr-btn-group" style="margin-top:20px; display:flex; gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1">儲存</button></div></form></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", authDomain: "studynest-database.firebaseapp.com", projectId: "studynest-database" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         let students = [], interactions = [], money = [], transports = [];
+
+        // 核心日期轉換: 2025-12-30 -> 30Dec25
+        const fmtDate = (str) => {
+            if(!str) return '-';
+            const d = new Date(str);
+            const m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            return `${String(d.getDate()).padStart(2,'0')}${m[d.getMonth()]}${String(d.getFullYear()).substring(2)}`;
+        };
 
         function startSync() {
             onSnapshot(collection(db, "students"), s => { students = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
@@ -169,83 +168,61 @@
         }
 
         function render() {
-            const today = new Date().toISOString().split('T')[0];
+            // 1. 學生列表
+            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校/宿舍</th><th class="desktop-only">生日</th><th>宿管詳情</th></tr>` + 
+                students.map(s => `<tr class="clickable" onclick="editS('${s.id}')"><td><b>${s.name}</b>${s.medical?'<span class="med-icon">💊</span>':''}</td><td>${s.school||'-'}<br><small>${s.house||'-'}</small></td><td class="desktop-only">${fmtDate(s.birthday)}</td><td>${s.hm||'-'}<br><small>${s.hmPhone||''}</small></td></tr>`).join('') + `</table>`;
 
-            // 1. 學生列表 (五欄位 + 醫療標記)
-            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校/宿舍</th><th>學生電話</th><th class="desktop-only">生日</th><th>宿管詳情</th></tr>` + 
-                students.map(s => `<tr class="clickable" onclick="editStudent('${s.id}')"><td><b>${s.name}</b>${s.medical?'<span class="med-icon">💊</span>':''}</td><td>${s.school||'-'}<br><small>${s.house||'-'}</small></td><td>${s.phone||'-'}</td><td class="desktop-only">${s.birthday||'-'}</td><td>${s.hm||'-'}<br><small>${s.hmPhone||''}</small></td></tr>`).join('') + `</table>`;
-
-            // 2. 互動紀錄 (電腦版並排 + 前10字截斷)
+            // 2. 互動紀錄 (電腦版並排)
             const intS = document.getElementById('filter-int-student').value || 'all';
             const filteredInt = intS === 'all' ? interactions : interactions.filter(i => i.studentId === intS);
             document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>類別</th><th>內容預覽</th></tr>` + 
-                filteredInt.map(i => `<tr class="clickable" onclick="editInt('${i.id}')"><td>${i.date.substring(5)}</td><td><b>${(students.find(s=>s.id===i.studentId)||{}).name||'-'}</b></td><td>${i.type}</td><td><small>${i.content.substring(0,12)}${i.content.length>12?'...':''}</small></td></tr>`).join('') + `</table>`;
+                filteredInt.map(i => `<tr class="clickable" onclick="editI('${i.id}')"><td>${fmtDate(i.date)}</td><td><b>${(students.find(s=>s.id===i.studentId)||{}).name||'-'}</b></td><td>${i.type}</td><td><small>${i.content.substring(0,12)}${i.content.length>12?'...':''}</small></td></tr>`).join('') + `</table>`;
 
-            // 3. 零用錢 (顏色區分)
+            // 3. 零用錢 (日期-學生-金額-項目)
             const monS = document.getElementById('filter-money-student').value || 'all';
             const filteredMon = monS === 'all' ? money : money.filter(m => m.studentId === monS);
-            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>金額</th><th>項目</th><th>學生</th></tr>` + 
-                filteredMon.map(m => `<tr class="clickable" onclick="editMoney('${m.id}')"><td>${m.date.substring(5)}</td><td style="color:${m.type==='支出'?'var(--danger)':'var(--success)'}; font-weight:bold;">${m.type==='支出'?'-':'+'}£${m.amount}</td><td><small>${m.detail}</small></td><td><b>${(students.find(s=>s.id===m.studentId)||{}).name||'-'}</b></td></tr>`).join('') + `</table>`;
+            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th>項目</th></tr>` + 
+                filteredMon.map(m => `<tr class="clickable" onclick="editM('${m.id}')"><td>${fmtDate(m.date)}</td><td><b>${(students.find(s=>s.id===m.studentId)||{}).name||'-'}</b></td><td style="color:${m.type==='支出'?'var(--danger)':'var(--success)'}; font-weight:bold;">£${m.amount}</td><td><small>${m.detail}</small></td></tr>`).join('') + `</table>`;
 
-            // 4. 接送與假期 (分欄：狀態 vs 支付)
-            const mFilter = document.getElementById('transport-month-filter').value;
-            const ongoing = transports.filter(t => t.status !== 'done');
-            let history = transports.filter(t => t.status === 'done');
-            if(mFilter) history = history.filter(t => t.time.startsWith(mFilter));
+            // 4. 接送與假期 (分欄 & 收益 Bar)
+            const fMonth = document.getElementById('transport-month-filter').value;
+            let fTr = transports;
+            if(fMonth) fTr = transports.filter(t => t.time.startsWith(fMonth));
+
+            const trHist = fTr.filter(t => t.status === 'done');
+            const nSum = trHist.reduce((s,t) => s + Number(t.transNet||0) + Number(t.stayNet||0), 0);
+            const gSum = trHist.reduce((s,t) => s + Number(t.transGross||0) + Number(t.stayGross||0), 0);
+            document.getElementById('sum-net').innerText = nSum.toFixed(2);
+            document.getElementById('sum-gross').innerText = gSum.toFixed(2);
+            document.getElementById('sum-profit').innerText = (gSum - nSum).toFixed(2);
 
             const trRow = (t) => {
                 const s = students.find(x => x.id === t.studentId) || {name:'-'};
-                const stClass = t.status === 'todo' ? 'st-todo' : (t.status === 'booked' ? 'st-booked' : 'st-done');
-                const stText = t.status === 'todo' ? '🔵 待辦' : (t.status === 'booked' ? '🟡 預約' : '🟢 完成');
-                return `<tr class="clickable" onclick="editTr('${t.id}')">
-                    <td><small>${t.time.substring(5,16).replace('T',' ')}</small><br><b>${t.type} ${t.hasStay?'🏠':''}</b></td>
-                    <td>${s.name}<br><small>${t.loc}</small></td>
-                    <td><div class="status-col">
-                        <select onclick="event.stopPropagation()" onchange="handleStatusChange('${t.id}', this.value)" class="badge ${stClass}">
-                            <option value="todo" ${t.status==='todo'?'selected':''}>🔵 待辦</option>
-                            <option value="booked" ${t.status==='booked'?'selected':''}>🟡 預約</option>
-                            <option value="done" ${t.status==='done'?'selected':''}>🟢 完成</option>
-                        </select>
-                    </div></td>
-                    <td><div class="status-col">
-                        <select onclick="event.stopPropagation()" onchange="updateGenericStatus('transport','${t.id}','payStatus',this.value)" class="badge pay-badge">
-                            <option value="⌛ 待處理" ${t.payStatus==='⌛ 待處理'?'selected':''}>⌛ 待處理</option>
-                            <option value="🚗 已付司機" ${t.payStatus==='🚗 已付司機'?'selected':''}>🚗 已付司機</option>
-                            <option value="🏡 已付住家" ${t.payStatus==='🏡 已付住家'?'selected':''}>🏡 已付住家</option>
-                            <option value="✅ 全部清帳" ${t.payStatus==='✅ 全部清帳'?'selected':''}>✅ 全部清帳</option>
-                        </select>
-                    </div></td>
+                const sc = t.status === 'todo' ? 'st-todo' : (t.status === 'booked' ? 'st-booked' : 'st-done');
+                const st = t.status === 'todo' ? '🔴 待辦' : (t.status === 'booked' ? '🟠 預約' : '🟢 完成');
+                return `<tr class="clickable" onclick="editT('${t.id}')">
+                    <td>${fmtDate(t.time)}<br><small>${t.time.split('T')[1]||''}</small></td>
+                    <td><b>${s.name}</b><br><small>${t.type} @ ${t.loc}</small></td>
+                    <td><select onclick="event.stopPropagation()" onchange="handleStChange('${t.id}',this.value)" class="badge ${sc}"><option value="todo" ${t.status==='todo'?'selected':''}>🔴 待辦</option><option value="booked" ${t.status==='booked'?'selected':''}>🟠 預約</option><option value="done" ${t.status==='done'?'selected':''}>🟢 完成</option></select></td>
+                    <td><select onclick="event.stopPropagation()" onchange="updSt('transport','${t.id}','payStatus',this.value)" class="badge pay-badge"><option value="⌛ 待處理" ${t.payStatus==='⌛ 待處理'?'selected':''}>⌛ 待處理</option><option value="🚗 已付司機" ${t.payStatus==='🚗 已付司機'?'selected':''}>🚗 已付司機</option><option value="🏡 已付住家" ${t.payStatus==='🏡 已付住家'?'selected':''}>🏡 已付住家</option><option value="✅ 全部清帳" ${t.payStatus==='✅ 全部清帳'?'selected':''}>✅ 全部清帳</option></select></td>
                 </tr>`;
             };
-            document.getElementById('transport-active-list').innerHTML = `<table><tr><th>行程/日期</th><th>學生/地點</th><th>任務狀態</th><th>支付追蹤</th></tr>${ongoing.map(trRow).join('')}</table>`;
-            document.getElementById('transport-history-list').innerHTML = `<table><tr><th>行程/日期</th><th>學生/地點</th><th>任務狀態</th><th>支付追蹤</th></tr>${history.map(trRow).join('')}</table>`;
+            document.getElementById('transport-active-list').innerHTML = `<table><tr><th>日期/時間</th><th>學生/任務</th><th>狀態</th><th>支付</th></tr>` + fTr.filter(t=>t.status!=='done').map(trRow).join('') + `</table>`;
+            document.getElementById('transport-history-list').innerHTML = `<table><tr><th>歷史行程</th><th>詳情</th><th>狀態</th><th>支付</th></tr>` + trHist.map(trRow).join('') + `</table>`;
 
             // 5. 概況統計
-            document.getElementById('summary-table').innerHTML = `<table><tr><th>學生</th><th>目前餘額</th><th>本月紀錄</th></tr>` + 
+            document.getElementById('summary-table').innerHTML = `<table><tr><th>學生</th><th>餘額</th><th>本月紀錄</th></tr>` + 
                 students.map(s => {
                     const bal = money.filter(m => m.studentId === s.id).reduce((sum, m) => sum + (m.type==='支出'?-Number(m.amount):Number(m.amount)), 0);
-                    const count = interactions.filter(i => i.studentId === s.id && i.date.startsWith(today.substring(0,7))).length;
-                    return `<tr><td><b>${s.name}</b></td><td>${bal < 300 ? `<span style="background:var(--danger); color:white; padding:2px 6px; border-radius:4px;">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td><td>${count} 次</td></tr>`;
+                    const count = interactions.filter(i => i.studentId === s.id && i.date.startsWith(new Date().toISOString().substring(0,7))).length;
+                    return `<tr><td><b>${s.name}</b></td><td>${bal < 300 ? `<span style="background:var(--danger);color:white;padding:2px 6px;border-radius:6px;">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td><td>${count} 次</td></tr>`;
                 }).join('') + `</table>`;
 
-            // 更新所有下拉選單
             updateSelects();
         }
 
-        // --- 功能邏輯 ---
-
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } };
-        window.switchTab = t => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(t+'-section').classList.add('active'); };
-        window.openModal = id => { 
-            const m = document.getElementById(id); m.style.display='block'; 
-            const today = new Date().toISOString().split('T')[0];
-            if(id==='interaction-modal') document.getElementById('int-date').value = today;
-            if(id==='money-modal') document.getElementById('money-date').value = today;
-        };
-        window.closeModal = id => { document.getElementById(id).style.display='none'; document.querySelectorAll('form').forEach(f => f.reset()); document.getElementById('night-display').innerText = ''; };
-
-        // 編輯學生檔案
-        window.editStudent = (id) => {
+        // --- 編輯功能 ---
+        window.editS = (id) => {
             const s = students.find(x => x.id === id);
             document.getElementById('s-id').value = s.id;
             document.getElementById('s-name').value = s.name;
@@ -254,8 +231,6 @@
             document.getElementById('s-house').value = s.house || '';
             document.getElementById('s-grade').value = s.grade || '';
             document.getElementById('s-birthday').value = s.birthday || '';
-            document.getElementById('s-phone').value = s.phone || '';
-            document.getElementById('s-address').value = s.address || '';
             document.getElementById('s-f-name').value = s.fName || '';
             document.getElementById('s-f-phone').value = s.fPhone || '';
             document.getElementById('s-m-name').value = s.mName || '';
@@ -265,13 +240,12 @@
             document.getElementById('s-hm-email').value = s.hmEmail || '';
             document.getElementById('s-medical').value = s.medical || '';
             document.getElementById('s-notes').value = s.notes || '';
-            document.getElementById('student-modal-title').innerText = "編輯學生檔案";
-            document.getElementById('student-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新儲存</button><button type="button" class="btn btn-danger" style="flex:1" onclick="deleteEntry('students','${id}')">刪除</button>`;
+            document.getElementById('s-modal-title').innerText = "編輯學生檔案";
+            document.getElementById('s-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新儲存</button><button type="button" class="btn btn-danger" style="flex:1" onclick="delE('students','${id}')">刪除</button>`;
             openModal('student-modal');
         };
 
-        // 編輯互動紀錄
-        window.editInt = (id) => {
+        window.editI = (id) => {
             const i = interactions.find(x => x.id === id);
             document.getElementById('int-id').value = i.id;
             document.getElementById('int-student-select').value = i.studentId;
@@ -279,12 +253,11 @@
             document.getElementById('int-type').value = i.type;
             document.getElementById('int-content').value = i.content;
             document.getElementById('int-modal-title').innerText = "編輯紀錄";
-            document.getElementById('int-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新</button><button type="button" class="btn btn-danger" style="flex:1" onclick="deleteEntry('interactions','${id}')">刪除</button>`;
+            document.getElementById('int-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新</button><button type="button" class="btn btn-danger" style="flex:1" onclick="delE('interactions','${id}')">刪除</button>`;
             openModal('interaction-modal');
         };
 
-        // 編輯零用錢
-        window.editMoney = (id) => {
+        window.editM = (id) => {
             const m = money.find(x => x.id === id);
             document.getElementById('money-id').value = m.id;
             document.getElementById('money-student-select').value = m.studentId;
@@ -293,12 +266,11 @@
             document.getElementById('money-type').value = m.type;
             document.getElementById('money-detail').value = m.detail;
             document.getElementById('money-modal-title').innerText = "編輯帳目";
-            document.getElementById('money-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新</button><button type="button" class="btn btn-danger" style="flex:1" onclick="deleteEntry('money','${id}')">刪除</button>`;
+            document.getElementById('money-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新</button><button type="button" class="btn btn-danger" style="flex:1" onclick="delE('money','${id}')">刪除</button>`;
             openModal('money-modal');
         };
 
-        // 編輯行程
-        window.editTr = (id) => {
+        window.editT = (id) => {
             const t = transports.find(x => x.id === id);
             const s = students.find(x => x.id === t.studentId) || {};
             document.getElementById('tr-id').value = t.id;
@@ -306,11 +278,8 @@
             document.getElementById('tr-type').value = t.type;
             document.getElementById('tr-time').value = t.time;
             document.getElementById('tr-loc').value = t.loc;
-            document.getElementById('tr-info').value = t.info || '';
-            document.getElementById('tr-driver').value = t.driver || '';
-            document.getElementById('tr-driver-phone').value = t.driverPhone || '';
             document.getElementById('tr-has-stay').checked = t.hasStay || false;
-            toggleStayFields(t.hasStay);
+            toggleStay(t.hasStay);
             if(t.hasStay) {
                 document.getElementById('tr-checkout').value = t.checkout || '';
                 document.getElementById('tr-hname').value = t.hname || '';
@@ -321,129 +290,92 @@
             }
             document.getElementById('tr-trans-net').value = t.transNet || 0;
             document.getElementById('tr-trans-gross').value = t.transGross || 0;
-            document.getElementById('tr-modal-title').innerText = `行程詳情 (${s.school || '無學校資訊'})`;
-            document.getElementById('tr-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新行程</button><button type="button" class="btn btn-danger" style="flex:1" onclick="deleteEntry('transport','${id}')">刪除</button>`;
+            document.getElementById('tr-modal-title').innerText = `行程：${s.school || '校外'}`;
+            document.getElementById('tr-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="flex:2">更新</button><button type="button" class="btn btn-danger" style="flex:1" onclick="delE('transport','${id}')">刪除</button>`;
             openModal('transport-modal');
         };
 
-        // 計算夜數
+        // --- 核心運算 ---
         window.calcNights = () => {
-            const start = document.getElementById('tr-time').value;
-            const end = document.getElementById('tr-checkout').value;
-            if(start && end) {
-                const sDate = new Date(start.split('T')[0]);
-                const eDate = new Date(end);
-                const diff = Math.ceil((eDate - sDate) / (1000 * 60 * 60 * 24));
-                document.getElementById('night-display').innerText = diff > 0 ? `${diff} 晚` : '0 晚';
+            const sStr = document.getElementById('tr-time').value;
+            const eStr = document.getElementById('tr-checkout').value;
+            if(sStr && eStr) {
+                const s = new Date(sStr.split('T')[0]), e = new Date(eStr);
+                const n = Math.ceil((e - s) / 86400000);
+                document.getElementById('night-disp').innerText = n > 0 ? `${n} 晚` : '';
             }
         };
 
-        // 處理狀態變更 (含自動扣款)
-        window.handleStatusChange = async (id, val) => {
+        window.handleStChange = async (id, val) => {
             await updateDoc(doc(db, 'transport', id), { status: val });
             if(val === 'done') {
                 const t = transports.find(x => x.id === id);
-                const total = Number(t.transGross || 0) + Number(t.stayGross || 0);
-                if(total > 0 && confirm(`行程已完成！是否要將總費用 £${total} (交通 £${t.transGross} + 住宿 £${t.stayGross}) 自動記入零用錢支出？`)) {
-                    await addDoc(collection(db, "money"), {
-                        studentId: t.studentId,
-                        date: new Date().toISOString().split('T')[0],
-                        amount: total,
-                        type: '支出',
-                        detail: `[自動扣款] ${t.type}：${t.loc}`
-                    });
+                const tot = Number(t.transGross||0) + Number(t.stayGross||0);
+                if(tot > 0 && confirm(`行程完成！是否扣款 £${tot}？`)) {
+                    await addDoc(collection(db, "money"), { studentId: t.studentId, date: new Date().toISOString().split('T')[0], amount: tot, type: '支出', detail: `[自動扣款] ${t.type} (${fmtDate(t.time)})` });
                 }
             }
         };
 
-        // 表單儲存邏輯 (合併新增與編輯)
+        // --- 表單儲存 ---
         document.getElementById('student-form').onsubmit = async e => {
             e.preventDefault();
-            const data = {
-                name: document.getElementById('s-name').value, engName: document.getElementById('s-eng-name').value,
-                school: document.getElementById('s-school').value, house: document.getElementById('s-house').value,
-                grade: document.getElementById('s-grade').value, birthday: document.getElementById('s-birthday').value,
-                phone: document.getElementById('s-phone').value, address: document.getElementById('s-address').value,
-                fName: document.getElementById('s-f-name').value, fPhone: document.getElementById('s-f-phone').value,
-                mName: document.getElementById('s-m-name').value, mPhone: document.getElementById('s-m-phone').value,
-                hm: document.getElementById('s-hm').value, hmPhone: document.getElementById('s-hm-phone').value,
-                hmEmail: document.getElementById('s-hm-email').value, medical: document.getElementById('s-medical').value, notes: document.getElementById('s-notes').value
-            };
+            const d = { name: document.getElementById('s-name').value, engName: document.getElementById('s-eng-name').value, school: document.getElementById('s-school').value, house: document.getElementById('s-house').value, grade: document.getElementById('s-grade').value, birthday: document.getElementById('s-birthday').value, fName: document.getElementById('s-f-name').value, fPhone: document.getElementById('s-f-phone').value, mName: document.getElementById('s-m-name').value, mPhone: document.getElementById('s-m-phone').value, hm: document.getElementById('s-hm').value, hmPhone: document.getElementById('s-hm-phone').value, hmEmail: document.getElementById('s-hm-email').value, medical: document.getElementById('s-medical').value, notes: document.getElementById('s-notes').value };
             const id = document.getElementById('s-id').value;
-            id ? await updateDoc(doc(db, 'students', id), data) : await addDoc(collection(db, 'students'), data);
+            id ? await updateDoc(doc(db, 'students', id), d) : await addDoc(collection(db, 'students'), d);
             closeModal('student-modal');
         };
 
         document.getElementById('interaction-form').onsubmit = async e => {
             e.preventDefault();
-            const data = { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value };
+            const d = { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value };
             const id = document.getElementById('int-id').value;
-            id ? await updateDoc(doc(db, 'interactions', id), data) : await addDoc(collection(db, 'interactions'), data);
+            id ? await updateDoc(doc(db, 'interactions', id), d) : await addDoc(collection(db, 'interactions'), d);
             closeModal('interaction-modal');
         };
 
         document.getElementById('money-form').onsubmit = async e => {
             e.preventDefault();
-            const data = { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, amount: Number(document.getElementById('money-amount').value), type: document.getElementById('money-type').value, detail: document.getElementById('money-detail').value };
+            const d = { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, amount: Number(document.getElementById('money-amount').value), type: document.getElementById('money-type').value, detail: document.getElementById('money-detail').value };
             const id = document.getElementById('money-id').value;
-            id ? await updateDoc(doc(db, 'money', id), data) : await addDoc(collection(db, 'money'), data);
+            id ? await updateDoc(doc(db, 'money', id), d) : await addDoc(collection(db, 'money'), d);
             closeModal('money-modal');
         };
 
         document.getElementById('transport-form').onsubmit = async e => {
             e.preventDefault();
-            const sid = document.getElementById('tr-student').value;
-            const type = document.getElementById('tr-type').value;
-            const time = document.getElementById('tr-time').value;
-            const hasStay = document.getElementById('tr-has-stay').checked;
-            const data = {
-                studentId: sid, type, time, loc: document.getElementById('tr-loc').value,
-                info: document.getElementById('tr-info').value, driver: document.getElementById('tr-driver').value,
-                driverPhone: document.getElementById('tr-driver-phone').value, hasStay,
-                checkout: hasStay ? document.getElementById('tr-checkout').value : '',
-                hname: hasStay ? document.getElementById('tr-hname').value : '',
-                hcontact: hasStay ? document.getElementById('tr-hcontact').value : '',
-                stayNet: hasStay ? Number(document.getElementById('tr-stay-net').value) : 0,
-                stayGross: hasStay ? Number(document.getElementById('tr-stay-gross').value) : 0,
-                transNet: Number(document.getElementById('tr-trans-net').value),
-                transGross: Number(document.getElementById('tr-trans-gross').value),
-                status: 'todo', payStatus: '⌛ 待處理'
-            };
+            const sid = document.getElementById('tr-student').value, type = document.getElementById('tr-type').value, time = document.getElementById('tr-time').value, has = document.getElementById('tr-has-stay').checked;
+            const d = { studentId: sid, type, time, loc: document.getElementById('tr-loc').value, hasStay: has, checkout: has?document.getElementById('tr-checkout').value:'', hname: has?document.getElementById('tr-hname').value:'', hcontact: has?document.getElementById('tr-hcontact').value:'', stayNet: has?Number(document.getElementById('tr-stay-net').value):0, stayGross: has?Number(document.getElementById('tr-stay-gross').value):0, transNet: Number(document.getElementById('tr-trans-net').value), transGross: Number(document.getElementById('tr-trans-gross').value), status: 'todo', payStatus: '⌛ 待處理' };
             const id = document.getElementById('tr-id').value;
-            if(id) {
-                await updateDoc(doc(db, 'transport', id), data);
-            } else {
-                await addDoc(collection(db, 'transport'), data);
-                // 自動同步到互動紀錄
-                await addDoc(collection(db, 'interactions'), {
-                    studentId: sid, date: new Date().toISOString().split('T')[0], type: '🤝 其他聯繫',
-                    content: `[系統自動紀錄] 已登記行程：${type} | 時間：${time.replace('T',' ')} | 地點：${data.loc}`
-                });
+            if(id) { await updateDoc(doc(db, 'transport', id), d); } 
+            else { 
+                await addDoc(collection(db, 'transport'), d); 
+                await addDoc(collection(db, 'interactions'), { studentId: sid, date: new Date().toISOString().split('T')[0], type: '🤝 其他聯繫', content: `[自動登記] 行程：${type} (${fmtDate(time)})` });
             }
             closeModal('transport-modal');
         };
 
-        // 工具函數
-        window.deleteEntry = async (col, id) => { if(confirm('確定要永久刪除此紀錄嗎？')) { await deleteDoc(doc(db, col, id)); closeModal(col.slice(0,-1)+'-modal'); closeModal('student-modal'); } };
-        window.updateGenericStatus = async (c, id, f, v) => { let o={}; o[f]=v; await updateDoc(doc(db, c, id), o); };
-        window.toggleStayFields = (v) => document.getElementById('tr-stay-fields').style.display = v ? 'grid' : 'none';
-        window.autoSuggestDest = (v) => { 
-            const l = document.getElementById('tr-loc'); const s = document.getElementById('tr-has-stay'); 
-            if(v.includes('機')){l.value='LHR'; s.checked=false;} 
-            else if(v.includes('寄宿')||v.includes('出校')){l.value='Host Family'; s.checked=true;} 
-            else if(v.includes('返校')){l.value='School'; s.checked=false;}
-            toggleStayFields(s.checked);
+        // --- 工具 ---
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } };
+        window.switchTab = t => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(t+'-section').classList.add('active'); };
+        window.openModal = id => { 
+            const m = document.getElementById(id); m.style.display='block';
+            const today = new Date().toISOString().split('T')[0];
+            if(id === 'money-modal') { document.getElementById('money-date').value = today; document.getElementById('money-id').value = ""; document.getElementById('money-modal-title').innerText = "新增帳目"; document.getElementById('money-btns').innerHTML = `<button type="submit" class="btn btn-primary" style="width:100%">儲存</button>`; }
+            if(id === 'interaction-modal') { document.getElementById('int-date').value = today; document.getElementById('int-id').value = ""; document.getElementById('int-modal-title').innerText = "新增紀錄"; document.getElementById('int-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="width:100%">儲存</button>`; }
+            if(id === 'transport-modal') { document.getElementById('tr-id').value = ""; document.getElementById('tr-modal-title').innerText = "登記行程任務"; document.getElementById('tr-btn-group').innerHTML = `<button type="submit" class="btn btn-primary" style="width:100%">儲存</button>`; }
         };
+        window.closeModal = id => document.getElementById(id).style.display='none';
+        window.delE = async (c, id) => { if(confirm('刪？')) { await deleteDoc(doc(db, c, id)); closeModal(c.slice(0,-1)+'-modal'); closeModal('student-modal'); } };
+        window.updSt = async (c, id, f, v) => { let o={}; o[f]=v; await updateDoc(doc(db, c, id), o); };
+        window.toggleStay = v => document.getElementById('stay-fields').style.display = v ? 'grid' : 'none';
+        window.autoSuggestDest = v => { const l=document.getElementById('tr-loc'), s=document.getElementById('tr-has-stay'); if(v.includes('機')){l.value='LHR'; s.checked=false;} else if(v.includes('寄宿')){l.value='Host Family'; s.checked=true;} toggleStay(s.checked); };
         function updateSelects() {
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             ['tr-student', 'int-student-select', 'money-student-select', 'filter-int-student', 'filter-money-student'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el && !el.innerHTML.includes(students[0]?.name)) {
-                    el.innerHTML = (id.includes('filter') ? '<option value="all">所有學生</option>' : '') + opts;
-                }
+                const el = document.getElementById(id); if(el && !el.innerHTML.includes(students[0]?.name)) { el.innerHTML = (id.includes('filter') ? '<option value="all">所有學生</option>' : '') + opts; }
             });
         }
-
         startSync();
     </script>
 </body>
