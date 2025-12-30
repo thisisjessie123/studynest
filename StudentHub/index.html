@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Student Hub - Ultimate Sync Edition</title>
+    <title>StudyNest Student Hub - Layout Fixed Edition</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,18 +27,22 @@
         .status-booked { background: #fffaf0 !important; color: #975a16; }
         .status-done { background: #f0fff4 !important; color: #276749; }
         
-        .notice-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 10px; border-radius: 10px; margin-top: 5px; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; grid-column: span 2; }
-        .checkbox-container { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold; color: #555; font-size: 0.85rem; margin: 5px 0; }
-        .checkbox-container input { width: auto; }
-
+        /* 住宿資訊區塊樣式修正 */
+        .notice-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 10px; border-radius: 10px; margin-bottom: 10px; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; grid-column: span 2; width: 100%; }
+        
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
         .modal-content { background:white; width:95%; max-width:750px; margin:20px auto; padding:25px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; z-index: 10; }
+        
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .form-group.full { grid-column: span 2; }
+        .form-group.full { grid-column: span 2; width: 100%; }
         .form-group label { display:block; margin-bottom:3px; font-weight:bold; color: #555; font-size: 0.8rem; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 0.95rem; }
         .form-group input:disabled { background: #f0f0f0; cursor: not-allowed; }
+
+        /* Checkbox 與標籤緊湊化 */
+        .compact-checkbox { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: #555; font-size: 0.85rem; }
+        .compact-checkbox input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
 
         .btn { padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn:active { transform: scale(0.98); }
@@ -46,8 +50,6 @@
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-mini { padding: 4px 6px; font-size: 0.7rem; border-radius: 5px; }
-        .badge-info { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; }
-        .alert-low { color: white; background: var(--danger); padding: 3px 6px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
     </style>
 </head>
 <body>
@@ -93,7 +95,7 @@
             <button class="btn btn-primary" style="margin-bottom:15px; width: 100%;" onclick="openModal('holiday-modal')">+ 新增假期/行程</button>
             <h4 style="margin-bottom:10px;">🗓️ 近期行程 (待辦/預約)</h4>
             <div id="holiday-list-active"></div>
-            <h4 style="margin: 20px 0 10px; color:#666;">📜 歷史行程 (已完成)</h4>
+            <h4 style="margin: 20px 0 10px; color:#666;">📜 歷史行程</h4>
             <div id="holiday-list-history"></div>
         </section>
 
@@ -161,7 +163,7 @@
                 </div>
                 <div class="form-group"><label>詳情</label><textarea id="int-content" rows="4" required></textarea></div>
                 <div class="form-group full" style="background: #fff5f5; padding: 10px; border-radius: 10px; margin-top:10px; border: 1px dashed var(--danger);">
-                    <label class="checkbox-container" style="color:var(--danger);"><input type="checkbox" id="int-sync-money" onchange="toggleSyncMoney(this.checked)"> 💸 同步新增零用錢支出 (代買/代墊)</label>
+                    <label class="compact-checkbox" style="color:var(--danger);"><input type="checkbox" id="int-sync-money" onchange="toggleSyncMoney(this.checked)"> 💸 同步新增零用錢支出 (代買/代墊)</label>
                     <div id="sync-money-fields" style="display:none; margin-top:10px;" class="form-grid">
                         <div class="form-group"><label>支出金額 (£)</label><input type="number" id="int-sync-amount" step="0.01"></div>
                         <div class="form-group"><label>支出分類</label>
@@ -236,19 +238,23 @@
                     <div class="form-group"><label>交通成本 (£)</label><input type="number" id="h-trans-cost" step="0.01"></div>
                     <div class="form-group"><label>交通報價 (£)</label><input type="number" id="h-trans-quote" step="0.01"></div>
                     
-                    <div class="form-group full">
-                        <label class="checkbox-container"><input type="checkbox" id="h-use-hm" onchange="toggleHm(this.checked)"> 安排臨時住家/外宿資訊?</label>
+                    <div class="form-group full" style="margin: 5px 0;">
+                        <label class="compact-checkbox">
+                            <input type="checkbox" id="h-use-hm" onchange="toggleHm(this.checked)"> 安排臨時住家/外宿資訊?
+                        </label>
                     </div>
 
                     <div id="hm-fields" class="form-grid full" style="display:none; background:#f0f4ff; padding:15px; border-radius:12px; border: 1px solid #c3dafe;">
-                        <div id="parent-notice" class="notice-box">⚠️ 重要：家長自行安排，請確認簽回「免責同意書」。</div>
+                        <div id="parent-notice" class="notice-box">⚠️ 重要提示：此為家長自行安排，請務必確認家長已簽回「免責同意書」。</div>
+                        
                         <div class="form-group"><label>住宿地點/名稱</label><input type="text" id="h-hm-name"></div>
                         <div class="form-group"><label>聯絡電話</label><input type="text" id="h-hm-phone"></div>
-                        <div class="form-group full"><label>詳細地址</label><input type="text" id="h-hm-address"></div>
+                        <div class="form-group full"><label>詳細地址 (Full Address)</label><input type="text" id="h-hm-address"></div>
+                        
                         <div class="form-group"><label>Check-out Date</label><input type="date" id="h-checkout" onchange="calcNights()"></div>
                         <div class="form-group"><label>總晚數</label><input type="text" id="h-nights" readonly></div>
-                        <div class="form-group"><label>住宿成本/晚</label><input type="number" id="h-stay-cost" step="0.01"></div>
-                        <div class="form-group"><label>住宿報價/晚</label><input type="number" id="h-stay-quote" step="0.01"></div>
+                        <div class="form-group"><label>住宿成本/每晚</label><input type="number" id="h-stay-cost" step="0.01"></div>
+                        <div class="form-group"><label>住宿報價/每晚</label><input type="number" id="h-stay-quote" step="0.01"></div>
                     </div>
                     
                     <div class="form-group full"><label>支付狀態</label>
@@ -292,13 +298,13 @@
             // 互動 (40字雙行)
             const intFilter = document.getElementById('filter-int-student')?.value || 'all';
             const filteredInts = intFilter === 'all' ? interactions : interactions.filter(i => i.studentId === intFilter);
-            document.getElementById('interaction-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>方式/日期</th><th>互動詳情 (40字)</th><th>刪</th></tr>` + 
+            document.getElementById('interaction-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>方式/日期</th><th>詳情</th><th>刪</th></tr>` + 
                 filteredInts.map(i => {
                     const s = students.find(x => x.id === i.studentId) || {};
                     return `<tr><td><b>${s.name || '-'}</b></td><td><span class="badge-info">${i.type}</span><br><small>${i.date}</small></td><td><div class="text-detail">${i.content}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('interactions','${i.id}')">X</button></td></tr>`;
                 }).join('') + `</table></div>`;
 
-            // 零用錢 (40字雙行)
+            // 零用錢
             const monFilter = document.getElementById('filter-money-student')?.value || 'all';
             const filteredMons = monFilter === 'all' ? money : money.filter(m => m.studentId === monFilter);
             document.getElementById('money-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>金額/日期</th><th>分類備註</th><th>刪</th></tr>` + 
@@ -307,7 +313,6 @@
                     return `<tr><td><b>${s.name || '-'}</b></td><td><span style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</span><br><small>${m.date}</small></td><td><div class="text-detail"><b>${m.cat}:</b> ${m.detail || '無'}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('money','${m.id}')">X</button></td></tr>`;
                 }).join('') + `</table></div>`;
 
-            // 選項更新
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             ['int-student-select', 'money-student-select', 'h-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
             ['filter-int-student', 'filter-money-student'].forEach(id => { const el = document.getElementById(id); const cur = el.value; el.innerHTML = `<option value="all">全部學生</option>` + opts; el.value = cur || 'all'; });
@@ -317,7 +322,6 @@
         function renderHolidays() {
             const active = holidays.filter(h => h.status !== '🟢 完成');
             const history = holidays.filter(h => h.status === '🟢 完成').sort((a,b) => b.datetime.localeCompare(a.datetime));
-
             const tableHtml = (list, isHistory) => `<div class="table-container"><table><tr><th>任務</th><th>學生/日期/航班</th><th>狀態</th><th>支付</th>${isHistory ? '<th>報價合計</th>' : '<th>刪</th>'}</tr>` + 
                 list.map(h => {
                     const s = students.find(x => x.id === h.studentId) || {};
@@ -510,9 +514,12 @@
             });
             document.getElementById('summary-table').innerHTML = html + `</table>`;
         }
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error Key"); };
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error"); };
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        window.openModal = id => { document.getElementById(id).style.display='block'; };
+        window.openModal = id => { 
+            document.getElementById(id).style.display='block'; 
+            if(id === 'holiday-modal' && !document.getElementById('h-id').value) { document.getElementById('holiday-form').reset(); toggleHm(false); }
+        };
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
         window.deleteEntry = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
         window.onkeydown = e => { if(e.key==='Escape') document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); };
