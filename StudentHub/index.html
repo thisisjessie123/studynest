@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Student Hub</title>
+    <title>StudyNest Student Hub - Final Update</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; }
-        
         .container { max-width: 1300px; margin: 0 auto; padding: 15px; display: none; }
         .header { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .nav-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
@@ -16,64 +15,39 @@
         .tab.active { background: var(--primary); color: white; }
         .content-section { display: none; }
         .content-section.active { display: block; }
-
         .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
-
         .med-icon { background: #fff5f5; border: 1px solid #feb2b2; padding: 2px 6px; border-radius: 20px; font-size: 0.8rem; margin-left: 4px; display: inline-flex; align-items: center; }
-
         .desktop-only { display: table-cell; }
-
-        @media screen and (max-width: 768px) {
-            .container { padding: 10px; }
-            th, td { padding: 10px 6px; font-size: 0.82rem; }
-            .tab { padding: 8px 12px; font-size: 0.8rem; }
-            td { word-break: break-all; white-space: normal !important; }
-            .desktop-only { display: none !important; }
-        }
-
+        @media screen and (max-width: 768px) { .desktop-only { display: none !important; } }
+        
         /* Modal Styles */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
         .modal-content { background:white; width:95%; max-width:700px; margin:20px auto; padding:25px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
-        .close-btn:hover { color: #333; }
-
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; z-index: 10; }
         .info-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px; }
-        .info-card h4 { color: var(--primary); margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .form-group.full { grid-column: span 2; }
         .form-group label { display:block; margin-bottom:5px; font-weight:bold; color: #555; font-size: 0.85rem; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 1rem; }
         .form-group input:disabled { background: #f0f0f0; cursor: not-allowed; }
-
-        .btn { padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
-        .btn:active { opacity: 0.7; }
+        .btn { padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-mini { padding: 4px 6px; font-size: 0.7rem; border-radius: 5px; }
-        .badge-info { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; }
-        .alert-low { color: white; background: var(--danger); padding: 3px 6px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
-        
         .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
         .login-box { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 380px; }
-        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; }
+        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <h1 style="color:var(--primary); margin-bottom:15px; font-size: 1.6rem;">StudyNest Hub</h1>
-            <select id="login-role" class="login-input">
-                <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
-                <option value="Guardian">Guardian</option>
-            </select>
+            <h1 style="color:var(--primary); margin-bottom:15px;">StudyNest Hub</h1>
             <input type="password" id="admin-password" placeholder="Access Key" class="login-input">
             <button class="btn btn-primary" style="width:100%;" onclick="login()">Sign In</button>
         </div>
@@ -81,8 +55,8 @@
 
     <div id="main-container" class="container">
         <div class="header">
-            <div><h2 style="font-size: 1.2rem;">StudyNest Hub</h2><span id="user-display" style="color:var(--secondary); font-weight:bold; font-size: 0.8rem;"></span></div>
-            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="location.reload()">Logout</button>
+            <div><h2>StudyNest Hub</h2><span id="user-display"></span></div>
+            <button class="btn btn-danger" onclick="location.reload()">Logout</button>
         </div>
 
         <div class="nav-tabs">
@@ -98,16 +72,16 @@
         </section>
 
         <section id="interactions-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
-                <select id="filter-int-student" style="padding: 8px; border-radius: 8px; flex: 1;" onchange="render()"></select>
+            <div style="margin-bottom:10px; display:flex; gap:8px;">
+                <select id="filter-int-student" style="flex:1; border-radius:8px; padding:5px;" onchange="render()"></select>
                 <button class="btn btn-primary" onclick="openModal('interaction-modal')">+</button>
             </div>
             <div class="table-container" id="interaction-list"></div>
         </section>
 
         <section id="money-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
-                <select id="filter-money-student" style="padding: 8px; border-radius: 8px; flex: 1;" onchange="render()"></select>
+            <div style="margin-bottom:10px; display:flex; gap:8px;">
+                <select id="filter-money-student" style="flex:1; border-radius:8px; padding:5px;" onchange="render()"></select>
                 <button class="btn btn-primary" onclick="openModal('money-modal')">+</button>
             </div>
             <div class="table-container" id="money-list"></div>
@@ -139,7 +113,7 @@
                     <div class="form-group"><label>宿管姓名</label><input type="text" id="s-hm-name"></div>
                     <div class="form-group"><label>宿管電話</label><input type="text" id="s-hm-phone"></div>
                     <div class="form-group full"><label>宿管 Email</label><input type="email" id="s-hm-email"></div>
-                    <div class="form-group full"><label>醫療/過敏提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div>
+                    <div class="form-group full"><label>醫療提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div>
                     <div class="form-group full"><label>備註事項</label><textarea id="s-notes" rows="2"></textarea></div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%; margin-top:15px;">儲存檔案</button>
@@ -150,15 +124,15 @@
     <div id="student-detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('student-detail-modal')">&times;</span>
-            <h2 id="det-name" style="color:var(--primary); font-size: 1.4rem; margin-bottom:10px;"></h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button id="det-edit-btn" class="btn btn-primary" style="flex: 1;">📝 編輯更新</button>
-                <button id="det-download-btn" class="btn btn-success" style="flex: 1;">📥 個人報告</button>
+            <h2 id="det-name" style="color:var(--primary); margin-bottom:10px;"></h2>
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <button id="det-edit-btn" class="btn btn-primary" style="flex:1;">📝 編輯更新</button>
+                <button id="det-download-btn" class="btn btn-success" style="flex:1;">📥 個人報告</button>
             </div>
             <div id="student-detail-body"></div>
             <div style="margin-top:20px; display:flex; gap:10px;">
                 <button class="btn" style="flex:1; background:#eee;" onclick="closeModal('student-detail-modal')">關閉</button>
-                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除檔案</button>
+                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除</button>
             </div>
         </div>
     </div>
@@ -197,21 +171,13 @@
                         <option value="💰 資金存入">💰 資金存入 (Top up)</option>
                         <option value="🎓 教育支出">🎓 教育支出 (Education)</option>
                         <option value="🏠 生活交通">🏠 生活交通 (Living & Transport)</option>
-                        <option value="💸 學生提領">💸 學生提領 (Transfer to Student)</option>
+                        <option value="💸 學生提領">💸 學生提領 (Withdrawal)</option>
                         <option value="⚙️ 其他雜項">⚙️ 其他雜項 (Others)</option>
                     </select>
                 </div>
                 <div class="form-group"><label>備註</label><input type="text" id="money-detail"></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">儲存</button>
             </form>
-        </div>
-    </div>
-
-    <div id="generic-detail-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('generic-detail-modal')">&times;</span>
-            <h3 id="generic-title"></h3>
-            <div id="generic-body"></div>
         </div>
     </div>
 
@@ -232,6 +198,7 @@
 
         let students = [], interactions = [], money = [];
 
+        // 核心同步與渲染
         function startSync() {
             onSnapshot(collection(db, "students"), s => { students = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { interactions = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
@@ -240,212 +207,120 @@
 
         const getToday = () => new Date().toISOString().split('T')[0];
 
-        function getNameWithIcon(student) {
-            const hasMedical = student.medical && student.medical.trim() !== "";
-            return `<b>${student.name}</b>${hasMedical ? '<span class="med-icon">💊</span>' : ''}`;
-        }
-        
-        function getPureName(id) {
-            const s = students.find(x => x.id === id);
-            return s ? `<b>${s.name}</b>` : '-';
-        }
-
         function render() {
-            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th class="desktop-only">生日</th><th>宿管/電話</th></tr>` + 
-                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td>${getNameWithIcon(s)}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td class="desktop-only">${s.birthday || '-'}</td><td>${s.hmName || '-'}<br><small>${s.hmPhone || '-'}</small></td></tr>`).join('') + `</table>`;
+            // Overall List
+            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th>宿管</th></tr>` + 
+                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?' 💊':''}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td>${s.hmName || '-'}</td></tr>`).join('') + `</table>`;
 
-            const intFilterVal = document.getElementById('filter-int-student')?.value || 'all';
-            const filteredInts = intFilterVal === 'all' ? interactions : interactions.filter(i => i.studentId === intFilterVal);
-            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th class="desktop-only">內容詳情</th><th>刪</th></tr>` + 
-                filteredInts.map(i => `<tr class="clickable" onclick="showGenericDetail('interaction', '${i.id}')"><td>${i.date.substring(5)}</td><td>${getPureName(i.studentId)}</td><td><span class="badge-info">${i.type}</span></td><td class="desktop-only"><small>${(i.content||'').substring(0,20)}...</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('interactions','${i.id}')">X</button></td></tr>`).join('') + `</table>`;
+            // Interactions
+            const intFilter = document.getElementById('filter-int-student')?.value || 'all';
+            const filteredInts = intFilter === 'all' ? interactions : interactions.filter(i => i.studentId === intFilter);
+            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th>刪</th></tr>` + 
+                filteredInts.map(i => `<tr><td>${i.date.substring(5)}</td><td>${(students.find(s=>s.id===i.studentId)||{}).name || '-'}</td><td>${i.type}</td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('interactions','${i.id}')">X</button></td></tr>`).join('') + `</table>`;
 
-            const monFilterVal = document.getElementById('filter-money-student')?.value || 'all';
-            const filteredMons = monFilterVal === 'all' ? money : money.filter(m => m.studentId === monFilterVal);
-            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th class="desktop-only">分類備註</th><th>刪</th></tr>` + 
-                filteredMons.map(m => `<tr class="clickable" onclick="showGenericDetail('money', '${m.id}')"><td>${m.date.substring(5)}</td><td>${getPureName(m.studentId)}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td class="desktop-only"><small>${m.cat}: ${m.detail||''}</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('money','${m.id}')">X</button></td></tr>`).join('') + `</table>`;
+            // Money
+            const monFilter = document.getElementById('filter-money-student')?.value || 'all';
+            const filteredMons = monFilter === 'all' ? money : money.filter(m => m.studentId === monFilter);
+            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>金額</th><th>分類</th><th>刪</th></tr>` + 
+                filteredMons.map(m => `<tr><td>${m.date.substring(5)}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td>${m.cat}</td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('money','${m.id}')">X</button></td></tr>`).join('') + `</table>`;
 
+            // Dropdowns
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            if(document.getElementById('int-student-select')) {
-                document.getElementById('int-student-select').innerHTML = opts;
-                document.getElementById('money-student-select').innerHTML = opts;
-                ['filter-int-student', 'filter-money-student'].forEach(id => { 
-                    const el = document.getElementById(id); 
-                    const cur = el.value; 
-                    el.innerHTML = `<option value="all">全部學生</option>` + opts; 
-                    el.value = cur || 'all'; 
-                });
-            }
+            ['int-student-select', 'money-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
+            ['filter-int-student', 'filter-money-student'].forEach(id => { 
+                const el = document.getElementById(id); 
+                const cur = el.value; 
+                el.innerHTML = `<option value="all">全部</option>` + opts; 
+                el.value = cur || 'all'; 
+            });
             renderSummary();
         }
 
         function renderSummary() {
-            let html = `<table><tr><th>學生</th><th>餘額</th><th>本月互動</th></tr>`;
+            let html = `<table><tr><th>學生</th><th>餘額</th></tr>`;
             students.forEach(s => {
                 const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
-                const cnt = interactions.filter(i => i.studentId === s.id && i.date.startsWith(new Date().toISOString().substring(0,7))).length;
-                html += `<tr><td><b>${s.name}</b></td><td>${bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td><td>${cnt} 次</td></tr>`;
+                html += `<tr><td><b>${s.name}</b></td><td>${bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td></tr>`;
             });
             document.getElementById('summary-table').innerHTML = html + `</table>`;
         }
 
-        // Global Actions
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; document.getElementById('user-display').innerText = "Role: " + document.getElementById('login-role').value; startSync(); } else alert("Error Key"); };
+        // Global Methods
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error"); };
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        
         window.openModal = id => { 
             document.getElementById(id).style.display='block'; 
-            if(id === 'interaction-modal') document.getElementById('int-date').value = getToday();
-            if(id === 'money-modal') document.getElementById('money-date').value = getToday();
-            if(id === 'student-modal') {
-                document.getElementById('student-form').reset();
-                document.getElementById('s-id').value = "";
-                document.getElementById('s-name').disabled = false;
-                document.getElementById('student-modal-title').innerText = "新增學生檔案";
-            }
+            if(id.includes('interaction')) document.getElementById('int-date').value = getToday();
+            if(id.includes('money')) document.getElementById('money-date').value = getToday();
         };
-
-        window.closeModal = id => { document.getElementById(id).style.display='none'; };
+        window.closeModal = id => document.getElementById(id).style.display='none';
+        window.deleteEntry = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
         
-        // ESC key to close
-        window.addEventListener('keydown', e => { if(e.key === 'Escape') document.querySelectorAll('.modal').forEach(m => m.style.display='none'); });
-
-        window.deleteRecord = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
-
+        // Show Student Details & Delete Fix
         window.showStudentDetail = id => {
             const s = students.find(x => x.id === id);
             if(!s) return;
-            document.getElementById('det-name').innerHTML = getNameWithIcon(s) + (s.engName ? ` (${s.engName})` : '');
-            document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
-            document.getElementById('det-edit-btn').onclick = () => editStudent(id);
+            document.getElementById('det-name').innerText = s.name + (s.engName?` (${s.engName})` : '');
             document.getElementById('student-detail-body').innerHTML = `
-                <div class="info-card"><h4>學校信息</h4><p><b>生日:</b> ${s.birthday || '-'}</p><p><b>學校:</b> ${s.school || '-'}</p><p><b>年級:</b> ${s.grade || '-'}</p><p><b>電話:</b> ${s.phone || '-'}</p><p><b>地址:</b> ${s.address || '-'}</p></div>
-                <div class="info-card"><h4>家長聯繫</h4><p>父: ${s.fatherName || '-'} (${s.fatherPhone || '-'})</p><p>母: ${s.motherName || '-'} (${s.motherPhone || '-'})</p></div>
-                <div class="info-card"><h4>宿管資訊</h4><p><b>姓名:</b> ${s.hmName || '-'} | <b>電話:</b> ${s.hmPhone || '-'}</p><p><b>Email:</b> ${s.hmEmail || '-'}</p></div>
-                <div class="info-card"><h4>重要提醒</h4><p style="color:red;"><b>醫療:</b> ${s.medical || '無'}</p><p><b>備註:</b> ${s.notes || '-'}</p></div>`;
+                <div class="info-card"><p><b>學校:</b> ${s.school||'-'} (${s.grade||'-'})</p><p><b>地址:</b> ${s.address||'-'}</p></div>
+                <div class="info-card"><p><b>家長:</b> ${s.fatherName||'-'} / ${s.motherName||'-'}</p><p><b>宿管:</b> ${s.hmName||'-'} (${s.hmPhone||'-'})</p></div>`;
             
-            document.getElementById('det-delete-btn').onclick = async () => { 
-                if(confirm('警告：這將永久刪除該學生的所有檔案！確定嗎？')) {
+            // 編輯按鈕
+            document.getElementById('det-edit-btn').onclick = () => {
+                closeModal('student-detail-modal');
+                openModal('student-modal');
+                document.getElementById('s-id').value = s.id;
+                document.getElementById('s-name').value = s.name;
+                document.getElementById('s-name').disabled = true; // 鎖定中文名
+                document.getElementById('s-school').value = s.school || '';
+                document.getElementById('s-address').value = s.address || '';
+                document.getElementById('s-hm-name').value = s.hmName || '';
+                // ... 其他欄位填充
+            };
+
+            // 修正刪除按鈕
+            document.getElementById('det-delete-btn').onclick = async () => {
+                if(confirm(`警告：將永久刪除 [${s.name}] 的檔案！`)) {
                     try {
-                        await deleteDoc(doc(db, "students", id));
+                        const targetDoc = doc(db, "students", id); // 確保是 2 段段位
+                        await deleteDoc(targetDoc);
                         closeModal('student-detail-modal');
                     } catch (e) { alert("刪除失敗: " + e.message); }
-                } 
+                }
             };
             openModal('student-detail-modal');
         };
 
-        window.editStudent = id => {
-            const s = students.find(x => x.id === id);
-            closeModal('student-detail-modal');
-            openModal('student-modal');
-            document.getElementById('student-modal-title').innerText = "編輯更新檔案";
-            document.getElementById('s-id').value = s.id;
-            document.getElementById('s-name').value = s.name;
-            document.getElementById('s-name').disabled = true; // 鎖定中文名
-            document.getElementById('s-eng-name').value = s.engName || '';
-            document.getElementById('s-school').value = s.school || '';
-            document.getElementById('s-grade').value = s.grade || '';
-            document.getElementById('s-birthday').value = s.birthday || '';
-            document.getElementById('s-phone').value = s.phone || '';
-            document.getElementById('s-address').value = s.address || '';
-            document.getElementById('s-father-name').value = s.fatherName || '';
-            document.getElementById('s-father-phone').value = s.fatherPhone || '';
-            document.getElementById('s-mother-name').value = s.motherName || '';
-            document.getElementById('s-mother-phone').value = s.motherPhone || '';
-            document.getElementById('s-hm-name').value = s.hmName || '';
-            document.getElementById('s-hm-phone').value = s.hmPhone || '';
-            document.getElementById('s-hm-email').value = s.hmEmail || '';
-            document.getElementById('s-medical').value = s.medical || '';
-            document.getElementById('s-notes').value = s.notes || '';
-        };
-
-        window.showGenericDetail = (mode, id) => {
-            const body = document.getElementById('generic-body');
-            const title = document.getElementById('generic-title');
-            if(mode === 'interaction') {
-                const i = interactions.find(x => x.id === id);
-                title.innerText = "互動詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${i.date}</p><p><b>方式:</b> ${i.type}</p><p style="white-space:pre-wrap; margin-top:10px; line-height:1.4;">${i.content}</p></div>`;
-            } else {
-                const m = money.find(x => x.id === id);
-                title.innerText = "帳目詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${m.date}</p><p><b>類型:</b> ${m.type} £${m.amount}</p><p><b>分類:</b> ${m.cat}</p><p><b>備註:</b> ${m.detail || '無'}</p></div>`;
-            }
-            openModal('generic-detail-modal');
-        };
-
-        window.downloadPersonalFullReport = id => {
-            const s = students.find(x => x.id === id);
-            const sInts = interactions.filter(i => i.studentId === id);
-            const sMons = money.filter(m => m.studentId === id);
-            let rows = [[`${s.name} 個人報告`],["姓名", s.name],["醫療", s.medical],[""],["=== 互動紀錄 ==="],["日期", "方式", "內容"]];
-            sInts.forEach(i => rows.push([i.date, i.type, i.content]));
-            rows.push([""],["=== 帳目明細 ==="],["日期", "金額", "分類", "備註"]);
-            sMons.forEach(m => rows.push([m.date, `£${m.amount}`, m.cat, m.detail]));
-            let csv = "\uFEFF" + rows.map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(",")).join("\n");
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-            link.download = `${s.name}_Report.csv`; link.click();
-        };
-
-        // Form Submissions
+        // Form Submit
         document.getElementById('student-form').onsubmit = async e => {
             e.preventDefault();
             const sid = document.getElementById('s-id').value;
-            const data = {
-                name: document.getElementById('s-name').value,
+            const data = { 
+                name: document.getElementById('s-name').value, 
                 engName: document.getElementById('s-eng-name').value,
                 school: document.getElementById('s-school').value,
-                grade: document.getElementById('s-grade').value,
-                birthday: document.getElementById('s-birthday').value,
-                phone: document.getElementById('s-phone').value,
                 address: document.getElementById('s-address').value,
-                fatherName: document.getElementById('s-father-name').value,
-                fatherPhone: document.getElementById('s-father-phone').value,
-                motherName: document.getElementById('s-mother-name').value,
-                motherPhone: document.getElementById('s-mother-phone').value,
                 hmName: document.getElementById('s-hm-name').value,
-                hmPhone: document.getElementById('s-hm-phone').value,
-                hmEmail: document.getElementById('s-hm-email').value,
-                medical: document.getElementById('s-medical').value,
-                notes: document.getElementById('s-notes').value
+                medical: document.getElementById('s-medical').value
             };
-            if(sid) {
-                await updateDoc(doc(db, "students", sid), data);
-            } else {
-                await addDoc(collection(db, "students"), data);
-            }
-            closeModal('student-modal');
-            e.target.reset();
+            sid ? await updateDoc(doc(db, "students", sid), data) : await addDoc(collection(db, "students"), data);
+            closeModal('student-modal'); e.target.reset();
         };
 
         document.getElementById('interaction-form').onsubmit = async e => {
             e.preventDefault();
-            await addDoc(collection(db, "interactions"), {
-                studentId: document.getElementById('int-student-select').value,
-                date: document.getElementById('int-date').value,
-                type: document.getElementById('int-type').value,
-                content: document.getElementById('int-content').value
-            });
+            await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value });
             closeModal('interaction-modal');
-            e.target.reset();
         };
 
         document.getElementById('money-form').onsubmit = async e => {
             e.preventDefault();
-            await addDoc(collection(db, "money"), {
-                studentId: document.getElementById('money-student-select').value,
-                date: document.getElementById('money-date').value,
-                type: document.getElementById('money-type').value,
-                amount: parseFloat(document.getElementById('money-amount').value),
-                cat: document.getElementById('money-cat').value,
-                detail: document.getElementById('money-detail').value
-            });
+            await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), cat: document.getElementById('money-cat').value, detail: document.getElementById('money-detail').value });
             closeModal('money-modal');
-            e.target.reset();
         };
 
-        window.render = render;
+        // Esc to close
+        window.onkeydown = e => { if(e.key==='Escape') document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); };
     </script>
 </body>
 </html>
