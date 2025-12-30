@@ -1,410 +1,366 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StudyNest Hub 旗艦完全版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyNest Hub - 旗艦修復版</title>
     <style>
-        :root {
-            --primary: #6366f1; --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
-            --gray-100: #f3f4f6; --gray-800: #1f2937;
-        }
-        * { box-sizing: border-box; font-family: -apple-system, "PingFang TC", sans-serif; }
-        body { margin: 0; background: #f8fafc; color: var(--gray-800); padding-bottom: 70px; }
-        .header { background: white; padding: 15px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); sticky: top; }
-        .tab-content { padding: 15px; display: none; }
-        .tab-content.active { display: block; }
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; }
         
-        /* 學生卡片與警示 */
-        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); position: relative; }
-        .balance-red { color: var(--danger); font-weight: bold; }
-        .pill { font-size: 10px; padding: 2px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
-        .pill-med { background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; }
+        /* 導覽與佈局 */
+        .container { max-width: 1300px; margin: 0 auto; padding: 15px; display: none; }
+        .header { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tab { padding: 10px 18px; background: #ddd; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        .tab.active { background: var(--primary); color: white; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
 
-        /* 表單樣式 */
-        .form-group { margin-bottom: 12px; }
-        label { display: block; font-size: 13px; margin-bottom: 4px; color: #64748b; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .btn { border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 5px; }
+        /* 表格與卡片 */
+        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+        th { background: #f8f9fa; color: var(--primary); }
+        tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
+
+        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: none; cursor: pointer; }
+        .status-todo { background: #fed7d7; color: #c53030; }
+        .status-doing { background: #feebc8; color: #975a16; }
+        .status-done { background: #c6f6d5; color: #2f855a; }
+
+        .balance-low { color: var(--danger); font-weight: bold; }
+        .med-icon { color: var(--danger); margin-left: 5px; font-weight: bold; }
+
+        /* 彈窗樣式 */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
+        .modal-content { background:white; width:95%; max-width:750px; margin:15px auto; padding:20px; border-radius:20px; max-height: 95vh; overflow-y: auto; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group.full { grid-column: span 2; }
+        .form-group label { display:block; margin-bottom:4px; font-weight:bold; color: #555; font-size: 0.8rem; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size: 1rem; }
+        
+        .btn { padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
-        .btn-mini { width: auto; padding: 5px 10px; font-size: 12px; }
-
-        /* 接送住宿專用 */
-        .stay-box { background: #f0f4ff; padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 4px solid var(--primary); }
-        .finance-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .btn-danger { background: var(--danger); color: white; }
+        
         .summary-bar { background: #eef2ff; padding: 12px; border-radius: 10px; margin-bottom: 15px; display: flex; justify-content: space-around; border: 1px solid #c3dafe; }
-        
-        /* 表格樣式 */
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 8px; background: #f1f5f9; }
-        td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+        .section-title { font-size: 1rem; color: var(--secondary); margin: 20px 0 10px 0; border-left: 4px solid var(--secondary); padding-left: 10px; font-weight: bold; }
 
-        /* 導航列 */
-        .nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #ddd; height: 60px; z-index: 100; }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: #64748b; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
-        
-        .status-todo { background: #ffedd5; color: #9a3412; }
-        .status-doing { background: #dcfce7; color: #166534; }
-        .status-done { background: #f1f5f9; color: #475569; }
+        .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .login-box { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 380px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h2 id="view-title">學生管理</h2>
-</div>
-
-<div id="view-students" class="tab-content active">
-    <button class="btn btn-primary" onclick="showAddStudent()">+ 新增學生檔案</button>
-    <div id="student-list" style="margin-top:15px;"></div>
-</div>
-
-<div id="view-interactions" class="tab-content">
-    <div class="form-group">
-        <select id="inter-student-filter" onchange="renderInteractions()">
-            <option value="all">所有學生</option>
-        </select>
-    </div>
-    <div id="interaction-list"></div>
-</div>
-
-<div id="view-pocket" class="tab-content">
-    <div class="form-group">
-        <select id="pocket-student-filter" onchange="renderPocket()">
-            <option value="all">所有學生</option>
-        </select>
-    </div>
-    <div id="pocket-list"></div>
-</div>
-
-<div id="view-transport" class="tab-content">
-    <button class="btn btn-primary" onclick="showAddTransport()">+ 新增行程任務</button>
-    
-    <h4 style="margin:20px 0 10px">進行中任務</h4>
-    <div id="transport-active-list"></div>
-
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:30px;">
-        <h4 style="margin:0">歷史對帳</h4>
-        <input type="month" id="transport-month-filter" style="width:auto;" onchange="renderTransport()">
-    </div>
-    <div id="transport-history-list" style="margin-top:10px;"></div>
-</div>
-
-<div class="nav">
-    <div class="nav-item active" onclick="switchTab('students', this)">👤 學生</div>
-    <div class="nav-item" onclick="switchTab('transport', this)">🚗 接送</div>
-    <div class="nav-item" onclick="switchTab('interactions', this)">💬 互動</div>
-    <div class="nav-item" onclick="switchTab('pocket', this)">💰 零用</div>
-</div>
-
-<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:200; overflow-y:auto; padding:20px;">
-    <div id="modal-body" style="background:white; border-radius:15px; padding:20px;"></div>
-</div>
-
-<script>
-let students = JSON.parse(localStorage.getItem('sn_students') || '[]');
-let interactions = JSON.parse(localStorage.getItem('sn_inter') || '[]');
-let pocketMoney = JSON.parse(localStorage.getItem('sn_pocket') || '[]');
-let transports = JSON.parse(localStorage.getItem('sn_trans') || '[]');
-
-function save() {
-    localStorage.setItem('sn_students', JSON.stringify(students));
-    localStorage.setItem('sn_inter', JSON.stringify(interactions));
-    localStorage.setItem('sn_pocket', JSON.stringify(pocketMoney));
-    localStorage.setItem('sn_trans', JSON.stringify(transports));
-    render();
-}
-
-function switchTab(tab, el) {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    document.getElementById('view-' + tab).classList.add('active');
-    el.classList.add('active');
-    document.getElementById('view-title').innerText = el.innerText.split(' ')[1];
-    render();
-}
-
-// --- 學生管理邏輯 ---
-function showAddStudent() {
-    const body = document.getElementById('modal-body');
-    body.innerHTML = `
-        <h3>新增學生檔案</h3>
-        <div class="form-group"><label>學生姓名 *</label><input id="s-name"></div>
-        <div class="form-group"><label>目前餘額 (£) *</label><input type="number" id="s-balance" value="0"></div>
-        <div class="form-group"><label>父母聯繫方式</label><input id="s-parent"></div>
-        <div class="form-group"><label>宿管資訊</label><input id="s-house"></div>
-        <div class="form-group"><label>地址</label><input id="s-addr"></div>
-        <div class="form-group"><label>醫療/過敏 (填寫後姓名旁會出現💊)</label><textarea id="s-med"></textarea></div>
-        <div class="form-group"><label>生日</label><input type="date" id="s-bday"></div>
-        <button class="btn btn-success" onclick="addStudent()">儲存檔案</button>
-        <button class="btn" onclick="closeModal()">取消</button>
-    `;
-    document.getElementById('modal').style.display = 'block';
-}
-
-function addStudent() {
-    const s = {
-        id: Date.now().toString(),
-        name: document.getElementById('s-name').value,
-        balance: parseFloat(document.getElementById('s-balance').value) || 0,
-        parent: document.getElementById('s-parent').value,
-        house: document.getElementById('s-house').value,
-        addr: document.getElementById('s-addr').value,
-        med: document.getElementById('s-med').value,
-        bday: document.getElementById('s-bday').value
-    };
-    students.push(s);
-    save();
-    closeModal();
-}
-
-// --- 接送住宿邏輯 ---
-function showAddTransport() {
-    const sOptions = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-    const body = document.getElementById('modal-body');
-    body.innerHTML = `
-        <h3>新增行程任務</h3>
-        <div class="form-group"><label>選擇學生</label><select id="t-sid">${sOptions}</select></div>
-        <div class="form-group"><label>任務類型</label>
-            <select id="t-type">
-                <option>接機 (Pick-up)</option><option>送機 (Drop-off)</option>
-                <option>出校 (Exit)</option><option>返校 (Return)</option>
-            </select>
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <h1 style="color:var(--primary); margin-bottom:15px;">StudyNest Hub</h1>
+            <input type="password" id="admin-password" placeholder="Access Key" style="width:100%; padding:12px; margin-bottom:20px; border-radius:10px; border:1px solid #ddd; text-align: center;">
+            <button class="btn btn-primary" style="width:100%;" onclick="login()">Sign In</button>
         </div>
-        <div class="form-group"><label>時間</label><input type="datetime-local" id="t-time"></div>
-        <div class="form-group"><label>目的地</label>
-            <input list="loc-list" id="t-loc">
-            <datalist id="loc-list">
-                <option value="LHR">LHR</option><option value="LGW">LGW</option>
-                <option value="學校">學校</option><option value="住家">住家</option>
-            </datalist>
-        </div>
-        <div class="form-group"><label>航班 / 住家地址</label><input id="t-info"></div>
-        
-        <div class="form-group">
-            <label><input type="checkbox" id="t-isStay" onchange="toggleStay()"> 此行程包含住宿</label>
+    </div>
+
+    <div id="main-container" class="container">
+        <div class="header">
+            <div><h2>StudyNest Hub</h2><small id="user-display" style="color:var(--secondary);"></small></div>
+            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="location.reload()">Logout</button>
         </div>
 
-        <div id="stay-fields" class="stay-box" style="display:none;">
-            <div class="form-group"><label>Check-out 日期</label><input type="date" id="t-stayEnd" onchange="calcNights()"></div>
-            <p id="stay-nights-tip" style="font-size:12px; color:var(--primary); font-weight:bold;">自動計算：0 晚</p>
-            <div class="form-group"><label>住家姓名</label><input id="t-hname"></div>
-            <div class="form-group"><label>住家聯繫方式</label><input id="t-hcontact"></div>
-            <div class="finance-row">
-                <div><label>住宿成本/晚 (Net)</label><input type="number" id="t-stayNet" placeholder="£"></div>
-                <div><label>住宿報價/晚 (Gross)</label><input type="number" id="t-stayGross" placeholder="£"></div>
+        <div class="nav-tabs">
+            <div class="tab active" onclick="switchTab('students')">學生管理</div>
+            <div class="tab" onclick="switchTab('interactions')">互動紀錄</div>
+            <div class="tab" onclick="switchTab('money')">零用錢</div>
+            <div class="tab" onclick="switchTab('transport')">接送與住宿</div>
+            <div class="tab" onclick="switchTab('summary')">概況</div>
+        </div>
+
+        <section id="students-section" class="content-section active">
+            <button class="btn btn-primary" style="margin-bottom:15px; width: 100%;" onclick="openModal('student-modal')">+ 新增學生檔案</button>
+            <div class="table-container" id="student-list-table"></div>
+        </section>
+
+        <section id="interactions-section" class="content-section">
+            <div style="margin-bottom:10px; display:flex; gap:8px;">
+                <select id="filter-int-student" style="flex:1; padding:8px; border-radius:8px;" onchange="render()"></select>
+                <button class="btn btn-primary" onclick="openModal('interaction-modal')">+</button>
             </div>
-        </div>
+            <div class="table-container" id="interaction-list"></div>
+        </section>
 
-        <div class="finance-row">
-            <div><label>車資成本 (Net)</label><input type="number" id="t-transNet" placeholder="£"></div>
-            <div><label>車資報價 (Gross)</label><input type="number" id="t-transGross" placeholder="£"></div>
-        </div>
+        <section id="money-section" class="content-section">
+            <div style="margin-bottom:10px; display:flex; gap:8px;">
+                <select id="filter-money-student" style="flex:1; padding:8px; border-radius:8px;" onchange="render()"></select>
+                <button class="btn btn-primary" onclick="openModal('money-modal')">+</button>
+            </div>
+            <div class="table-container" id="money-list"></div>
+        </section>
 
-        <div class="form-group">
-            <label><input type="checkbox" id="t-syncInter" checked> 同步寫入互動紀錄</label>
-        </div>
+        <section id="transport-section" class="content-section">
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <button class="btn btn-primary" style="flex:2" onclick="openModal('transport-modal')">+ 登記行程</button>
+                <input type="month" id="transport-month-filter" style="flex:1; border-radius:10px; border:1px solid #ddd; padding:5px;" onchange="render()">
+            </div>
+            <div class="section-title">進行中行程 (Ongoing)</div>
+            <div class="table-container" id="transport-active-list"></div>
+            <div class="section-title">歷史行程 (Completed)</div>
+            <div id="transport-summary-stats"></div>
+            <div class="table-container" id="transport-history-list"></div>
+        </section>
 
-        <button class="btn btn-success" onclick="addTransport()">儲存行程</button>
-        <button class="btn" onclick="closeModal()">取消</button>
-    `;
-    document.getElementById('modal').style.display = 'block';
-}
+        <section id="summary-section" class="content-section">
+            <div class="table-container" id="summary-table"></div>
+        </section>
+    </div>
 
-function toggleStay() {
-    document.getElementById('stay-fields').style.display = document.getElementById('t-isStay').checked ? 'block' : 'none';
-}
+    <div id="student-modal" class="modal"><div class="modal-content">
+        <h3>新增完整學生檔案</h3>
+        <form id="student-form">
+            <div class="form-grid">
+                <div class="form-group"><label>中文姓名*</label><input type="text" id="s-name" required></div>
+                <div class="form-group"><label>英文名</label><input type="text" id="s-eng-name"></div>
+                <div class="form-group"><label>就讀學校</label><input type="text" id="s-school"></div>
+                <div class="form-group"><label>年級</label><input type="text" id="s-grade"></div>
+                <div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div>
+                <div class="form-group"><label>學生電話</label><input type="text" id="s-phone"></div>
+                <div class="form-group full"><label>英國地址</label><input type="text" id="s-address"></div>
+                <div class="form-group"><label>父母資訊</label><input type="text" id="s-parent-info"></div>
+                <div class="form-group"><label>宿管資訊</label><input type="text" id="s-hm-info"></div>
+                <div class="form-group full"><label>醫療/過敏提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div>
+                <div class="form-group full"><label>備註事項</label><textarea id="s-notes" rows="2"></textarea></div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">儲存學生檔案</button>
+            <button type="button" class="btn" style="width:100%; margin-top:5px;" onclick="closeModal('student-modal')">取消</button>
+        </form>
+    </div></div>
 
-function calcNights() {
-    const start = new Date(document.getElementById('t-time').value.split('T')[0]);
-    const end = new Date(document.getElementById('t-stayEnd').value);
-    if(start && end && end > start) {
-        const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-        document.getElementById('stay-nights-tip').innerText = `自動計算：${diff} 晚`;
-    }
-}
+    <div id="transport-modal" class="modal"><div class="modal-content">
+        <h3>登記物流與住宿行程</h3>
+        <form id="transport-form">
+            <div class="form-grid">
+                <div class="form-group"><label>學生</label><select id="tr-student" required></select></div>
+                <div class="form-group"><label>任務類型</label><select id="tr-type" onchange="autoSuggestDest(this.value)">
+                    <option value="接機">接機 (Arrival)</option><option value="送機">送機 (Departure)</option>
+                    <option value="出校">出校 (Exeat - Out)</option><option value="返校">返校 (Back to School)</option>
+                </select></div>
+                <div class="form-group"><label>目的地</label>
+                    <input list="loc-presets" id="tr-loc" placeholder="LHR / LGW / 學校 / 住家" required>
+                    <datalist id="loc-presets"><option value="LHR">LHR</option><option value="LGW">LGW</option><option value="學校">學校</option><option value="住家">住家</option></datalist>
+                </div>
+                <div class="form-group"><label>時間</label><input type="datetime-local" id="tr-time" required></div>
+                <div class="form-group"><label>航班 / 住家地址</label><input type="text" id="tr-info"></div>
+                <div class="form-group"><label>司機姓名</label><input type="text" id="tr-driver"></div>
+                <div class="form-group"><label>司機電話</label><input type="text" id="tr-driver-phone"></div>
+                <div class="form-group full" style="background:#f0f4ff; padding:10px; border-radius:10px;">
+                    <label style="display:inline;"><input type="checkbox" id="tr-has-stay" onchange="toggleStaySection(this.checked)"> <b>此行程包含住宿</b></label>
+                </div>
+                <div id="stay-fields" class="form-group full form-grid" style="display:none; border-left:4px solid var(--primary); padding-left:10px;">
+                    <div class="form-group"><label>退房日期</label><input type="date" id="tr-checkout" onchange="calcNights()"></div>
+                    <div class="form-group"><label>晚數</label><input type="number" id="tr-nights" readonly style="background:#eee;"></div>
+                    <div class="form-group"><label>住家姓名</label><input type="text" id="tr-hname"></div>
+                    <div class="form-group"><label>住家聯繫方式</label><input type="text" id="tr-hcontact"></div>
+                    <div class="form-group"><label>住宿成本/晚 (Net) £</label><input type="number" id="tr-stay-net" step="0.1" value="0"></div>
+                    <div class="form-group"><label>住宿報價/晚 (Gross) £</label><input type="number" id="tr-stay-gross" step="0.1" value="0"></div>
+                </div>
+                <div class="form-group"><label>交通成本 (Net) £</label><input type="number" id="tr-trans-net" step="0.1" value="0"></div>
+                <div class="form-group"><label>交通報價 (Gross) £</label><input type="number" id="tr-trans-gross" step="0.1" value="0"></div>
+                <div class="form-group full"><label><input type="checkbox" id="tr-auto-int" checked> 同步寫入互動紀錄</label></div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">儲存行程</button>
+            <button type="button" class="btn" style="width:100%; margin-top:5px;" onclick="closeModal('transport-modal')">取消</button>
+        </form>
+    </div></div>
 
-function addTransport() {
-    const isStay = document.getElementById('t-isStay').checked;
-    let nights = 0;
-    if(isStay) {
-        const start = new Date(document.getElementById('t-time').value.split('T')[0]);
-        const end = new Date(document.getElementById('t-stayEnd').value);
-        nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    }
+    <div id="interaction-modal" class="modal"><div class="modal-content">
+        <h3>新增互動紀錄</h3>
+        <form id="interaction-form">
+            <div class="form-group"><label>學生</label><select id="int-student-select"></select></div>
+            <div class="form-group"><label>日期</label><input type="date" id="int-date" required></div>
+            <div class="form-group"><label>方式</label><select id="int-type"><option value="電話溝通">電話溝通</option><option value="當面交流">當面交流</option><option value="線上聯繫">線上聯繫</option><option value="校訪家訪">校訪家訪</option></select></div>
+            <div class="form-group"><label>內容</label><textarea id="int-content" rows="4" required></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">儲存紀錄</button>
+        </form>
+    </div></div>
 
-    const t = {
-        id: Date.now().toString(),
-        studentId: document.getElementById('t-sid').value,
-        type: document.getElementById('t-type').value,
-        time: document.getElementById('t-time').value,
-        loc: document.getElementById('t-loc').value,
-        info: document.getElementById('t-info').value,
-        isStay: isStay,
-        stayEnd: document.getElementById('t-stayEnd').value,
-        nights: nights,
-        hname: document.getElementById('t-hname')?.value || '',
-        hcontact: document.getElementById('t-hcontact')?.value || '',
-        transNet: document.getElementById('t-transNet').value,
-        transGross: document.getElementById('t-transGross').value,
-        stayNet: document.getElementById('t-stayNet').value,
-        stayGross: document.getElementById('t-stayGross').value,
-        status: 'todo'
-    };
-    transports.push(t);
+    <div id="money-modal" class="modal"><div class="modal-content">
+        <h3>新增帳目明細</h3>
+        <form id="money-form">
+            <div class="form-group"><label>學生</label><select id="money-student-select"></select></div>
+            <div class="form-group"><label>日期</label><input type="date" id="money-date" required></div>
+            <div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div>
+            <div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div>
+            <div class="form-group"><label>備註</label><input type="text" id="money-detail" required></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">儲存帳目</button>
+        </form>
+    </div></div>
 
-    // 聯動功能：寫入互動紀錄
-    if(document.getElementById('t-syncInter').checked) {
-        const s = students.find(x => x.id === t.studentId);
-        interactions.push({
-            id: Date.now().toString() + 'i',
-            studentId: t.studentId,
-            date: t.time.split('T')[0],
-            type: '生活',
-            content: `【行程預約】${t.type}：${t.loc}。${isStay ? '含住宿 '+nights+' 晚 ('+t.hname+')' : ''}`
-        });
-    }
+    <div id="student-detail-modal" class="modal"><div class="modal-content">
+        <h2 id="det-name" style="color:var(--primary);"></h2>
+        <div id="student-detail-body" style="margin-top:15px;"></div>
+        <div style="margin-top:20px; display:flex; gap:10px;"><button class="btn" style="flex:1" onclick="closeModal('student-detail-modal')">關閉</button><button id="det-delete-btn" class="btn btn-danger" style="flex:1">刪除檔案</button></div>
+    </div></div>
 
-    save();
-    closeModal();
-}
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-function updateTrStatus(id, newStatus) {
-    const t = transports.find(x => x.id === id);
-    if(t) {
-        // 如果狀態改為完成，詢問是否扣除零用錢
-        if(newStatus === 'done' && t.status !== 'done') {
-            const totalGross = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
-            if(confirm(`任務完成！是否自動從零用錢扣除報價總額 £${totalGross}？`)) {
-                const s = students.find(x => x.id === t.studentId);
-                if(s) {
-                    s.balance -= totalGross;
-                    pocketMoney.push({
-                        id: Date.now().toString() + 'p',
-                        studentId: t.studentId,
-                        date: new Date().toISOString().split('T')[0],
-                        amount: -totalGross,
-                        desc: `行程扣費: ${t.type} @ ${t.loc}`
-                    });
+        const firebaseConfig = { apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", authDomain: "studynest-database.firebaseapp.com", projectId: "studynest-database", appId: "1:193833641970:web:e2063f85f52c4bc891ed6b" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let students = [], interactions = [], money = [], transports = [];
+
+        function startSync() {
+            onSnapshot(collection(db, "students"), s => { students = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
+            onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { interactions = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
+            onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { money = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
+            onSnapshot(query(collection(db, "transport"), orderBy("time", "asc")), s => { transports = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
+        }
+
+        function render() {
+            // 學生管理
+            const slist = document.getElementById('student-list-table');
+            slist.innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>餘額</th></tr>` + 
+                students.map(s => {
+                    const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
+                    return `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?'<span class="med-icon">💊</span>':''}</td><td>${s.school || '-'}</td><td class="${bal<300?'balance-low':''}">£${bal.toFixed(2)}</td></tr>`;
+                }).join('') + `</table>`;
+
+            // 接送管理
+            const ongoing = transports.filter(t => t.status !== 'done');
+            let history = transports.filter(t => t.status === 'done');
+            const mFilter = document.getElementById('transport-month-filter').value;
+            
+            let totalNet = 0, totalGross = 0;
+            if(mFilter) {
+                history = history.filter(t => t.time.startsWith(mFilter));
+                history.forEach(t => {
+                    const n = (parseFloat(t.transNet)||0) + ((parseFloat(t.stayNet)||0) * (parseInt(t.nights)||0));
+                    const g = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
+                    totalNet += n; totalGross += g;
+                });
+                document.getElementById('transport-summary-stats').innerHTML = `
+                    <div class="summary-bar">
+                        <div><small>總成本</small><br><b style="color:var(--danger)">£${totalNet.toFixed(1)}</b></div>
+                        <div><small>總報價</small><br><b style="color:var(--success)">£${totalGross.toFixed(1)}</b></div>
+                        <div><small>淨利</small><br><b style="color:var(--primary)">£${(totalGross-totalNet).toFixed(1)}</b></div>
+                    </div>`;
+            } else { document.getElementById('transport-summary-stats').innerHTML = ''; }
+
+            const trRow = (t) => {
+                const s = students.find(x => x.id === t.studentId) || {name:'-'};
+                const g = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
+                const n = (parseFloat(t.transNet)||0) + ((parseFloat(t.stayNet)||0) * (parseInt(t.nights)||0));
+                return `<tr><td><small>${t.time.substring(5,16).replace('T',' ')}</small><br><b>${t.type}</b></td><td>${s.name}<br><small>${t.loc}</small></td><td>G:£${g}<br><small style="color:gray;">(N:£${n})</small></td><td><select onchange="updateTrStatus('${t.id}', this.value)" class="status-badge status-${t.status}"><option value="todo" ${t.status==='todo'?'selected':''}>待辦</option><option value="doing" ${t.status==='doing'?'selected':''}>預約</option><option value="done" ${t.status==='done'?'selected':''}>完成</option></select></td><td><button class="btn btn-mini btn-success" onclick="copyTrMsg('${t.id}')" style="padding:4px 8px;">📋</button></td></tr>`;
+            };
+            document.getElementById('transport-active-list').innerHTML = `<table><tr><th>任務</th><th>學生/地點</th><th>帳目</th><th>狀態</th><th>通知</th></tr>` + ongoing.map(trRow).join('') + `</table>`;
+            document.getElementById('transport-history-list').innerHTML = `<table><tr><th>任務</th><th>學生/地點</th><th>帳目</th><th>狀態</th><th>通知</th></tr>` + history.map(trRow).join('') + `</table>`;
+
+            // 更新下拉與互動
+            updateDropdowns();
+            renderSummary();
+            renderInterAndMoney();
+        }
+
+        function renderInterAndMoney() {
+            const intS = document.getElementById('filter-int-student').value || 'all';
+            const filteredInt = intS === 'all' ? interactions : interactions.filter(x => x.studentId === intS);
+            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th>內容</th></tr>` + filteredInt.map(x => `<tr><td>${x.date.substring(5)}</td><td>${students.find(s=>s.id===x.studentId)?.name||'-'}</td><td>${x.type}</td><td><small>${x.content}</small></td></tr>`).join('') + `</table>`;
+
+            const monS = document.getElementById('filter-money-student').value || 'all';
+            const filteredMon = monS === 'all' ? money : money.filter(x => x.studentId === monS);
+            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>金額</th><th>備註</th></tr>` + filteredMon.map(x => `<tr><td>${x.date.substring(5)}</td><td style="color:${x.type==='收入'?'green':'red'}">£${x.amount}</td><td><small>${x.detail}</small></td></tr>`).join('') + `</table>`;
+        }
+
+        window.updateTrStatus = async (id, newStatus) => {
+            const t = transports.find(x => x.id === id);
+            if(newStatus === 'done' && t.status !== 'done') {
+                const g = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
+                if(g > 0 && confirm(`任務完成！是否自動扣除報價費用 £${g}？`)) {
+                    await addDoc(collection(db, "money"), { studentId: t.studentId, date: t.time.split('T')[0], type: "支出", amount: g, detail: `行程扣費: ${t.type} @ ${t.loc}` });
                 }
             }
+            await updateDoc(doc(db, "transport", id), { status: newStatus });
+        };
+
+        document.getElementById('transport-form').onsubmit = async e => {
+            e.preventDefault();
+            const sid = document.getElementById('tr-student').value;
+            const type = document.getElementById('tr-type').value;
+            const time = document.getElementById('tr-time').value;
+            const loc = document.getElementById('tr-loc').value;
+
+            await addDoc(collection(db, "transport"), {
+                studentId: sid, type, time, loc,
+                info: document.getElementById('tr-info').value,
+                driver: document.getElementById('tr-driver').value,
+                driverPhone: document.getElementById('tr-driver-phone').value,
+                hasStay: document.getElementById('tr-has-stay').checked,
+                checkout: document.getElementById('tr-checkout').value,
+                nights: document.getElementById('tr-nights').value,
+                hname: document.getElementById('tr-hname').value,
+                hcontact: document.getElementById('tr-hcontact').value,
+                stayNet: parseFloat(document.getElementById('tr-stay-net').value)||0,
+                stayGross: parseFloat(document.getElementById('tr-stay-gross').value)||0,
+                transNet: parseFloat(document.getElementById('tr-trans-net').value)||0,
+                transGross: parseFloat(document.getElementById('tr-trans-gross').value)||0,
+                status: 'todo'
+            });
+
+            if(document.getElementById('tr-auto-int').checked) {
+                await addDoc(collection(db, "interactions"), { studentId: sid, date: time.split('T')[0], type: "線上聯繫", content: `[自動] 安排行程: ${type} @ ${loc} (${time.replace('T',' ')})` });
+            }
+            closeModal('transport-modal'); e.target.reset(); toggleStaySection(false);
+        };
+
+        window.showStudentDetail = (id) => {
+            const s = students.find(x => x.id === id);
+            document.getElementById('det-name').innerText = s.name;
+            document.getElementById('student-detail-body').innerHTML = `<div class="form-grid"><div><b>學校:</b> ${s.school||'-'}</div><div><b>年級:</b> ${s.grade||'-'}</div><div><b>電話:</b> ${s.phone||'-'}</div><div><b>生日:</b> ${s.birthday||'-'}</div><div class="full"><b>地址:</b> ${s.address||'-'}</div><div><b>父母:</b> ${s.parentInfo||'-'}</div><div><b>宿管:</b> ${s.hmInfo||'-'}</div><div class="full" style="color:red;"><b>醫療:</b> ${s.medical||'無'}</div><div class="full"><b>備註:</b> ${s.notes||'-'}</div></div>`;
+            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('刪除？')) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); }};
+            openModal('student-detail-modal');
+        };
+
+        window.copyTrMsg = (id) => {
+            const t = transports.find(x => x.id === id);
+            const s = students.find(x => x.id === t.studentId);
+            let msg = `【行程確認】\n學生：${s.name}\n任務：${t.type}\n時間：${t.time.replace('T',' ')}\n地點：${t.loc} (${t.info||''})\n司機：${t.driver||'-'} (${t.driverPhone||'-'})`;
+            if(t.hasStay) msg += `\n住宿：${t.time.split('T')[0]} ~ ${t.checkout}\n住家：${t.hname} (${t.hcontact})`;
+            if(t.type.includes('送機') || t.type.includes('出校')) msg += `\n\n📢 提醒：請提前 15 分鐘等候，檢查護照及行李。`;
+            navigator.clipboard.writeText(msg).then(() => alert('已複製！'));
+        };
+
+        // 基礎UI
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert('Error'); };
+        window.switchTab = (t) => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(t+'-section').classList.add('active'); };
+        window.openModal = id => { document.getElementById(id).style.display='block'; if(id==='transport-modal') document.getElementById('tr-time').value = new Date().toISOString().substring(0,16); };
+        window.closeModal = id => document.getElementById(id).style.display='none';
+        window.toggleStaySection = (s) => { document.getElementById('stay-fields').style.display = s ? 'grid' : 'none'; };
+        window.calcNights = () => { const s = new Date(document.getElementById('tr-time').value.split('T')[0]); const e = new Date(document.getElementById('tr-checkout').value); if(e > s) document.getElementById('tr-nights').value = Math.ceil((e-s)/(86400000)); };
+        window.autoSuggestDest = (v) => { const l = document.getElementById('tr-loc'); if(v.includes('機')) l.value = 'LHR'; else if(v==='返校') l.value = '學校'; else if(v==='出校') l.value = '住家'; };
+
+        function updateDropdowns() {
+            const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            ['tr-student', 'int-student-select', 'money-student-select', 'filter-int-student', 'filter-money-student'].forEach(id => { const el = document.getElementById(id); if(el) { const cur = el.value; el.innerHTML = (id.includes('filter') ? '<option value="all">全部</option>' : '') + opts; el.value = cur; } });
         }
-        t.status = newStatus;
-        save();
-    }
-}
+        function renderSummary() {
+            let h = `<table><tr><th>學生</th><th>餘額</th><th>待辦</th></tr>`;
+            students.forEach(s => {
+                const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
+                const tr = transports.filter(t => t.studentId === s.id && t.status !== 'done').length;
+                h += `<tr><td><b>${s.name}</b></td><td class="${bal<300?'balance-low':''}">£${bal.toFixed(1)}</td><td>${tr}件</td></tr>`;
+            });
+            document.getElementById('summary-table').innerHTML = h + `</table>`;
+        }
 
-function copyTrMsg(id) {
-    const t = transports.find(x => x.id === id);
-    const s = students.find(x => x.id === t.studentId);
-    let msg = `【接送行程確認】\n學生：${s.name}\n任務：${t.type}\n時間：${t.time.replace('T',' ')}\n目的地：${t.loc}\n資訊：${t.info}`;
-    if(t.isStay) {
-        msg += `\n---\n住宿家庭：${t.hname}\n住家電話：${t.hcontact}\n退房日期：${t.stayEnd}\n(共 ${t.nights} 晚)`;
-    }
-    msg += `\n\n* 請提前15分鐘到達，請學生檢查護照及私人行李。`;
-    
-    navigator.clipboard.writeText(msg).then(() => alert('訊息已複製，可直接貼上 WhatsApp'));
-}
+        // 其他表單提交
+        document.getElementById('student-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "students"), { name: document.getElementById('s-name').value, engName: document.getElementById('s-eng-name').value, school: document.getElementById('s-school').value, grade: document.getElementById('s-grade').value, birthday: document.getElementById('s-birthday').value, phone: document.getElementById('s-phone').value, address: document.getElementById('s-address').value, parentInfo: document.getElementById('s-parent-info').value, hmInfo: document.getElementById('s-hm-info').value, medical: document.getElementById('s-medical').value, notes: document.getElementById('s-notes').value }); closeModal('student-modal'); e.target.reset(); };
+        document.getElementById('interaction-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value }); closeModal('interaction-modal'); e.target.reset(); };
+        document.getElementById('money-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), detail: document.getElementById('money-detail').value }); closeModal('money-modal'); e.target.reset(); };
 
-// --- 通用渲染邏輯 ---
-function render() {
-    // 學生清單
-    const slist = document.getElementById('student-list');
-    slist.innerHTML = students.map(s => `
-        <div class="card">
-            <div style="display:flex; justify-content:space-between;">
-                <b>${s.name} ${s.med ? '<span class="pill pill-med">💊</span>' : ''}</b>
-                <span class="${s.balance < 300 ? 'balance-red' : ''}">£${s.balance.toFixed(2)}</span>
-            </div>
-            <div style="font-size:12px; color:gray; margin-top:5px;">
-                📞 父母: ${s.parent || '-'} | 🏠 宿管: ${s.house || '-'}<br>
-                📍 ${s.addr || '無地址資訊'}
-            </div>
-        </div>
-    `).join('');
-
-    // 接送清單與對帳
-    const mFilter = document.getElementById('transport-month-filter').value;
-    const ongoing = transports.filter(t => t.status !== 'done');
-    let history = transports.filter(t => t.status === 'done');
-    
-    let totalNet = 0, totalGross = 0;
-    if(mFilter) {
-        history = history.filter(t => t.time.startsWith(mFilter));
-        history.forEach(t => {
-            const n = (parseFloat(t.transNet)||0) + ((parseFloat(t.stayNet)||0) * (parseInt(t.nights)||0));
-            const g = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
-            totalNet += n; totalGross += g;
-        });
-    }
-
-    const trRow = (t) => {
-        const s = students.find(x => x.id === t.studentId) || {name:'-'};
-        const n = (parseFloat(t.transNet)||0) + ((parseFloat(t.stayNet)||0) * (parseInt(t.nights)||0));
-        const g = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
-        return `<tr>
-            <td><small>${t.time.replace('T',' ')}</small><br><b>${t.type}</b></td>
-            <td>${s.name}<br><small>${t.loc}</small></td>
-            <td>G: £${g}<br><small style="color:gray;">(N: £${n})</small></td>
-            <td><select onchange="updateTrStatus('${t.id}', this.value)" class="status-badge status-${t.status}">
-                <option value="todo" ${t.status==='todo'?'selected':''}>待辦</option>
-                <option value="doing" ${t.status==='doing'?'selected':''}>預約</option>
-                <option value="done" ${t.status==='done'?'selected':''}>完成</option>
-            </select></td>
-            <td><button class="btn btn-mini btn-success" onclick="copyTrMsg('${t.id}')">📋</button></td>
-        </tr>`;
-    };
-
-    document.getElementById('transport-active-list').innerHTML = `<table><tr><th>任務</th><th>學生</th><th>帳目</th><th>狀態</th><th>通知</th></tr>` + ongoing.map(trRow).join('') + `</table>`;
-    
-    const summaryHtml = !mFilter ? '' : `
-        <div class="summary-bar">
-            <div><small>總成本</small><br><b style="color:var(--danger)">£${totalNet.toFixed(2)}</b></div>
-            <div><small>總報價</small><br><b style="color:var(--success)">£${totalGross.toFixed(2)}</b></div>
-            <div><small>淨利</small><br><b style="color:var(--primary)">£${(totalGross-totalNet).toFixed(2)}</b></div>
-        </div>`;
-    document.getElementById('transport-history-list').innerHTML = summaryHtml + `<table><tr><th>任務</th><th>學生</th><th>帳目</th><th>狀態</th><th>通知</th></tr>` + history.map(trRow).join('') + `</table>`;
-
-    // 互動與零用錢 (快速簡易版)
-    renderInteractions();
-    renderPocket();
-    
-    // 更新 Filter 下拉選單
-    const filters = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-    document.getElementById('inter-student-filter').innerHTML = '<option value="all">所有學生</option>' + filters;
-    document.getElementById('pocket-student-filter').innerHTML = '<option value="all">所有學生</option>' + filters;
-}
-
-function renderInteractions() {
-    const filter = document.getElementById('inter-student-filter').value;
-    const list = document.getElementById('interaction-list');
-    let data = interactions;
-    if(filter !== 'all') data = data.filter(i => i.studentId === filter);
-    list.innerHTML = data.sort((a,b)=>b.date.localeCompare(a.date)).map(i => `
-        <div class="card"><small>${i.date} [${i.type}]</small><br>${i.content}</div>
-    `).join('');
-}
-
-function renderPocket() {
-    const filter = document.getElementById('pocket-student-filter').value;
-    const list = document.getElementById('pocket-list');
-    let data = pocketMoney;
-    if(filter !== 'all') data = data.filter(p => p.studentId === filter);
-    list.innerHTML = data.sort((a,b)=>b.date.localeCompare(a.date)).map(p => `
-        <div class="card" style="display:flex; justify-content:space-between;">
-            <span><small>${p.date}</small><br>${p.desc}</span>
-            <b style="color:${p.amount<0? 'red':'green'}">${p.amount<0?'':'+'}£${p.amount}</b>
-        </div>
-    `).join('');
-}
-
-function closeModal() { document.getElementById('modal').style.display = 'none'; }
-
-// 初始化
-window.onload = render;
-</script>
-
+        window.render = render;
+    </script>
 </body>
 </html>
