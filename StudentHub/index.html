@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Student Hub - Ultimate</title>
+    <title>StudyNest Student Hub - Ultimate v2</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -176,11 +176,9 @@
         }
 
         function render() {
-            // 1. Overall - 維持原貌
             document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th class="desktop-only">生日</th><th>宿管/電話</th></tr>` + 
                 students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td>${getNameWithIcon(s)}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td class="desktop-only">${s.birthday || '-'}</td><td>${s.hmName || '-'}<br><small>${s.hmPhone || '-'}</small></td></tr>`).join('') + `</table>`;
 
-            // 2. 接送住宿 - 強大新分頁
             const mFilter = document.getElementById('transport-month-filter').value;
             const ongoing = transports.filter(t => t.status !== 'done');
             let history = transports.filter(t => t.status === 'done');
@@ -198,14 +196,14 @@
 
             const trRow = (t) => {
                 const s = students.find(x => x.id === t.studentId) || {name:'-'};
+                const stayIcon = t.hasStay ? ' <span title="包含住宿">🏠</span>' : ''; 
                 const g = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
                 const n = (parseFloat(t.transNet)||0) + ((parseFloat(t.stayNet)||0) * (parseInt(t.nights)||0));
-                return `<tr><td><small>${t.time.substring(5,16).replace('T',' ')}</small><br><b>${t.type}</b></td><td>${s.name}<br><small>${t.loc}</small></td><td>G:£${g}<br><small style="color:gray;">(N:£${n})</small></td><td><select onchange="updateTrStatus('${t.id}', this.value)" class="status-badge status-${t.status}"><option value="todo" ${t.status==='todo'?'selected':''}>待辦</option><option value="doing" ${t.status==='doing'?'selected':''}>預約</option><option value="done" ${t.status==='done'?'selected':''}>完成</option></select></td><td><button class="btn btn-mini btn-success" onclick="copyTrMsg('${t.id}')">📋</button></td></tr>`;
+                return `<tr><td><small>${t.time.substring(5,16).replace('T',' ')}</small><br><b>${t.type}${stayIcon}</b></td><td>${s.name}<br><small>${t.loc}</small></td><td>G:£${g}<br><small style="color:gray;">(N:£${n})</small></td><td><select onchange="updateTrStatus('${t.id}', this.value)" class="status-badge status-${t.status}"><option value="todo" ${t.status==='todo'?'selected':''}>待辦</option><option value="doing" ${t.status==='doing'?'selected':''}>預約</option><option value="done" ${t.status==='done'?'selected':''}>完成</option></select></td><td><button class="btn btn-mini btn-success" onclick="copyTrMsg('${t.id}')">📋</button></td></tr>`;
             };
             document.getElementById('transport-active-list').innerHTML = `<table><tr><th>任務/時間</th><th>學生/目的地</th><th>帳目</th><th>狀態</th><th>通知</th></tr>` + ongoing.map(trRow).join('') + `</table>`;
             document.getElementById('transport-history-list').innerHTML = `<table><tr><th>任務/時間</th><th>學生/目的地</th><th>帳目</th><th>狀態</th><th>通知</th></tr>` + history.map(trRow).join('') + `</table>`;
 
-            // 3. 互動與零用錢 - 維持原貌
             const intFilterVal = document.getElementById('filter-int-student') ? document.getElementById('filter-int-student').value : 'all';
             const filteredInts = intFilterVal === 'all' ? interactions : interactions.filter(i => i.studentId === intFilterVal);
             document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th class="desktop-only">內容詳情</th><th>刪</th></tr>` + 
@@ -216,7 +214,6 @@
             document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th class="desktop-only">分類備註</th><th>刪</th></tr>` + 
                 filteredMons.map(m => `<tr class="clickable" onclick="showGenericDetail('money', '${m.id}')"><td>${m.date.substring(5)}</td><td>${getPureName(m.studentId)}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td class="desktop-only"><small>${m.cat}: ${m.detail||''}</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('money','${m.id}')">X</button></td></tr>`).join('') + `</table>`;
 
-            // 4. 下拉選單與 Summary
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             ['tr-student', 'int-student-select', 'money-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
             ['filter-int-student', 'filter-money-student'].forEach(id => { const el = document.getElementById(id); const cur = el.value; el.innerHTML = `<option value="all">全部學生</option>` + opts; el.value = cur || 'all'; });
@@ -315,6 +312,7 @@
         document.getElementById('money-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), cat: document.getElementById('money-cat').value, detail: document.getElementById('money-detail').value }); closeModal('money-modal'); e.target.reset(); };
 
         window.render = render;
+        startSync();
     </script>
 </body>
 </html>
