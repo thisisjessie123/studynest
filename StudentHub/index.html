@@ -3,239 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Hub - Professional Edition</title>
+    <title>StudyNest Hub - Ultimate Complete Edition</title>
     <style>
         :root { 
-            --primary: #667eea; 
-            --secondary: #764ba2; 
-            --bg: #f4f7f6; 
-            --danger: #e53e3e; 
-            --warning: #d69e2e; 
-            --success: #38a169; 
+            --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; 
+            --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; 
         }
-        
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; line-height: 1.6; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 15px; display: none; }
         
-        body { 
-            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; 
-            background: var(--bg); 
-            color: #333; 
-            line-height: 1.6;
-        }
-
-        .container { 
-            max-width: 1300px; 
-            margin: 0 auto; 
-            padding: 15px; 
-            display: none; 
-        }
-
-        .header { 
-            background: white; 
-            padding: 15px 25px; 
-            border-radius: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .nav-tabs { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 20px; 
-            flex-wrap: wrap; 
-        }
-
-        .tab { 
-            padding: 12px 20px; 
-            background: #e2e8f0; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 0.95rem; 
-            transition: 0.3s;
-            color: #64748b;
-        }
-
+        /* 頂部導航與標頭 */
+        .header { background: white; padding: 15px 25px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 12px 20px; background: #e2e8f0; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.95rem; transition: 0.3s; color: #64748b; }
         .tab:hover { background: #cbd5e1; }
         .tab.active { background: var(--primary); color: white; }
-
         .content-section { display: none; animation: fadeIn 0.3s; }
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 50/50 頂部操作區佈局 */
-        .action-bar { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 20px; 
-            align-items: stretch; 
-        }
+        /* 50/50 佈局設計 */
+        .action-bar { display: flex; gap: 15px; margin-bottom: 20px; align-items: stretch; }
+        .action-bar .btn { flex: 1; height: 50px; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+        .action-bar select, .action-bar input { flex: 1; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid #cbd5e1; background: white; font-size: 1rem; outline: none; }
 
-        .action-bar .btn { 
-            flex: 1; 
-            height: 50px; 
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-bar select, .action-bar input { 
-            flex: 1; 
-            height: 50px; 
-            padding: 0 15px; 
-            border-radius: 12px; 
-            border: 1px solid #cbd5e1; 
-            background: white; 
-            font-size: 1rem; 
-            outline: none;
-        }
-
-        .table-container { 
-            background: white; 
-            border-radius: 15px; 
-            overflow-x: auto; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-            margin-bottom: 20px; 
-            border: 1px solid #f1f5f9;
-        }
-
+        /* 表格樣式 */
+        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #f1f5f9; }
         table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px 15px; text-align: left; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        th { background: #f8fafc; color: var(--primary); font-weight: 700; white-space: nowrap; }
+        tr.clickable:hover { background: #f8fafc; cursor: pointer; }
+        .text-detail { font-size: 0.8rem; color: #64748b; line-height: 1.4; max-width: 300px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        th, td { 
-            padding: 15px 15px; 
-            text-align: left; 
-            border-bottom: 1px solid #f1f5f9; 
-            font-size: 0.9rem; 
-        }
-
-        th { 
-            background: #f8fafc; 
-            color: var(--primary); 
-            font-weight: 700;
-            white-space: nowrap; 
-        }
-
-        tr.clickable:hover { 
-            background: #f8fafc; 
-            cursor: pointer; 
-        }
-
-        .text-detail { 
-            font-size: 0.8rem; 
-            color: #64748b; 
-            line-height: 1.4; 
-            max-width: 300px; 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .inline-select { 
-            padding: 6px 10px; 
-            border-radius: 8px; 
-            font-size: 0.85rem; 
-            font-weight: bold; 
-            border: 1px solid #cbd5e1; 
-            cursor: pointer;
-        }
-        
+        /* 狀態標籤 */
+        .inline-select { padding: 6px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; border: 1px solid #cbd5e1; cursor: pointer; }
         .status-todo { background: #fff5f5 !important; color: #c53030; border-color: #feb2b2; }
         .status-booked { background: #fffaf0 !important; color: #975a16; border-color: #fbd38d; }
         .status-done { background: #f0fff4 !important; color: #276749; border-color: #9ae6b4; }
         
-        .profit-card { 
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            color: white; 
-            padding: 20px; 
-            border-radius: 16px; 
-            margin-bottom: 20px; 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            text-align: center; 
-            gap: 15px; 
-            box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3);
-        }
-        
+        /* 利潤卡片 */
+        .profit-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 15px; box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3); }
         .profit-card div span { display: block; font-size: 0.8rem; opacity: 0.9; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
         .profit-card div b { font-size: 1.4rem; font-weight: 800; }
 
         /* 住宿滿版區塊 */
-        #hm-fields { 
-            grid-column: span 2; 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
-            background: #eff6ff; 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: 1px solid #bfdbfe; 
-            margin-top: 10px; 
-        }
+        #hm-fields { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #eff6ff; padding: 20px; border-radius: 12px; border: 1px solid #bfdbfe; margin-top: 10px; }
+        .notice-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; grid-column: span 2; }
 
-        .notice-box { 
-            background: #fff5f5; 
-            border: 1px solid #feb2b2; 
-            color: #c53030; 
-            padding: 12px; 
-            border-radius: 8px; 
-            margin-bottom: 10px; 
-            font-weight: bold; 
-            font-size: 0.9rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            grid-column: span 2; 
-        }
-
-        /* Modal Styles */
+        /* Modal 彈窗 */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; backdrop-filter: blur(3px); }
-        .modal-content { 
-            background:white; 
-            width:95%; 
-            max-width:800px; 
-            margin:40px auto; 
-            padding:30px; 
-            border-radius: 20px; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-            position: relative; 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
+        .modal-content { background:white; width:95%; max-width:800px; margin:40px auto; padding:30px; border-radius: 20px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .close-btn { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.2s; }
         .close-btn:hover { color: #333; }
 
+        /* 表單元素 */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group.full { grid-column: span 2; }
         .form-group label { display:block; margin-bottom:6px; font-weight:600; color: #475569; font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea { 
-            width:100%; 
-            padding: 10px 12px; 
-            border:1px solid #e2e8f0; 
-            border-radius:8px; 
-            font-size: 0.95rem; 
-            transition: 0.2s;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding: 10px 12px; border:1px solid #e2e8f0; border-radius:8px; font-size: 0.95rem; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
         .compact-checkbox { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: #475569; }
         .compact-checkbox input { width: 18px; height: 18px; margin: 0; cursor: pointer; }
 
+        /* 按鈕 */
         .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; letter-spacing: 0.5px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #5a67d8; }
+        .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: #5a67d8; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-mini { padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; }
-        
         .alert-low { background: #fed7d7; color: #c53030; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; }
     </style>
 </head>
@@ -245,7 +81,7 @@
         <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
             <h1 style="color:var(--primary); margin-bottom:20px; font-size: 1.8rem;">StudyNest Hub</h1>
             <p style="color:#666; margin-bottom:20px; font-size:0.9rem;">Professional Guardianship System</p>
-            <input type="password" id="admin-password" placeholder="Enter Access Key" style="width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ddd; font-size:1rem;">
+            <input type="password" id="admin-password" placeholder="Access Key" style="width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ddd; font-size:1rem;">
             <button class="btn btn-primary" style="width:100%; padding: 14px; font-size:1rem;" onclick="login()">Sign In</button>
         </div>
     </div>
@@ -303,18 +139,9 @@
             </div>
             
             <div id="monthly-profit-card" class="profit-card">
-                <div>
-                    <span>總成本 (Net)</span>
-                    <b id="total-month-cost">£0.00</b>
-                </div>
-                <div>
-                    <span>總營收 (Quote)</span>
-                    <b id="total-month-quote">£0.00</b>
-                </div>
-                <div style="background: rgba(255,255,255,0.2); border-radius: 12px;">
-                    <span>預計利潤</span>
-                    <b id="total-month-profit">£0.00</b>
-                </div>
+                <div><span>總成本 (Net)</span><b id="total-month-cost">£0.00</b></div>
+                <div><span>總營收 (Quote)</span><b id="total-month-quote">£0.00</b></div>
+                <div style="background: rgba(255,255,255,0.2); border-radius: 12px;"><span>預計利潤</span><b id="total-month-profit">£0.00</b></div>
             </div>
 
             <h4 style="margin: 0 0 15px 5px; color:#475569;">📅 近期行程 (待辦/預約)</h4>
@@ -342,7 +169,7 @@
                     <div class="form-group"><label>年級</label><input type="text" id="s-grade"></div>
                     <div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div>
                     <div class="form-group"><label>學生電話</label><input type="text" id="s-phone"></div>
-                    <div class="form-group full"><label>英國地址</label><input type="text" id="s-address"></div>
+                    <div class="form-group full"><label>宿舍名 or 英國地址</label><input type="text" id="s-address"></div>
                     <div class="form-group"><label>父親姓名</label><input type="text" id="s-father-name"></div>
                     <div class="form-group"><label>父親電話</label><input type="text" id="s-father-phone"></div>
                     <div class="form-group"><label>母親姓名</label><input type="text" id="s-mother-name"></div>
@@ -515,7 +342,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase Configuration
+        // Firebase 設定
         const firebaseConfig = { 
             apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", 
             authDomain: "studynest-database.firebaseapp.com", 
@@ -527,49 +354,46 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Global State
         let students = [], interactions = [], money = [], holidays = [];
 
-        // 啟動資料同步
         function startSync() {
-            // 注意：這裡我們 "不" 預設填入月份，讓使用者自己選，避免資料被隱藏
-            // document.getElementById('filter-h-month').value = ... (移除)
-
-            // 1. 學生資料同步
+            // 學生資料
             onSnapshot(collection(db, "students"), s => { 
                 students = s.docs.map(d => ({id:d.id, ...d.data()}));
-                updateDropdowns(); // 更新選單選項
+                updateDropdowns(); 
                 renderAll(); 
             });
 
-            // 2. 其他資料同步
+            // 互動資料 (更新後重新計算概況)
             onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { 
                 interactions = s.docs.map(d => ({id:d.id, ...d.data()})); 
-                renderInteractionTable(); 
+                renderInteractionTable();
+                renderSummary(); // 修正：資料到位後立即刷新概況
             });
             
+            // 零用錢資料 (更新後重新計算概況)
             onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { 
                 money = s.docs.map(d => ({id:d.id, ...d.data()})); 
                 renderMoneyTable(); 
+                renderSummary(); // 修正：資料到位後立即刷新概況
             });
             
+            // 假期資料
             onSnapshot(query(collection(db, "holidays"), orderBy("datetime", "asc")), s => { 
                 holidays = s.docs.map(d => ({id:d.id, ...d.data()})); 
                 renderHolidayTable(); 
             });
         }
 
-        // 核心修復：更新下拉選單但不重置已選的值
+        // 下拉選單更新 (不影響當前選擇)
         function updateDropdowns() {
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             
-            // 更新表單內的選單
             ['int-student-select', 'money-student-select', 'h-student-select'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.innerHTML = opts;
             });
 
-            // 更新篩選器 (保留目前選擇)
             ['filter-int-student', 'filter-money-student'].forEach(id => {
                 const el = document.getElementById(id);
                 const currentVal = el.value;
@@ -580,23 +404,22 @@
 
         const getToday = () => new Date().toISOString().split('T')[0];
 
-        // 渲染主控台
         function renderAll() {
+            // 更新：學生列表新增宿管電話
             document.getElementById('student-list-table').innerHTML = `<table>
-                <tr><th>姓名</th><th>學校</th><th>電話</th><th>宿管</th></tr>` + 
+                <tr><th>姓名</th><th>學校</th><th>學生電話</th><th>宿管/電話</th></tr>` + 
                 students.map(s => `
                     <tr class="clickable" onclick="showStudentDetail('${s.id}')">
                         <td><b>${s.name}</b>${s.medical?' 💊':''}<br><small>${s.engName||''}</small></td>
                         <td>${s.school || '-'}</td>
                         <td>${s.phone || '-'}</td>
-                        <td>${s.hmName || '-'}</td>
+                        <td>${s.hmName || '-'}<br><small style="color:#666;">${s.hmPhone || ''}</small></td>
                     </tr>`).join('') + `</table>`;
             
             renderSummary();
-            // 其他表格由各自的 Snapshot 觸發渲染
         }
 
-        // 渲染互動表 (含篩選)
+        // 互動紀錄表格
         window.renderInteractionTable = () => {
             const filterVal = document.getElementById('filter-int-student').value;
             const list = filterVal === 'all' ? interactions : interactions.filter(i => i.studentId === filterVal);
@@ -614,7 +437,7 @@
                 }).join('') + `</table></div>`;
         };
 
-        // 渲染財務表 (含篩選)
+        // 零用錢表格
         window.renderMoneyTable = () => {
             const filterVal = document.getElementById('filter-money-student').value;
             const list = filterVal === 'all' ? money : money.filter(m => m.studentId === filterVal);
@@ -634,12 +457,11 @@
                 }).join('') + `</table></div>`;
         };
 
-        // 渲染假期表 (含月份利潤計算)
+        // 假期表格
         window.renderHolidayTable = () => {
             const hMonth = document.getElementById('filter-h-month').value;
             let list = holidays;
             
-            // 如果選了月份，就篩選；沒選就顯示全部
             if(hMonth) {
                 list = holidays.filter(h => h.datetime.startsWith(hMonth));
             }
@@ -647,7 +469,6 @@
             const active = list.filter(h => h.status !== '🟢 完成');
             const history = list.filter(h => h.status === '🟢 完成').sort((a,b) => b.datetime.localeCompare(a.datetime));
 
-            // 計算利潤
             let tCost = 0, tQuote = 0;
             
             const rowHtml = (h, isHist) => {
@@ -704,21 +525,16 @@
                 ${history.map(h => rowHtml(h, true)).join('')}
             </table></div>`;
             
-            // 更新卡片數字
             document.getElementById('total-month-cost').innerText = `£${tCost.toFixed(2)}`;
             document.getElementById('total-month-quote').innerText = `£${tQuote.toFixed(2)}`;
             document.getElementById('total-month-profit').innerText = `£${(tQuote - tCost).toFixed(2)}`;
         };
 
-        // 更新假期狀態 & 自動扣款邏輯
         window.updateHField = async (id, field, value) => {
             await updateDoc(doc(db, "holidays", id), { [field]: value });
-            
-            // 如果狀態變成「完成」，詢問是否自動扣款
             if(field === 'status' && value === '🟢 完成') {
                 const h = holidays.find(x => x.id === id);
                 const total = (h.transQuote||0) + ((h.stayQuote||0) * (parseInt(h.nights)||0));
-                
                 if(confirm(`行程已完成！\n是否從學生零用錢帳戶自動扣款 £${total.toFixed(2)}？`)) {
                     await addDoc(collection(db, "money"), { 
                         studentId: h.studentId, 
@@ -732,12 +548,11 @@
             }
         };
 
-        // 介面連動邏輯
         window.toggleParentOption = (loc) => { 
             if(loc.includes('Other')) { 
                 document.getElementById('h-use-hm').checked = true; 
                 toggleHm(true); 
-                document.getElementById('h-stay-quote').value = 0; // 家長自付，報價為0
+                document.getElementById('h-stay-quote').value = 0; 
             } 
         };
         
@@ -754,7 +569,6 @@
             }
         };
 
-        // 編輯假期
         window.editHoliday = (id) => {
             const h = holidays.find(x => x.id === id);
             openModal('holiday-modal');
@@ -767,7 +581,6 @@
                           'stayCost','stayQuote','payment'];
             
             fields.forEach(f => {
-                // 將駝峰轉為 -分隔 (e.g., driverName -> driver-name)
                 const elId = 'h-' + f.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
                 const el = document.getElementById(elId);
                 if(el) el.value = h[f] || '';
@@ -777,11 +590,9 @@
             toggleHm(h.useHm);
         };
 
-        // 提交假期表單
         document.getElementById('holiday-form').onsubmit = async (e) => {
             e.preventDefault();
             const sid = document.getElementById('h-student-select').value;
-            
             const data = { 
                 studentId: sid, 
                 task: document.getElementById('h-task').value, 
@@ -803,57 +614,30 @@
                 stayQuote: parseFloat(document.getElementById('h-stay-quote').value || 0), 
                 payment: document.getElementById('h-payment').value 
             };
-
             const hid = document.getElementById('h-id').value;
-            
-            if(hid) {
-                await updateDoc(doc(db, "holidays", hid), data);
-            } else {
-                await addDoc(collection(db, "holidays"), data);
-            }
-            
-            closeModal('holiday-modal'); 
-            e.target.reset();
+            if(hid) { await updateDoc(doc(db, "holidays", hid), data); } else { await addDoc(collection(db, "holidays"), data); }
+            closeModal('holiday-modal'); e.target.reset();
         };
 
-        // 互動紀錄表單邏輯
-        window.toggleSyncMoney = (show) => { 
-            document.getElementById('sync-money-fields').style.display = show ? 'grid' : 'none'; 
-        };
+        window.toggleSyncMoney = (show) => { document.getElementById('sync-money-fields').style.display = show ? 'grid' : 'none'; };
 
         document.getElementById('interaction-form').onsubmit = async (e) => {
             e.preventDefault();
             const sid = document.getElementById('int-student-select').value;
             const content = document.getElementById('int-content').value;
             const date = document.getElementById('int-date').value;
-            
-            await addDoc(collection(db, "interactions"), { 
-                studentId: sid, 
-                date, 
-                type: document.getElementById('int-type').value, 
-                content 
-            });
-
-            // 如果勾選同步支出
+            await addDoc(collection(db, "interactions"), { studentId: sid, date, type: document.getElementById('int-type').value, content });
             if(document.getElementById('int-sync-money').checked) {
                 const amount = parseFloat(document.getElementById('int-sync-amount').value || 0);
                 if(amount > 0) {
                     await addDoc(collection(db, "money"), { 
-                        studentId: sid, 
-                        date, 
-                        type: "支出", 
-                        amount, 
-                        cat: document.getElementById('int-sync-cat').value, 
-                        detail: "(同步) " + content.substring(0, 30) 
+                        studentId: sid, date, type: "支出", amount, cat: document.getElementById('int-sync-cat').value, detail: "(同步) " + content.substring(0, 30) 
                     });
                 }
             }
-            closeModal('interaction-modal'); 
-            e.target.reset(); 
-            toggleSyncMoney(false);
+            closeModal('interaction-modal'); e.target.reset(); toggleSyncMoney(false);
         };
 
-        // 零用錢表單邏輯
         document.getElementById('money-form').onsubmit = async (e) => { 
             e.preventDefault(); 
             await addDoc(collection(db, "money"), { 
@@ -864,20 +648,15 @@
                 cat: document.getElementById('money-cat').value, 
                 detail: document.getElementById('money-detail').value 
             }); 
-            closeModal('money-modal'); 
-            e.target.reset(); 
+            closeModal('money-modal'); e.target.reset(); 
         };
 
-        // 學生詳情與刪除
         window.showStudentDetail = (id) => {
             const s = students.find(x => x.id === id);
             if(!s) return;
-            
             document.getElementById('det-name').innerHTML = `<b>${s.name}</b> <small style="color:#666">(${s.engName||'-'})</small>`;
-            
             document.getElementById('det-edit-btn').onclick = () => editStudent(id);
             document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
-            
             document.getElementById('student-detail-body').innerHTML = `
                 <div style="background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:10px;">
                     <h4 style="color:var(--primary); margin-bottom:5px;">🏫 學校資訊</h4>
@@ -894,159 +673,70 @@
                     <p><strong>過敏/醫療:</strong> ${s.medical||'無'}</p>
                     <p><strong>其他備註:</strong> ${s.notes||'無'}</p>
                 </div>`;
-            
-            document.getElementById('det-delete-btn').onclick = async () => { 
-                if(confirm(`⚠️ 警告：這將永久刪除 [${s.name}] 的所有資料！\n確定要執行嗎？`)) { 
-                    await deleteDoc(doc(db, "students", id)); 
-                    closeModal('student-detail-modal'); 
-                } 
-            };
-            
+            document.getElementById('det-delete-btn').onclick = async () => { if(confirm(`⚠️ 警告：這將永久刪除 [${s.name}] 的所有資料！\n確定要執行嗎？`)) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
             openModal('student-detail-modal');
         };
 
-        // 編輯學生
         window.editStudent = (id) => {
             const s = students.find(x => x.id === id);
             closeModal('student-detail-modal');
             document.getElementById('student-modal-title').innerText = "編輯學生檔案";
             document.getElementById('s-id').value = s.id;
-            
-            const fields = ['name','engName','school','grade','birthday','phone','address',
-                          'fatherName','fatherPhone','motherName','motherPhone',
-                          'hmName','hmPhone','hmEmail','medical','notes'];
-            
+            const fields = ['name','engName','school','grade','birthday','phone','address','fatherName','fatherPhone','motherName','motherPhone','hmName','hmPhone','hmEmail','medical','notes'];
             fields.forEach(f => {
                 const elId = 's-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`);
                 const el = document.getElementById(elId);
                 if(el) el.value = s[f] || '';
             });
-            
             openModal('student-modal');
         };
 
-        // 提交學生表單
         document.getElementById('student-form').onsubmit = async e => {
             e.preventDefault();
             const sid = document.getElementById('s-id').value;
             const data = {};
-            
-            const fields = ['name','engName','school','grade','birthday','phone','address',
-                          'fatherName','fatherPhone','motherName','motherPhone',
-                          'hmName','hmPhone','hmEmail','medical','notes'];
-            
+            const fields = ['name','engName','school','grade','birthday','phone','address','fatherName','fatherPhone','motherName','motherPhone','hmName','hmPhone','hmEmail','medical','notes'];
             fields.forEach(f => {
                 const elId = 's-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`);
                 data[f] = document.getElementById(elId).value;
             });
-
-            if(sid) {
-                await updateDoc(doc(db, "students", sid), data);
-            } else {
-                await addDoc(collection(db, "students"), data);
-            }
-            
-            closeModal('student-modal'); 
-            e.target.reset();
+            if(sid) { await updateDoc(doc(db, "students", sid), data); } else { await addDoc(collection(db, "students"), data); }
+            closeModal('student-modal'); e.target.reset();
         };
 
-        // 下載 CSV 報告
         window.downloadPersonalFullReport = (id) => {
             const s = students.find(x => x.id === id);
             const sInts = interactions.filter(i => i.studentId === id);
             const sMons = money.filter(m => m.studentId === id);
-            
-            let rows = [
-                [`${s.name} - 完整個人報告`],
-                [`產生日期: ${getToday()}`],
-                [],
-                ["=== 💬 互動紀錄 ==="],
-                ["日期", "類型", "內容"]
-            ];
-            
+            let rows = [[`${s.name} - 完整個人報告`], [`產生日期: ${getToday()}`], [], ["=== 💬 互動紀錄 ==="], ["日期", "類型", "內容"]];
             sInts.forEach(i => rows.push([i.date, i.type, i.content]));
-            
             rows.push([], ["=== 💰 零用錢帳目 ==="], ["日期", "金額", "分類", "備註"]);
-            
             sMons.forEach(m => rows.push([m.date, m.amount, m.cat, m.detail]));
-            
             let csv = "\uFEFF" + rows.map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(",")).join("\n");
-            
             const link = document.createElement("a");
             link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-            link.download = `${s.name}_Full_Report.csv`; 
-            link.click();
+            link.download = `${s.name}_Full_Report.csv`; link.click();
         };
 
-        // 概況摘要
         function renderSummary() {
+            if(money.length === 0 && interactions.length === 0 && students.length > 0) return;
             let h = `<table><tr><th>學生</th><th>目前餘額</th><th>本月互動</th></tr>`;
-            
             students.forEach(s => {
-                const bal = money.filter(m => m.studentId === s.id)
-                                 .reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
-                
+                const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
                 const thisMonth = getToday().substring(0,7);
                 const cnt = interactions.filter(i => i.studentId === s.id && i.date.startsWith(thisMonth)).length;
-                
-                // 餘額過低警示
-                const balDisplay = bal < 300 
-                    ? `<span class="alert-low">£${bal.toFixed(2)}</span>` 
-                    : `<span style="color:var(--success); font-weight:bold;">£${bal.toFixed(2)}</span>`;
-                
-                h += `<tr>
-                    <td><b>${s.name}</b></td>
-                    <td>${balDisplay}</td>
-                    <td>${cnt} 次</td>
-                </tr>`;
+                const balDisplay = bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `<span style="color:var(--success); font-weight:bold;">£${bal.toFixed(2)}</span>`;
+                h += `<tr><td><b>${s.name}</b></td><td>${balDisplay}</td><td>${cnt} 次</td></tr>`;
             });
             document.getElementById('summary-table').innerHTML = h + `</table>`;
         }
 
-        // 系統功能
-        window.login = () => { 
-            if(document.getElementById('admin-password').value === '1234') { 
-                document.getElementById('login-screen').style.display='none'; 
-                document.getElementById('main-container').style.display='block'; 
-                startSync(); 
-            } else { 
-                alert("存取金鑰錯誤 (Access Key Error)"); 
-            } 
-        };
-
-        window.switchTab = tab => { 
-            document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); 
-            // 透過 event.target 找到點擊的 tab (如果是子元素點擊，往上找)
-            const clickedTab = event.target.closest('.tab');
-            if(clickedTab) clickedTab.classList.add('active');
-            
-            document.getElementById(tab+'-section').classList.add('active'); 
-        };
-
-        window.openModal = id => { 
-            document.getElementById(id).style.display='block'; 
-            
-            // 如果是新增模式 (id為空)，重置表單
-            if(id === 'holiday-modal' && !document.getElementById('h-id').value) {
-                 document.getElementById('holiday-form').reset(); 
-                 toggleHm(false); 
-            }
-            if(id === 'interaction-modal') document.getElementById('int-date').value = getToday();
-            if(id === 'money-modal') document.getElementById('money-date').value = getToday();
-        };
-
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else { alert("存取金鑰錯誤 (Access Key Error)"); } };
+        window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); const clickedTab = event.target.closest('.tab'); if(clickedTab) clickedTab.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
+        window.openModal = id => { document.getElementById(id).style.display='block'; if(id === 'holiday-modal' && !document.getElementById('h-id').value) { document.getElementById('holiday-form').reset(); toggleHm(false); } if(id === 'interaction-modal') document.getElementById('int-date').value = getToday(); if(id === 'money-modal') document.getElementById('money-date').value = getToday(); };
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
-        
-        window.deleteEntry = async (col, id) => { 
-            if(confirm('確定要刪除這筆紀錄嗎？此動作無法復原。')) {
-                await deleteDoc(doc(db, col, id)); 
-            }
-        };
-
+        window.deleteEntry = async (col, id) => { if(confirm('確定要刪除這筆紀錄嗎？此動作無法復原。')) { await deleteDoc(doc(db, col, id)); } };
         window.onkeydown = e => { if(e.key==='Escape') document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); };
-
-        // 自動登入 (開發測試用，正式版可移除)
-        // login(); 
     </script>
 </body>
 </html>
