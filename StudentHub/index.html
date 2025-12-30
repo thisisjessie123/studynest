@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Hub - Premium Financial Edition</title>
+    <title>StudyNest Hub - Ultimate Full Edition</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,25 +15,30 @@
         .tab.active { background: var(--primary); color: white; }
         .content-section { display: none; }
         .content-section.active { display: block; }
+        
+        /* 50/50 頂部佈局：左邊新增，右邊篩選 */
+        .action-bar { display: flex; gap: 10px; margin-bottom: 15px; align-items: stretch; }
+        .action-bar .btn { flex: 1; white-space: nowrap; }
+        .action-bar .filter-select { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ddd; font-size: 0.95rem; background: white; outline: none; }
+
         .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.85rem; }
         th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
         
-        /* 雙排字顯示 */
         .text-detail { font-size: 0.75rem; color: #666; line-height: 1.3; max-width: 280px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; }
         .inline-select { padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; border: 1px solid #ddd; cursor: pointer; }
         .status-todo { background: #fff5f5 !important; color: #c53030; }
         .status-booked { background: #fffaf0 !important; color: #975a16; }
         .status-done { background: #f0fff4 !important; color: #276749; }
         
-        /* 月度財務統計卡 */
+        /* 月度利潤結算卡 */
         .profit-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 10px; box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3); }
         .profit-card div span { display: block; font-size: 0.7rem; opacity: 0.9; margin-bottom: 4px; }
-        .profit-card div b { font-size: 1.1rem; letter-spacing: 0.5px; }
+        .profit-card div b { font-size: 1rem; letter-spacing: 0.5px; }
 
-        /* 住宿資訊框 - 滿版設計修正 */
+        /* 住宿區塊真滿版設計 */
         #hm-fields { 
             grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
             background: #f0f4ff; padding: 15px; border-radius: 12px; border: 1px solid #c3dafe; width: 100%; margin-top: 5px; 
@@ -52,7 +57,8 @@
         .form-group.full { grid-column: span 2; width: 100%; }
         .form-group label { display:block; margin-bottom:3px; font-weight:bold; color: #555; font-size: 0.8rem; }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 0.95rem; }
-        
+        .form-group input:disabled { background: #f0f0f0; cursor: not-allowed; }
+
         .compact-checkbox { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: #555; font-size: 0.85rem; width: fit-content; }
         .compact-checkbox input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
 
@@ -61,6 +67,8 @@
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-mini { padding: 4px 6px; font-size: 0.7rem; border-radius: 5px; }
+        .badge-mini { background: #eee; padding: 2px 4px; border-radius: 4px; font-size: 0.7rem; }
+        .alert-low { color: white; background: var(--danger); padding: 3px 6px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
     </style>
 </head>
 <body>
@@ -93,19 +101,25 @@
         </section>
 
         <section id="interactions-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px;"><select id="filter-int-student" style="flex:1; border-radius:8px; padding:8px;" onchange="render()"></select><button class="btn btn-primary" onclick="openModal('interaction-modal')">+</button></div>
+            <div class="action-bar">
+                <button class="btn btn-primary" onclick="openModal('interaction-modal')">+ 新增互動紀錄</button>
+                <select id="filter-int-student" class="filter-select" onchange="render()"></select>
+            </div>
             <div id="interaction-list"></div>
         </section>
 
         <section id="money-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px;"><select id="filter-money-student" style="flex:1; border-radius:8px; padding:8px;" onchange="render()"></select><button class="btn btn-primary" onclick="openModal('money-modal')">+</button></div>
+            <div class="action-bar">
+                <button class="btn btn-primary" onclick="openModal('money-modal')">+ 新增學生帳目</button>
+                <select id="filter-money-student" class="filter-select" onchange="render()"></select>
+            </div>
             <div id="money-list"></div>
         </section>
 
         <section id="holiday-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px;">
-                <input type="month" id="filter-h-month" style="flex:1; border-radius:8px; padding:8px; border:1px solid #ddd;" onchange="renderHolidays()">
-                <button class="btn btn-primary" onclick="openModal('holiday-modal')">+ 新增行程</button>
+            <div class="action-bar">
+                <button class="btn btn-primary" onclick="openModal('holiday-modal')">+ 新增安排行程</button>
+                <input type="month" id="filter-h-month" class="filter-select" onchange="renderHolidays()">
             </div>
             
             <div id="monthly-profit-card" class="profit-card">
@@ -126,7 +140,7 @@
     <div id="student-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('student-modal')">&times;</span>
-            <h3 id="student-modal-title">新增學生檔案</h3>
+            <h3 id="student-modal-title">學生檔案詳細資料</h3>
             <form id="student-form">
                 <input type="hidden" id="s-id">
                 <div class="form-grid">
@@ -152,19 +166,65 @@
         </div>
     </div>
 
-    <div id="student-detail-modal" class="modal">
+    <div id="holiday-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('student-detail-modal')">&times;</span>
-            <h2 id="det-name" style="color:var(--primary); font-size: 1.4rem;"></h2>
-            <div style="display:flex; gap:10px; margin: 15px 0;">
-                <button id="det-edit-btn" class="btn btn-primary" style="flex:1;">📝 編輯更新</button>
-                <button id="det-download-btn" class="btn btn-success" style="flex:1;">📥 個人報告</button>
-            </div>
-            <div id="student-detail-body"></div>
-            <div style="margin-top:20px; display:flex; gap:10px;">
-                <button class="btn" style="flex:1; background:#eee;" onclick="closeModal('student-detail-modal')">關閉</button>
-                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除檔案</button>
-            </div>
+            <span class="close-btn" onclick="closeModal('holiday-modal')">&times;</span>
+            <h3 id="holiday-modal-title">行程與交通/住宿安排</h3>
+            <form id="holiday-form">
+                <input type="hidden" id="h-id">
+                <div class="form-grid">
+                    <div class="form-group"><label>學生</label><select id="h-student-select"></select></div>
+                    <div class="form-group"><label>任務類型</label>
+                        <select id="h-task">
+                            <option value="✈️接送機">✈️ 接送機</option>
+                            <option value="🏠假期住宿">🏠 假期住宿</option>
+                            <option value="🚌離校">🚌 離校</option>
+                            <option value="🏫返校">🏫 返校</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>日期時間</label><input type="datetime-local" id="h-datetime" required></div>
+                    <div class="form-group"><label>行程狀態</label><select id="h-status"><option value="🔴 待辦">🔴 待辦</option><option value="🟡 預約">🟡 預約</option><option value="🟢 完成">🟢 完成</option></select></div>
+                    <div class="form-group"><label>航班 (Flight No.)</label><input type="text" id="h-flight"></div>
+                    <div class="form-group"><label>目的地 (Destination)</label>
+                        <select id="h-location" onchange="toggleParentOption(this.value)">
+                            <option value="LHR">LHR Airport</option>
+                            <option value="LGW">LGW Airport</option>
+                            <option value="住家">Home (住家)</option>
+                            <option value="學校">School (學校)</option>
+                            <option value="Other (家長安排外宿)">Other (家長安排外宿)</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>司機姓名</label><input type="text" id="h-driver-name"></div>
+                    <div class="form-group"><label>司機電話</label><input type="text" id="h-driver-phone"></div>
+                    <div class="form-group"><label>交通成本 (£)</label><input type="number" id="h-trans-cost" step="0.01"></div>
+                    <div class="form-group"><label>交通報價 (£)</label><input type="number" id="h-trans-quote" step="0.01"></div>
+                    
+                    <div class="form-group full">
+                        <label class="compact-checkbox"><input type="checkbox" id="h-use-hm" onchange="toggleHm(this.checked)"> 安排住宿資訊?</label>
+                    </div>
+
+                    <div id="hm-fields" style="display:none;">
+                        <div class="notice-box">⚠️ 重要：若為家長私人安排住宿，請確認簽回「免責同意書」。</div>
+                        <div class="form-group"><label>住宿地點/住家名稱</label><input type="text" id="h-hm-name"></div>
+                        <div class="form-group"><label>聯絡電話</label><input type="text" id="h-hm-phone"></div>
+                        <div class="form-group full"><label>詳細地址 (Address)</label><input type="text" id="h-hm-address"></div>
+                        <div class="form-group"><label>Check-out Date</label><input type="date" id="h-checkout" onchange="calcNights()"></div>
+                        <div class="form-group"><label>入住晚數</label><input type="text" id="h-nights" readonly></div>
+                        <div class="form-group"><label>每晚成本 (£)</label><input type="number" id="h-stay-cost" step="0.01"></div>
+                        <div class="form-group"><label>每晚報價 (£)</label><input type="number" id="h-stay-quote" step="0.01"></div>
+                    </div>
+                    
+                    <div class="form-group full"><label>支付狀態</label>
+                        <select id="h-payment">
+                            <option value="待付 ⏳">待付 ⏳</option>
+                            <option value="已付司機 🚗">已付司機 🚗</option>
+                            <option value="已付住家 🏠">已付住家 🏠</option>
+                            <option value="已結清 ✅">已結清 ✅</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:15px;">儲存安排</button>
+            </form>
         </div>
     </div>
 
@@ -183,8 +243,8 @@
                     </select>
                 </div>
                 <div class="form-group"><label>詳情</label><textarea id="int-content" rows="4" required></textarea></div>
-                <div class="form-group full" style="background:#fff5f5; padding:12px; border-radius:10px; margin-top:10px; border:1px dashed var(--danger);">
-                    <label class="compact-checkbox" style="color:var(--danger);"><input type="checkbox" id="int-sync-money" onchange="toggleSyncMoney(this.checked)"> 💸 同步新增支出紀錄</label>
+                <div class="form-group full" style="background:#fff5f5; padding:10px; border-radius:10px; margin-top:10px; border:1px dashed var(--danger);">
+                    <label class="compact-checkbox" style="color:var(--danger);"><input type="checkbox" id="int-sync-money" onchange="toggleSyncMoney(this.checked)"> 💸 同步新增支出</label>
                     <div id="sync-money-fields" style="display:none; margin-top:10px;" class="form-grid">
                         <div class="form-group"><label>金額 (£)</label><input type="number" id="int-sync-amount" step="0.01"></div>
                         <div class="form-group"><label>分類</label>
@@ -225,67 +285,19 @@
         </div>
     </div>
 
-    <div id="holiday-modal" class="modal">
+    <div id="student-detail-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('holiday-modal')">&times;</span>
-            <h3 id="holiday-modal-title">假期與交通/住宿安排</h3>
-            <form id="holiday-form">
-                <input type="hidden" id="h-id">
-                <div class="form-grid">
-                    <div class="form-group"><label>學生</label><select id="h-student-select"></select></div>
-                    <div class="form-group"><label>任務類型</label>
-                        <select id="h-task">
-                            <option value="✈️接送機">✈️ 接送機</option>
-                            <option value="🏠假期住宿">🏠 假期住宿</option>
-                            <option value="🚌離校">🚌 離校</option>
-                            <option value="🏫返校">🏫 返校</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>日期時間</label><input type="datetime-local" id="h-datetime" required></div>
-                    <div class="form-group"><label>狀態</label><select id="h-status"><option value="🔴 待辦">🔴 待辦</option><option value="🟡 預約">🟡 預約</option><option value="🟢 完成">🟢 完成</option></select></div>
-                    
-                    <div class="form-group"><label>航班 (Flight No.)</label><input type="text" id="h-flight"></div>
-                    <div class="form-group"><label>目的地 (Destination)</label>
-                        <select id="h-location" onchange="toggleParentOption(this.value)">
-                            <option value="LHR">LHR Airport</option>
-                            <option value="LGW">LGW Airport</option>
-                            <option value="住家">Home (住家)</option>
-                            <option value="學校">School (學校)</option>
-                            <option value="Other (家長安排外宿)">Other (家長安排外宿)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group"><label>司機姓名</label><input type="text" id="h-driver-name"></div>
-                    <div class="form-group"><label>司機電話</label><input type="text" id="h-driver-phone"></div>
-                    <div class="form-group"><label>交通成本 (£)</label><input type="number" id="h-trans-cost" step="0.01"></div>
-                    <div class="form-group"><label>交通報價 (£)</label><input type="number" id="h-trans-quote" step="0.01"></div>
-                    
-                    <div class="form-group full">
-                        <label class="compact-checkbox"><input type="checkbox" id="h-use-hm" onchange="toggleHm(this.checked)"> 填寫住宿資訊?</label>
-                    </div>
-
-                    <div id="hm-fields" style="display:none;">
-                        <div class="notice-box">⚠️ 重要：若為家長私人安排住宿，請確認簽回「免責同意書」。</div>
-                        <div class="form-group"><label>住宿地點/住家名稱</label><input type="text" id="h-hm-name"></div>
-                        <div class="form-group"><label>聯絡電話</label><input type="text" id="h-hm-phone"></div>
-                        <div class="form-group full"><label>詳細地址 (Full Address)</label><input type="text" id="h-hm-address"></div>
-                        <div class="form-group"><label>Check-out Date</label><input type="date" id="h-checkout" onchange="calcNights()"></div>
-                        <div class="form-group"><label>入住晚數</label><input type="text" id="h-nights" readonly></div>
-                        <div class="form-group"><label>每晚成本 (£)</label><input type="number" id="h-stay-cost" step="0.01"></div>
-                        <div class="form-group"><label>每晚報價 (£)</label><input type="number" id="h-stay-quote" step="0.01"></div>
-                    </div>
-                    
-                    <div class="form-group full"><label>支付狀態</label>
-                        <select id="h-payment">
-                            <option value="待付 ⏳">待付 ⏳</option>
-                            <option value="已付司機 🚗">已付司機 🚗</option>
-                            <option value="已付住家 🏠">已付住家 🏠</option>
-                            <option value="已結清 ✅">已結清 ✅</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:15px;">儲存此安排紀錄</button>
-            </form>
+            <span class="close-btn" onclick="closeModal('student-detail-modal')">&times;</span>
+            <h2 id="det-name" style="color:var(--primary); font-size: 1.4rem;"></h2>
+            <div style="display:flex; gap:10px; margin: 15px 0;">
+                <button id="det-edit-btn" class="btn btn-primary" style="flex:1;">📝 編輯更新</button>
+                <button id="det-download-btn" class="btn btn-success" style="flex:1;">📥 個人報告</button>
+            </div>
+            <div id="student-detail-body"></div>
+            <div style="margin-top:20px; display:flex; gap:10px;">
+                <button class="btn" style="flex:1; background:#eee;" onclick="closeModal('student-detail-modal')">關閉</button>
+                <button id="det-delete-btn" class="btn btn-danger" style="flex:1">永久刪除</button>
+            </div>
         </div>
     </div>
 
@@ -293,7 +305,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase Config - 確保此部分不被覆蓋
         const firebaseConfig = { apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", authDomain: "studynest-database.firebaseapp.com", projectId: "studynest-database", storageBucket: "studynest-database.firebasestorage.app", messagingSenderId: "193833641970", appId: "1:193833641970:web:e2063f85f52c4bc891ed6b" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -301,6 +312,10 @@
         let students = [], interactions = [], money = [], holidays = [];
 
         function startSync() {
+            // 初始化月份篩選器
+            const now = new Date();
+            document.getElementById('filter-h-month').value = now.toISOString().substring(0, 7);
+
             onSnapshot(collection(db, "students"), s => { students = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { interactions = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { money = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
@@ -309,38 +324,41 @@
 
         const getToday = () => new Date().toISOString().split('T')[0];
 
+        // 核心渲染修復：確保 Filter 的值不被清空
         function render() {
             // 學生列表
-            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th>宿管/電話</th></tr>` + 
-                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?' 💊':''}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td>${s.hmName || '-'}<br><small>${s.hmPhone || '-'}</small></td></tr>`).join('') + `</table>`;
+            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th>宿管</th></tr>` + 
+                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?' 💊':''}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td>${s.hmName || '-'}</td></tr>`).join('') + `</table>`;
             
-            // 互動列表 (40字雙行)
-            const intF = document.getElementById('filter-int-student')?.value || 'all';
-            const filteredInts = intF === 'all' ? interactions : interactions.filter(i => i.studentId === intF);
-            document.getElementById('interaction-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>方式/日期</th><th>互動詳情 (40字)</th><th>刪</th></tr>` + 
-                filteredInts.map(i => {
-                    const s = students.find(x => x.id === i.studentId) || {};
-                    return `<tr><td><b>${s.name || '-'}</b></td><td><span class="badge-mini" style="background:#eee; padding:2px 4px; border-radius:4px; font-size:0.7rem;">${i.type}</span><br><small>${i.date}</small></td><td><div class="text-detail">${i.content}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('interactions','${i.id}')">X</button></td></tr>`;
-                }).join('') + `</table></div>`;
+            // 互動列表 (修復篩選抓取)
+            const intSel = document.getElementById('filter-int-student');
+            const intVal = intSel.value || 'all';
+            const filteredInts = intVal === 'all' ? interactions : interactions.filter(i => i.studentId === intVal);
+            document.getElementById('interaction-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>日期</th><th>詳情</th><th>刪</th></tr>` + 
+                filteredInts.map(i => `<tr><td><b>${(students.find(x=>x.id===i.studentId)||{}).name || '-'}</b><br><small>${i.date}</small></td><td><div class="text-detail">${i.content}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('interactions','${i.id}')">X</button></td></tr>`).join('') + `</table></div>`;
             
-            // 零用錢列表
-            const monF = document.getElementById('filter-money-student')?.value || 'all';
-            const filteredMons = monF === 'all' ? money : money.filter(m => m.studentId === monF);
-            document.getElementById('money-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>金額/日期</th><th>分類備註</th><th>刪</th></tr>` + 
-                filteredMons.map(m => {
-                    const s = students.find(x => x.id === m.studentId) || {};
-                    return `<tr><td><b>${s.name || '-'}</b></td><td><span style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</span><br><small>${m.date}</small></td><td><div class="text-detail"><b>${m.cat}:</b> ${m.detail || '無'}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('money','${m.id}')">X</button></td></tr>`;
-                }).join('') + `</table></div>`;
+            // 零用錢列表 (修復篩選抓取)
+            const monSel = document.getElementById('filter-money-student');
+            const monVal = monSel.value || 'all';
+            const filteredMons = monVal === 'all' ? money : money.filter(m => m.studentId === monVal);
+            document.getElementById('money-list').innerHTML = `<div class="table-container"><table><tr><th>學生</th><th>金額</th><th>備註</th><th>刪</th></tr>` + 
+                filteredMons.map(m => `<tr><td><b>${(students.find(x=>x.id===m.studentId)||{}).name || '-'}</b><br><small>${m.date}</small></td><td><span style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</span></td><td><div class="text-detail"><b>${m.cat}:</b> ${m.detail || '無'}</div></td><td><button class="btn btn-danger btn-mini" onclick="deleteEntry('money','${m.id}')">X</button></td></tr>`).join('') + `</table></div>`;
             
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             ['int-student-select', 'money-student-select', 'h-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
-            ['filter-int-student', 'filter-money-student'].forEach(id => { const el = document.getElementById(id); const cur = el.value; el.innerHTML = `<option value="all">全部學生</option>` + opts; el.value = cur || 'all'; });
+            ['filter-int-student', 'filter-money-student'].forEach(id => { 
+                const el = document.getElementById(id);
+                const cur = el.value;
+                el.innerHTML = `<option value="all">全部學生篩選</option>` + opts;
+                if(cur) el.value = cur;
+            });
             renderSummary();
+            renderHolidays();
         }
 
-        // 月度結算與雙層財務列表
+        // 月份篩選、利潤統計與雙層財務列表
         function renderHolidays() {
-            const hMonth = document.getElementById('filter-h-month').value;
+            const hMonth = document.getElementById('filter-h-month')?.value;
             let filteredH = holidays;
             if(hMonth) filteredH = holidays.filter(h => h.datetime.startsWith(hMonth));
 
@@ -348,8 +366,7 @@
             const hist = filteredH.filter(h => h.status === '🟢 完成').sort((a,b) => b.datetime.localeCompare(a.datetime));
 
             let totalC = 0, totalQ = 0;
-
-            const tableHtml = (list, isHist) => `<div class="table-container"><table><tr><th>任務</th><th>學生/時間/目的地</th><th>狀態</th><th>支付</th>${isHist ? '<th>收支明細 (Net/Quote)</th>' : '<th>刪</th>'}</tr>` + 
+            const tableHtml = (list, isHist) => `<div class="table-container"><table><tr><th>任務</th><th>學生/時間/目的地</th><th>狀態</th><th>支付</th>${isHist ? '<th>收支明細</th>' : '<th>刪</th>'}</tr>` + 
                 list.map(h => {
                     const s = students.find(x => x.id === h.studentId) || {};
                     const sClass = h.status.includes('待辦') ? 'status-todo' : (h.status.includes('預約') ? 'status-booked' : 'status-done');
@@ -357,10 +374,9 @@
                     const cT = (h.transCost||0) + ((h.stayCost||0)*nights);
                     const qT = (h.transQuote||0) + ((h.stayQuote||0)*nights);
                     if(isHist) { totalC += cT; totalQ += qT; }
-
                     return `<tr>
                         <td class="clickable" onclick="editHoliday('${h.id}')">${h.task}${h.useHm ? ' 🏠' : ''}</td>
-                        <td><b>${s.name || '-'}</b><br><small>${h.datetime.replace('T',' ')}</small><br><div class="text-detail">✈️:${h.flight||'-'} | 📍:${h.location||'-'}</div></td>
+                        <td><b>${s.name || '-'}</b><br><small>${h.datetime.replace('T',' ')}</small><br><div class="text-detail">📍:${h.location||'-'}</div></td>
                         <td><select class="inline-select ${sClass}" onchange="updateHField('${h.id}', 'status', this.value)">
                             <option value="🔴 待辦" ${h.status==='🔴 待辦'?'selected':''}>🔴 待辦</option>
                             <option value="🟡 預約" ${h.status==='🟡 預約'?'selected':''}>🟡 預約</option>
@@ -378,7 +394,6 @@
 
             document.getElementById('holiday-list-active').innerHTML = tableHtml(act, false);
             document.getElementById('holiday-list-history').innerHTML = tableHtml(hist, true);
-            
             document.getElementById('total-month-cost').innerText = `£${totalC.toFixed(2)}`;
             document.getElementById('total-month-quote').innerText = `£${totalQ.toFixed(2)}`;
             document.getElementById('total-month-profit').innerText = `£${(totalQ - totalC).toFixed(2)}`;
@@ -388,10 +403,9 @@
             const h = holidays.find(x => x.id === id);
             await updateDoc(doc(db, "holidays", id), { [field]: value });
             if (field === 'status' && value === '🟢 完成') {
-                const nights = parseInt(h.nights) || 0;
-                const total = (h.transQuote || 0) + ((h.stayQuote || 0) * nights);
+                const total = (h.transQuote || 0) + ((h.stayQuote || 0) * (parseInt(h.nights) || 0));
                 if (confirm(`行程已完成！是否自動扣款 £${total.toFixed(2)}？`)) {
-                    await addDoc(collection(db, "money"), { studentId: h.studentId, date: getToday(), type: "支出", amount: total, cat: "🏠 生活交通", detail: `${h.task} ${h.datetime.split('T')[0]} ✈️:${h.flight||'-'} 📍:${h.location||'-'}` });
+                    await addDoc(collection(db, "money"), { studentId: h.studentId, date: getToday(), type: "支出", amount: total, cat: "🏠 生活交通", detail: `${h.task} ${h.datetime.split('T')[0]} ✈️:${h.flight||'-'}` });
                 }
             }
         };
@@ -420,23 +434,17 @@
         document.getElementById('holiday-form').onsubmit = async (e) => {
             e.preventDefault();
             const sid = document.getElementById('h-student-select').value;
-            const data = {
-                studentId: sid, task: document.getElementById('h-task').value, datetime: document.getElementById('h-datetime').value,
-                status: document.getElementById('h-status').value, flight: document.getElementById('h-flight').value, location: document.getElementById('h-location').value,
-                driverName: document.getElementById('h-driver-name').value, driverPhone: document.getElementById('h-driver-phone').value,
-                transCost: parseFloat(document.getElementById('h-trans-cost').value || 0), transQuote: parseFloat(document.getElementById('h-trans-quote').value || 0),
-                useHm: document.getElementById('h-use-hm').checked, hmName: document.getElementById('h-hm-name').value, hmPhone: document.getElementById('h-hm-phone').value,
-                hmAddress: document.getElementById('h-hm-address').value, checkout: document.getElementById('h-checkout').value, nights: document.getElementById('h-nights').value,
-                stayCost: parseFloat(document.getElementById('h-stay-cost').value || 0), stayQuote: parseFloat(document.getElementById('h-stay-quote').value || 0),
-                payment: document.getElementById('h-payment').value
+            const data = { 
+                studentId: sid, task: document.getElementById('h-task').value, datetime: document.getElementById('h-datetime').value, 
+                status: document.getElementById('h-status').value, flight: document.getElementById('h-flight').value, location: document.getElementById('h-location').value, 
+                driverName: document.getElementById('h-driver-name').value, driverPhone: document.getElementById('h-driver-phone').value, 
+                transCost: parseFloat(document.getElementById('h-trans-cost').value || 0), transQuote: parseFloat(document.getElementById('h-trans-quote').value || 0), 
+                useHm: document.getElementById('h-use-hm').checked, hmName: document.getElementById('h-hm-name').value, hmPhone: document.getElementById('h-hm-phone').value, 
+                hmAddress: document.getElementById('h-hm-address').value, checkout: document.getElementById('h-checkout').value, nights: document.getElementById('h-nights').value, 
+                stayCost: parseFloat(document.getElementById('h-stay-cost').value || 0), stayQuote: parseFloat(document.getElementById('h-stay-quote').value || 0), payment: document.getElementById('h-payment').value 
             };
             const hid = document.getElementById('h-id').value;
             hid ? await updateDoc(doc(db, "holidays", hid), data) : await addDoc(collection(db, "holidays"), data);
-            if(!hid) {
-                let note = `假期：${data.task}, 目的地：${data.location}`;
-                if(data.location.includes('家長安排')) note += " (需免責書)";
-                await addDoc(collection(db, "interactions"), { studentId: sid, date: getToday(), type: "🤝 其他協助", content: note });
-            }
             closeModal('holiday-modal'); e.target.reset(); document.getElementById('h-id').value = "";
         };
 
@@ -445,10 +453,11 @@
             e.preventDefault();
             const sid = document.getElementById('int-student-select').value;
             const content = document.getElementById('int-content').value;
-            await addDoc(collection(db, "interactions"), { studentId: sid, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content });
+            const date = document.getElementById('int-date').value;
+            await addDoc(collection(db, "interactions"), { studentId: sid, date, type: document.getElementById('int-type').value, content });
             if(document.getElementById('int-sync-money').checked) {
                 const amount = parseFloat(document.getElementById('int-sync-amount').value || 0);
-                if(amount > 0) await addDoc(collection(db, "money"), { studentId: sid, date: document.getElementById('int-date').value, type: "支出", amount, cat: document.getElementById('int-sync-cat').value, detail: "(同步) " + content.substring(0, 30) });
+                if(amount > 0) await addDoc(collection(db, "money"), { studentId: sid, date, type: "支出", amount, cat: document.getElementById('int-sync-cat').value, detail: "(同步) " + content.substring(0, 30) });
             }
             closeModal('interaction-modal'); e.target.reset(); toggleSyncMoney(false);
         };
@@ -464,9 +473,9 @@
             document.getElementById('student-detail-body').innerHTML = `
                 <div class="info-card"><h4>學校信息</h4><p>學校: ${s.school||'-'} (${s.grade||'-'})</p><p>地址: ${s.address||'-'}</p></div>
                 <div class="info-card"><h4>家長</h4><p>父: ${s.fatherName||'-'} (${s.fatherPhone||'-'})</p><p>母: ${s.motherName||'-'} (${s.motherPhone||'-'})</p></div>
-                <div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} | ${s.hmPhone||'-'}</p></div>
+                <div class="info-card"><h4>宿管</h4><p>${s.hmName||'-'} | ${s.hmPhone||'-'} | ${s.hmEmail||'-'}</p></div>
                 <div class="info-card"><h4>提醒</h4><p style="color:red;">💊 ${s.medical||'無'}</p><p>備註: ${s.notes||'-'}</p></div>`;
-            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除此學生檔案？')) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
+            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除？')) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
             openModal('student-detail-modal');
         };
 
@@ -520,9 +529,14 @@
             document.getElementById('summary-table').innerHTML = h + `</table>`;
         }
 
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Error"); };
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("密碼錯誤"); };
         window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        window.openModal = id => { document.getElementById(id).style.display='block'; };
+        window.openModal = id => { 
+            document.getElementById(id).style.display='block'; 
+            if(id === 'holiday-modal' && !document.getElementById('h-id').value) { document.getElementById('holiday-form').reset(); toggleHm(false); }
+            if(id === 'interaction-modal') document.getElementById('int-date').value = getToday();
+            if(id === 'money-modal') document.getElementById('money-date').value = getToday();
+        };
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
         window.deleteEntry = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
         window.onkeydown = e => { if(e.key==='Escape') document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); };
