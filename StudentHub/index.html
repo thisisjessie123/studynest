@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Student Hub</title>
+    <title>StudyNest Hub Ultimate Pro</title>
     <style>
         :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,80 +12,74 @@
         .container { max-width: 1300px; margin: 0 auto; padding: 15px; display: none; }
         .header { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .nav-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-        .tab { padding: 10px 18px; background: #ddd; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        .tab { padding: 10px 18px; background: #ddd; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
         .tab.active { background: var(--primary); color: white; }
         .content-section { display: none; }
         .content-section.active { display: block; }
 
-        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.85rem; }
         th { background: #f8f9fa; color: var(--primary); white-space: nowrap; }
         tr.clickable:hover { background: #f0f4ff; cursor: pointer; }
 
-        /* 藥丸樣式 */
+        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: none; cursor: pointer; }
+        .status-todo { background: #fed7d7; color: #c53030; }
+        .status-doing { background: #feebc8; color: #975a16; }
+        .status-done { background: #c6f6d5; color: #2f855a; }
+
         .med-icon { background: #f0f2ff; border: 1px solid #c3dafe; padding: 2px 6px; border-radius: 20px; font-size: 0.8rem; margin-left: 4px; display: inline-flex; align-items: center; }
+        .desktop-only { display: table-cell; }
+        @media screen and (max-width: 768px) { .desktop-only { display: none !important; } }
 
-        /* 電腦 vs 手機 差別顯示邏輯 */
-        .desktop-only { display: table-cell; } /* 預設顯示 (電腦) */
-
-        @media screen and (max-width: 768px) {
-            .container { padding: 10px; }
-            th, td { padding: 10px 6px; font-size: 0.82rem; }
-            .tab { padding: 8px 12px; font-size: 0.8rem; }
-            td { word-break: break-all; white-space: normal !important; }
-            
-            /* 手機版隱藏「備註/詳情」欄位 */
-            .desktop-only { display: none !important; }
-        }
-
-        /* 彈窗等其餘樣式維持 */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
-        .modal-content { background:white; width:95%; max-width:700px; margin:20px auto; padding:20px; border-radius:20px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .info-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px; }
-        .info-card h4 { color: var(--primary); margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .modal-content { background:white; width:95%; max-width:750px; margin:15px auto; padding:20px; border-radius:20px; max-height: 95vh; overflow-y: auto; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .form-group.full { grid-column: span 2; }
-        .form-group label { display:block; margin-bottom:5px; font-weight:bold; color: #555; font-size: 0.85rem; }
-        .form-group input, .form-group select, .form-group textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; font-size: 1rem; }
+        .form-group label { display:block; margin-bottom:4px; font-weight:bold; color: #555; font-size: 0.8rem; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size: 1rem; }
+        
+        .price-section { background: #f0f4ff; padding: 12px; border-radius: 12px; border: 1px solid #d0daff; margin-top: 10px; }
         .btn { padding: 10px 16px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-mini { padding: 4px 6px; font-size: 0.7rem; border-radius: 5px; }
-        .badge-info { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; }
-        .alert-low { color: white; background: var(--danger); padding: 3px 6px; border-radius: 6px; font-weight: bold; font-size: 0.75rem; }
+        .btn-mini { padding: 4px 8px; font-size: 0.75rem; }
+
         .login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
         .login-box { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 380px; }
-        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; font-size: 1rem; }
+        
+        .section-title { font-size: 1rem; color: var(--secondary); margin: 15px 0 10px 0; border-left: 4px solid var(--secondary); padding-left: 10px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="login-container">
         <div class="login-box">
-            <h1 style="color:var(--primary); margin-bottom:15px; font-size: 1.6rem;">StudyNest Hub</h1>
-            <select id="login-role" class="login-input">
+            <h1 style="color:var(--primary); margin-bottom:15px;">StudyNest Hub</h1>
+            <select id="login-role" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
                 <option value="Admin">Admin</option>
                 <option value="Manager">Manager</option>
                 <option value="Guardian">Guardian</option>
             </select>
-            <input type="password" id="admin-password" placeholder="Access Key" class="login-input">
+            <input type="password" id="admin-password" placeholder="Access Key" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
             <button class="btn btn-primary" style="width:100%;" onclick="login()">Sign In</button>
         </div>
     </div>
 
     <div id="main-container" class="container">
         <div class="header">
-            <div><h2 style="font-size: 1.2rem;">StudyNest Hub</h2><span id="user-display" style="color:var(--secondary); font-weight:bold; font-size: 0.8rem;"></span></div>
+            <div><h2>StudyNest Ultimate</h2><small id="user-display" style="color:var(--secondary); font-weight:bold;"></small></div>
             <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="location.reload()">Logout</button>
         </div>
 
         <div class="nav-tabs">
-            <div class="tab active" onclick="switchTab('students')">學生管理 (Overall)</div>
+            <div class="tab active" onclick="switchTab('students')">學生管理</div>
             <div class="tab" onclick="switchTab('interactions')">互動紀錄</div>
-            <div class="tab" onclick="switchTab('money')">零用錢明細</div>
-            <div class="tab" onclick="switchTab('summary')">學生概況</div> </div>
+            <div class="tab" onclick="switchTab('money')">零用錢</div>
+            <div class="tab" onclick="switchTab('transport')">接送與住宿</div>
+            <div class="tab" onclick="switchTab('summary')">概況</div>
+        </div>
 
         <section id="students-section" class="content-section active">
             <button class="btn btn-primary" style="margin-bottom:15px; width: 100%;" onclick="openModal('student-modal')">+ 新增學生檔案</button>
@@ -93,19 +87,26 @@
         </section>
 
         <section id="interactions-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
-                <select id="filter-int-student" style="padding: 8px; border-radius: 8px; flex: 1;" onchange="render()"></select>
-                <button class="btn btn-primary" onclick="openModal('interaction-modal')">+</button>
-            </div>
+            <div style="margin-bottom:10px; display:flex; gap:8px;"><select id="filter-int-student" style="flex:1; padding:8px; border-radius:8px;" onchange="render()"></select><button class="btn btn-primary" onclick="openModal('interaction-modal')">+</button></div>
             <div class="table-container" id="interaction-list"></div>
         </section>
 
         <section id="money-section" class="content-section">
-            <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
-                <select id="filter-money-student" style="padding: 8px; border-radius: 8px; flex: 1;" onchange="render()"></select>
-                <button class="btn btn-primary" onclick="openModal('money-modal')">+</button>
-            </div>
+            <div style="margin-bottom:10px; display:flex; gap:8px;"><select id="filter-money-student" style="flex:1; padding:8px; border-radius:8px;" onchange="render()"></select><button class="btn btn-primary" onclick="openModal('money-modal')">+</button></div>
             <div class="table-container" id="money-list"></div>
+        </section>
+
+        <section id="transport-section" class="content-section">
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <button class="btn btn-primary" style="flex:2" onclick="openModal('transport-modal')">+ 登記行程</button>
+                <select id="transport-month-filter" style="flex:1; border-radius:10px; border:1px solid #ddd;" onchange="render()">
+                    <option value="all">所有月份</option>
+                </select>
+            </div>
+            <div class="section-title">進行中行程 (Ongoing)</div>
+            <div class="table-container" id="transport-active-list"></div>
+            <div class="section-title">歷史行程 (Completed)</div>
+            <div class="table-container" id="transport-history-list"></div>
         </section>
 
         <section id="summary-section" class="content-section">
@@ -113,136 +114,182 @@
         </section>
     </div>
 
-    <div id="student-modal" class="modal"><div class="modal-content"><h3>新增學生檔案</h3><form id="student-form"><div class="form-grid"><div class="form-group"><label>中文姓名*</label><input type="text" id="s-name" required></div><div class="form-group"><label>英文名</label><input type="text" id="s-eng-name"></div><div class="form-group"><label>就讀學校</label><input type="text" id="s-school"></div><div class="form-group"><label>年級</label><input type="text" id="s-grade"></div><div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div><div class="form-group"><label>學生電話</label><input type="text" id="s-phone"></div><div class="form-group full"><label>英國地址</label><input type="text" id="s-address"></div><div class="form-group"><label>父親姓名</label><input type="text" id="s-father-name"></div><div class="form-group"><label>父親電話</label><input type="text" id="s-father-phone"></div><div class="form-group"><label>母親姓名</label><input type="text" id="s-mother-name"></div><div class="form-group"><label>母親電話</label><input type="text" id="s-mother-phone"></div><div class="form-group"><label>宿管姓名</label><input type="text" id="s-hm-name"></div><div class="form-group"><label>宿管電話</label><input type="text" id="s-hm-phone"></div><div class="form-group full"><label>宿管 Email</label><input type="email" id="s-hm-email"></div><div class="form-group full"><label>醫療/過敏提醒 (填寫後名字旁會顯示 💊)</label><textarea id="s-medical" rows="2"></textarea></div><div class="form-group full"><label>備註事項</label><textarea id="s-notes" rows="2"></textarea></div></div><button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">儲存檔案</button><button type="button" class="btn" style="width:100%; margin-top:5px;" onclick="closeModal('student-modal')">取消</button></form></div></div>
-    <div id="student-detail-modal" class="modal"><div class="modal-content"><h2 id="det-name" style="color:var(--primary); font-size: 1.4rem; margin-bottom:10px;"></h2><button id="det-download-btn" class="btn btn-success" style="width:100%; margin-bottom:15px;">📥 下載個人完整報告</button><div id="student-detail-body"></div><div style="margin-top:20px; display:flex; gap:10px;"><button class="btn" style="flex:1" onclick="closeModal('student-detail-modal')">關閉</button><button id="det-delete-btn" class="btn btn-danger" style="flex:1">刪除檔案</button></div></div></div>
-    <div id="generic-detail-modal" class="modal"><div class="modal-content"><h3 id="generic-title" style="font-size: 1.2rem;"></h3><div id="generic-body"></div><button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="closeModal('generic-detail-modal')">關閉</button></div></div>
-    <div id="interaction-modal" class="modal"><div class="modal-content"><h3>新增互動紀錄</h3><form id="interaction-form"><div class="form-group"><label>學生</label><select id="int-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="int-date" required></div><div class="form-group"><label>方式</label><select id="int-type"><option value="當面交流">當面交流</option><option value="電話溝通">電話溝通</option><option value="線上聯繫">線上聯繫</option><option value="家訪校訪">家訪校訪</option><option value="其他方式">其他方式</option></select></div><div class="form-group"><label>詳情</label><textarea id="int-content" rows="4" required></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;">儲存</button></form></div></div>
-    <div id="money-modal" class="modal"><div class="modal-content"><h3>新增帳目</h3><form id="money-form"><div class="form-group"><label>學生</label><select id="money-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="money-date" required></div><div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div><div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div><div class="form-group"><label>分類</label><select id="money-cat"><option value="零花收入">零花收入</option><option value="學習相關">學習相關</option><option value="生活娛樂">生活娛樂</option><option value="交通出行">交通出行</option><option value="住宿費用">住宿費用</option><option value="其他支出">其他支出</option></select></div><div class="form-group"><label>備註</label><input type="text" id="money-detail"></div><button type="submit" class="btn btn-primary" style="width:100%;">儲存</button></form></div></div>
+    <div id="transport-modal" class="modal"><div class="modal-content">
+        <h3>登記物流與住宿行程</h3>
+        <form id="transport-form">
+            <div class="form-grid">
+                <div class="form-group"><label>學生</label><select id="tr-student" required></select></div>
+                <div class="form-group"><label>任務類型</label><select id="tr-type" onchange="autoSuggestDest(this.value)">
+                    <option value="接機">接機 (Arrival)</option>
+                    <option value="送機">送機 (Departure)</option>
+                    <option value="出校">出校 (Exeat - Out)</option>
+                    <option value="返校">返校 (Back to School)</option>
+                </select></div>
+                <div class="form-group"><label>目的地 (防呆選取)</label>
+                    <input list="loc-presets" id="tr-loc" placeholder="選取或手動輸入" required>
+                    <datalist id="loc-presets">
+                        <option value="LHR T2">LHR T3</option><option value="LHR T5">LGW</option>
+                        <option value="學校 (School)">Host Family</option>
+                    </datalist>
+                </div>
+                <div class="form-group"><label>行程時間</label><input type="datetime-local" id="tr-time" required></div>
+                <div class="form-group"><label>航班/備註</label><input type="text" id="tr-flight" placeholder="CX251 / 門牌號碼"></div>
+                <div class="form-group"><label>司機姓名</label><input type="text" id="tr-driver"></div>
+                <div class="form-group"><label>司機電話</label><input type="text" id="tr-driver-phone"></div>
+                
+                <div class="form-group full" style="background:#f0f4ff; padding:10px; border-radius:10px;">
+                    <label style="display:inline;"><input type="checkbox" id="tr-has-stay" onchange="toggleStaySection(this.checked)"> <b>此行程包含住宿 (Host Family Stay)</b></label>
+                </div>
+
+                <div id="stay-fields" class="form-group full form-grid" style="display:none; border-left:4px solid var(--primary); padding-left:10px;">
+                    <div class="form-group"><label>退房日期 (Check-out)</label><input type="date" id="tr-checkout" onchange="calcNights()"></div>
+                    <div class="form-group"><label>晚數</label><input type="number" id="tr-nights" readonly style="background:#eee;"></div>
+                    <div class="form-group"><label>住宿成本/晚 (Net) £</label><input type="number" id="tr-stay-net" step="0.01" value="0"></div>
+                    <div class="form-group"><label>住宿報價/晚 (Gross) £</label><input type="number" id="tr-stay-gross" step="0.01" value="0"></div>
+                </div>
+
+                <div class="form-group price-section"><label>交通成本 (Net) £</label><input type="number" id="tr-trans-net" step="0.01" value="0"></div>
+                <div class="form-group price-section"><label>交通報價 (Gross) £</label><input type="number" id="tr-trans-gross" step="0.01" value="0"></div>
+                
+                <div class="form-group"><label>狀態</label><select id="tr-status">
+                    <option value="todo">🔴 待排車</option><option value="doing">🟡 已預約</option><option value="done">🟢 已完成</option>
+                </select></div>
+                <div class="form-group full"><label><input type="checkbox" id="tr-auto-bill" checked> 完成時自動扣款 (Gross)</label></div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">儲存行程</button>
+            <button type="button" class="btn" style="width:100%; margin-top:5px;" onclick="closeModal('transport-modal')">取消</button>
+        </form>
+    </div></div>
+
+    <div id="student-modal" class="modal"><div class="modal-content"><h3>新增完整學生檔案</h3><form id="student-form"><div class="form-grid"><div class="form-group"><label>中文姓名*</label><input type="text" id="s-name" required></div><div class="form-group"><label>英文名</label><input type="text" id="s-eng-name"></div><div class="form-group"><label>就讀學校</label><input type="text" id="s-school"></div><div class="form-group"><label>年級</label><input type="text" id="s-grade"></div><div class="form-group"><label>生日</label><input type="date" id="s-birthday"></div><div class="form-group"><label>學生電話</label><input type="text" id="s-phone"></div><div class="form-group full"><label>醫療過敏提醒 (💊)</label><textarea id="s-medical" rows="2"></textarea></div><div class="form-group full"><label>備註</label><textarea id="s-notes" rows="2"></textarea></div></div><button type="submit" class="btn btn-primary">儲存</button><button type="button" class="btn" onclick="closeModal('student-modal')">取消</button></form></div></div>
+    <div id="student-detail-modal" class="modal"><div class="modal-content"><h2 id="det-name" style="color:var(--primary);"></h2><div id="student-detail-body" style="margin-top:15px;"></div><div style="margin-top:20px; display:flex; gap:10px;"><button class="btn" style="flex:1" onclick="closeModal('student-detail-modal')">關閉</button><button id="det-delete-btn" class="btn btn-danger" style="flex:1">刪除</button></div></div></div>
+    <div id="interaction-modal" class="modal"><div class="modal-content"><h3>新增互動紀錄</h3><form id="interaction-form"><div class="form-group"><label>學生</label><select id="int-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="int-date" required></div><div class="form-group"><label>詳情</label><textarea id="int-content" rows="4" required></textarea></div><button type="submit" class="btn btn-primary">儲存</button></form></div></div>
+    <div id="money-modal" class="modal"><div class="modal-content"><h3>新增帳目</h3><form id="money-form"><div class="form-group"><label>學生</label><select id="money-student-select"></select></div><div class="form-group"><label>日期</label><input type="date" id="money-date" required></div><div class="form-group"><label>類型</label><select id="money-type"><option value="支出">支出 (-)</option><option value="收入">收入 (+)</option></select></div><div class="form-group"><label>金額 (£)</label><input type="number" id="money-amount" step="0.01" required></div><div class="form-group"><label>備註</label><input type="text" id="money-detail"></div><button type="submit" class="btn btn-primary">儲存</button></form></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4",
-            authDomain: "studynest-database.firebaseapp.com",
-            projectId: "studynest-database",
-            storageBucket: "studynest-database.firebasestorage.app",
-            messagingSenderId: "193833641970",
-            appId: "1:193833641970:web:e2063f85f52c4bc891ed6b"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", authDomain: "studynest-database.firebaseapp.com", projectId: "studynest-database", appId: "1:193833641970:web:e2063f85f52c4bc891ed6b" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let students = [], interactions = [], money = [];
+        let students = [], interactions = [], money = [], transports = [];
 
         function startSync() {
             onSnapshot(collection(db, "students"), s => { students = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { interactions = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
             onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { money = s.docs.map(d => ({id:d.id, ...d.data()})); render(); });
-        }
-
-        // 只有 Overall 會呼叫這個有 Icon 的版本
-        function getNameWithIcon(student) {
-            const hasMedical = student.medical && student.medical.trim() !== "";
-            return `<b>${student.name}</b>${hasMedical ? '<span class="med-icon">💊</span>' : ''}`;
-        }
-        
-        // 其他頁面只顯示純名字
-        function getPureName(id) {
-            const s = students.find(x => x.id === id);
-            return s ? `<b>${s.name}</b>` : '-';
+            onSnapshot(query(collection(db, "transport"), orderBy("time", "asc")), s => { transports = s.docs.map(d => ({id:d.id, ...d.data()})); updateMonthFilter(); render(); });
         }
 
         function render() {
-            // 1. Overall - 保持藥丸
-            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>電話</th><th class="desktop-only">生日</th><th>宿管/電話</th></tr>` + 
-                students.map(s => `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td>${getNameWithIcon(s)}<br><small>${s.engName||''}</small></td><td>${s.school || '-'}</td><td>${s.phone || '-'}</td><td class="desktop-only">${s.birthday || '-'}</td><td>${s.hmName || '-'}<br><small>${s.hmPhone || '-'}</small></td></tr>`).join('') + `</table>`;
+            // 學生管理
+            document.getElementById('student-list-table').innerHTML = `<table><tr><th>姓名</th><th>學校</th><th>餘額</th></tr>` + 
+                students.map(s => {
+                    const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
+                    return `<tr class="clickable" onclick="showStudentDetail('${s.id}')"><td><b>${s.name}</b>${s.medical?'<span class="med-icon">💊</span>':''}</td><td>${s.school || '-'}</td><td>£${bal.toFixed(2)}</td></tr>`
+                }).join('') + `</table>`;
 
-            // 2. 互動紀錄 - 移除藥丸 + 電腦顯示細節
-            const intFilterVal = document.getElementById('filter-int-student') ? document.getElementById('filter-int-student').value : 'all';
-            const filteredInts = intFilterVal === 'all' ? interactions : interactions.filter(i => i.studentId === intFilterVal);
-            document.getElementById('interaction-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>方式</th><th class="desktop-only">內容詳情</th><th>刪</th></tr>` + 
-                filteredInts.map(i => `<tr class="clickable" onclick="showGenericDetail('interaction', '${i.id}')"><td>${i.date.substring(5)}</td><td>${getPureName(i.studentId)}</td><td><span class="badge-info">${i.type}</span></td><td class="desktop-only"><small>${i.content.substring(0,20)}...</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('interactions','${i.id}')">X</button></td></tr>`).join('') + `</table>`;
+            // 接送管理
+            const mFilter = document.getElementById('transport-month-filter').value;
+            const ongoing = transports.filter(t => t.status !== 'done');
+            let history = transports.filter(t => t.status === 'done');
+            if(mFilter !== 'all') history = history.filter(t => t.time.startsWith(mFilter));
 
-            // 3. 零用錢 - 移除藥丸 + 電腦顯示備註
-            const monFilterVal = document.getElementById('filter-money-student') ? document.getElementById('filter-money-student').value : 'all';
-            const filteredMons = monFilterVal === 'all' ? money : money.filter(m => m.studentId === monFilterVal);
-            document.getElementById('money-list').innerHTML = `<table><tr><th>日期</th><th>學生</th><th>金額</th><th class="desktop-only">分類備註</th><th>刪</th></tr>` + 
-                filteredMons.map(m => `<tr class="clickable" onclick="showGenericDetail('money', '${m.id}')"><td>${m.date.substring(5)}</td><td>${getPureName(m.studentId)}</td><td style="color:${m.type==='收入'?'green':'red'}">£${m.amount}</td><td class="desktop-only"><small>${m.cat}: ${m.detail||''}</small></td><td><button class="btn btn-danger btn-mini" onclick="event.stopPropagation(); deleteRecord('money','${m.id}')">X</button></td></tr>`).join('') + `</table>`;
+            const trRow = (t) => {
+                const s = students.find(x => x.id === t.studentId) || {name:'-'};
+                return `<tr><td><small>${t.time.substring(5,16).replace('T',' ')}</small><br><b>${t.type}</b></td><td>${s.name}<br><small>${t.loc}</small></td><td><a href="tel:${t.driverPhone}">📞</a> ${t.driver || '-'}</td><td><select onchange="updateTrStatus('${t.id}', this.value)" class="status-badge status-${t.status}"><option value="todo" ${t.status==='todo'?'selected':''}>待辦</option><option value="doing" ${t.status==='doing'?'selected':''}>預約</option><option value="done" ${t.status==='done'?'selected':''}>完成</option></select></td><td><button class="btn btn-mini btn-success" onclick="copyTrMsg('${t.id}')">📋</button></td></tr>`;
+            };
+            document.getElementById('transport-active-list').innerHTML = `<table><tr><th>時間/任務</th><th>學生/目的地</th><th>司機</th><th>狀態</th><th>通知</th></tr>` + ongoing.map(trRow).join('') + `</table>`;
+            document.getElementById('transport-history-list').innerHTML = `<table><tr><th>時間/任務</th><th>學生/目的地</th><th>司機</th><th>狀態</th><th>通知</th></tr>` + history.map(trRow).join('') + `</table>`;
 
-            // 4. 下拉選單與 Summary (Summary 移除藥丸)
-            const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            if(document.getElementById('int-student-select')) {
-                document.getElementById('int-student-select').innerHTML = opts;
-                document.getElementById('money-student-select').innerHTML = opts;
-                ['filter-int-student', 'filter-money-student'].forEach(id => { const el = document.getElementById(id); const cur = el.value; el.innerHTML = `<option value="all">全部學生</option>` + opts; el.value = cur || 'all'; });
-            }
+            // 其餘列表更新
+            updateDropdowns();
             renderSummary();
         }
 
+        window.copyTrMsg = (id) => {
+            const t = transports.find(x => x.id === id);
+            const s = students.find(x => x.id === t.studentId);
+            let msg = `📋 StudyNest 行程提醒\n學生：${s.name}\n任務：${t.type}\n時間：${t.time.replace('T', ' ')}\n地點：${t.loc}\n司機：${t.driver || '-'}\n`;
+            if(t.hasStay) msg += `住宿：${t.time.split('T')[0]} 至 ${t.checkout} (共 ${t.nights} 晚)\n`;
+            if(t.type.includes('送機') || t.type.includes('出校')) msg += `\n📢 提醒：請提前 15 分鐘在門口等候司機。請務必檢查護照及私人行李是否帶齊。`;
+            navigator.clipboard.writeText(msg).then(() => alert('訊息已複製！'));
+        };
+
+        window.updateTrStatus = async (id, newStatus) => {
+            const t = transports.find(x => x.id === id);
+            if(newStatus === 'done' && t.status !== 'done' && t.autoBill) {
+                const total = (parseFloat(t.transGross)||0) + ((parseFloat(t.stayGross)||0) * (parseInt(t.nights)||0));
+                if(total > 0 && confirm(`是否扣除家長價共 £${total}？`)) {
+                    await addDoc(collection(db, "money"), { studentId: t.studentId, date: t.time.split('T')[0], type: "支出", amount: total, detail: `${t.type}: ${t.loc}` });
+                }
+            }
+            await updateDoc(doc(db, "transport", id), { status: newStatus });
+        };
+
+        window.toggleStaySection = (show) => { document.getElementById('stay-fields').style.display = show ? 'grid' : 'none'; };
+        window.calcNights = () => {
+            const start = new Date(document.getElementById('tr-time').value.split('T')[0]);
+            const end = new Date(document.getElementById('tr-checkout').value);
+            if(end > start) document.getElementById('tr-nights').value = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+        };
+        window.autoSuggestDest = (type) => { const loc = document.getElementById('tr-loc'); if(type.includes('機')) loc.value = 'LHR T5'; else if(type==='返校') loc.value = '學校 (School)'; };
+
+        // 登入與導覽
+        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else alert("Key Error"); };
+        window.switchTab = (tab) => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
+        window.openModal = id => { document.getElementById(id).style.display='block'; if(id==='transport-modal') document.getElementById('tr-time').value = new Date().toISOString().substring(0,16); };
+        window.closeModal = id => document.getElementById(id).style.display='none';
+
+        function updateDropdowns() {
+            const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            ['tr-student', 'int-student-select', 'money-student-select'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerHTML = opts; });
+        }
+        function updateMonthFilter() {
+            const f = document.getElementById('transport-month-filter');
+            const m = [...new Set(transports.filter(t=>t.status==='done').map(t => t.time.substring(0, 7)))].sort().reverse();
+            const cur = f.value;
+            f.innerHTML = `<option value="all">所有月份</option>` + m.map(x => `<option value="${x}">${x}</option>`).join('');
+            f.value = cur;
+        }
         function renderSummary() {
-            let html = `<table><tr><th>學生</th><th>餘額</th><th>本月互動</th></tr>`;
+            let h = `<table><tr><th>學生</th><th>餘額</th><th>待辦行程</th></tr>`;
             students.forEach(s => {
                 const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
-                const cnt = interactions.filter(i => i.studentId === s.id && new Date(i.date).getMonth() === new Date().getMonth()).length;
-                html += `<tr><td><b>${s.name}</b></td><td>${bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `£${bal.toFixed(2)}`}</td><td>${cnt} 次</td></tr>`;
+                const tr = transports.filter(t => t.studentId === s.id && t.status !== 'done').length;
+                h += `<tr><td><b>${s.name}</b></td><td>£${bal.toFixed(2)}</td><td>${tr} 件</td></tr>`;
             });
-            document.getElementById('summary-table').innerHTML = html + `</table>`;
+            document.getElementById('summary-table').innerHTML = h + `</table>`;
         }
 
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; document.getElementById('user-display').innerText = "Role: " + document.getElementById('login-role').value; startSync(); } else alert("Error Key"); };
-        window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        window.openModal = id => { document.getElementById(id).style.display='block'; };
-        window.closeModal = id => document.getElementById(id).style.display='none';
-        window.deleteRecord = async (col, id) => { if(confirm('確定刪除？')) await deleteDoc(doc(db, col, id)); };
-
-        window.showStudentDetail = id => {
-            const s = students.find(x => x.id === id);
-            if(!s) return;
-            document.getElementById('det-name').innerHTML = getNameWithIcon(s) + (s.engName ? ` (${s.engName})` : '');
-            document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
-            document.getElementById('student-detail-body').innerHTML = `
-                <div class="info-card"><h4>學校信息</h4><p><b>生日:</b> ${s.birthday || '-'}</p><p><b>學校:</b> ${s.school || '-'}</p><p><b>電話:</b> ${s.phone || '-'}</p><p><b>地址:</b> ${s.address || '-'}</p></div>
-                <div class="info-card"><h4>家長</h4><p>父: ${s.fatherName} (${s.fatherPhone})</p><p>母: ${s.motherName} (${s.motherPhone})</p></div>
-                <div class="info-card"><h4>宿管</h4><p><b>姓名:</b> ${s.hmName} | <b>電話:</b> ${s.hmPhone}</p><p><b>Email:</b> ${s.hmEmail}</p></div>
-                <div class="info-card"><h4>提醒</h4><p style="color:red;"><b>醫療:</b> ${s.medical || '無'}</p><p><b>備註:</b> ${s.notes || '-'}</p></div>`;
-            document.getElementById('det-delete-btn').onclick = async () => { if(confirm('永久刪除？')) await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); };
-            openModal('student-detail-modal');
+        document.getElementById('transport-form').onsubmit = async e => {
+            e.preventDefault();
+            await addDoc(collection(db, "transport"), {
+                studentId: document.getElementById('tr-student').value,
+                type: document.getElementById('tr-type').value,
+                loc: document.getElementById('tr-loc').value,
+                time: document.getElementById('tr-time').value,
+                driver: document.getElementById('tr-driver').value,
+                driverPhone: document.getElementById('tr-driver-phone').value,
+                hasStay: document.getElementById('tr-has-stay').checked,
+                checkout: document.getElementById('tr-checkout').value,
+                nights: document.getElementById('tr-nights').value,
+                stayNet: parseFloat(document.getElementById('tr-stay-net').value)||0,
+                stayGross: parseFloat(document.getElementById('tr-stay-gross').value)||0,
+                transNet: parseFloat(document.getElementById('tr-trans-net').value)||0,
+                transGross: parseFloat(document.getElementById('tr-trans-gross').value)||0,
+                status: document.getElementById('tr-status').value,
+                autoBill: document.getElementById('tr-auto-bill').checked
+            });
+            closeModal('transport-modal'); e.target.reset(); toggleStaySection(false);
         };
 
-        window.showGenericDetail = (mode, id) => {
-            const body = document.getElementById('generic-body');
-            const title = document.getElementById('generic-title');
-            if(mode === 'interaction') {
-                const i = interactions.find(x => x.id === id);
-                title.innerText = "互動詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${i.date}</p><p><b>方式:</b> ${i.type}</p><p style="white-space:pre-wrap; margin-top:10px; line-height:1.4;">${i.content}</p></div>`;
-            } else {
-                const m = money.find(x => x.id === id);
-                title.innerText = "帳目詳情";
-                body.innerHTML = `<div class="info-card"><p><b>日期:</b> ${m.date}</p><p><b>類型:</b> ${m.type} £${m.amount}</p><p><b>分類:</b> ${m.cat}</p><p><b>備註:</b> ${m.detail || '無'}</p></div>`;
-            }
-            openModal('generic-detail-modal');
-        };
-
-        window.downloadPersonalFullReport = id => {
-            const s = students.find(x => x.id === id);
-            const sInts = interactions.filter(i => i.studentId === id);
-            const sMons = money.filter(m => m.studentId === id);
-            let rows = [[`${s.name} 個人報告`],["姓名", s.name],["醫療", s.medical],[""],["=== 互動 ==="],["日期", "方式", "內容"]];
-            sInts.forEach(i => rows.push([i.date, i.type, i.content]));
-            rows.push([""],["=== 帳目 ==="],["日期", "金額", "分類", "備註"]);
-            sMons.forEach(m => rows.push([m.date, `£${m.amount}`, m.cat, m.detail]));
-            let csv = "\uFEFF" + rows.map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(",")).join("\n");
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-            link.download = `${s.name}_Report.csv`; link.click();
-        };
-
-        document.getElementById('student-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "students"), { name: document.getElementById('s-name').value, engName: document.getElementById('s-eng-name').value, school: document.getElementById('s-school').value, grade: document.getElementById('s-grade').value, birthday: document.getElementById('s-birthday').value, phone: document.getElementById('s-phone').value, address: document.getElementById('s-address').value, fatherName: document.getElementById('s-father-name').value, fatherPhone: document.getElementById('s-father-phone').value, motherName: document.getElementById('s-mother-name').value, motherPhone: document.getElementById('s-mother-phone').value, hmName: document.getElementById('s-hm-name').value, hmPhone: document.getElementById('s-hm-phone').value, hmEmail: document.getElementById('s-hm-email').value, medical: document.getElementById('s-medical').value, notes: document.getElementById('s-notes').value }); closeModal('student-modal'); e.target.reset(); };
-        document.getElementById('interaction-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: document.getElementById('int-type').value, content: document.getElementById('int-content').value }); closeModal('interaction-modal'); e.target.reset(); };
-        document.getElementById('money-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), cat: document.getElementById('money-cat').value, detail: document.getElementById('money-detail').value }); closeModal('money-modal'); e.target.reset(); };
+        // 基礎表單
+        document.getElementById('student-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "students"), { name: document.getElementById('s-name').value, school: document.getElementById('s-school').value, phone: document.getElementById('s-phone').value, medical: document.getElementById('s-medical').value }); closeModal('student-modal'); e.target.reset(); };
+        document.getElementById('interaction-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "interactions"), { studentId: document.getElementById('int-student-select').value, date: document.getElementById('int-date').value, type: '互動', content: document.getElementById('int-content').value }); closeModal('interaction-modal'); e.target.reset(); };
+        document.getElementById('money-form').onsubmit = async e => { e.preventDefault(); await addDoc(collection(db, "money"), { studentId: document.getElementById('money-student-select').value, date: document.getElementById('money-date').value, type: document.getElementById('money-type').value, amount: parseFloat(document.getElementById('money-amount').value), detail: document.getElementById('money-detail').value }); closeModal('money-modal'); e.target.reset(); };
 
         window.render = render;
     </script>
