@@ -3,57 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyNest Hub - Ultimate Complete Edition</title>
+    <title>StudyNest Hub - Final Professional Edition</title>
     <style>
         :root { 
-            --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; 
-            --danger: #e53e3e; --warning: #d69e2e; --success: #38a169; 
+            --primary: #667eea; 
+            --secondary: #764ba2; 
+            --bg: #f4f7f6; 
+            --danger: #e53e3e; 
+            --warning: #d69e2e; 
+            --success: #38a169; 
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: #333; line-height: 1.6; }
-        .container { max-width: 1300px; margin: 0 auto; padding: 15px; display: none; }
         
-        /* 頂部導航與標頭 */
-        .header { background: white; padding: 15px 25px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab { padding: 12px 20px; background: #e2e8f0; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.95rem; transition: 0.3s; color: #64748b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; 
+            background: var(--bg); 
+            color: #333; 
+            line-height: 1.6;
+        }
+
+        .container { 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 15px; 
+            display: none; 
+        }
+
+        /* 頂部 Header 與 導航 */
+        .header { 
+            background: white; 
+            padding: 15px 25px; 
+            border-radius: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .nav-tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap; 
+        }
+
+        .tab { 
+            padding: 12px 20px; 
+            background: #e2e8f0; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 0.95rem; 
+            transition: 0.3s;
+            color: #64748b;
+        }
+
         .tab:hover { background: #cbd5e1; }
         .tab.active { background: var(--primary); color: white; }
+
         .content-section { display: none; animation: fadeIn 0.3s; }
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 50/50 佈局設計 */
-        .action-bar { display: flex; gap: 15px; margin-bottom: 20px; align-items: stretch; }
-        .action-bar .btn { flex: 1; height: 50px; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
-        .action-bar select, .action-bar input { flex: 1; height: 50px; padding: 0 15px; border-radius: 12px; border: 1px solid #cbd5e1; background: white; font-size: 1rem; outline: none; }
+        /* 操作區 (Action Bar) */
+        .action-bar { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 20px; 
+            align-items: stretch; 
+        }
+
+        .action-bar .btn { 
+            flex: 1; 
+            height: 50px; 
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-bar select, .action-bar input { 
+            flex: 1; 
+            height: 50px; 
+            padding: 0 15px; 
+            border-radius: 12px; 
+            border: 1px solid #cbd5e1; 
+            background: white; 
+            font-size: 1rem; 
+            outline: none;
+        }
 
         /* 表格樣式 */
-        .table-container { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #f1f5f9; }
+        .table-container { 
+            background: white; 
+            border-radius: 15px; 
+            overflow-x: auto; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            margin-bottom: 20px; 
+            border: 1px solid #f1f5f9;
+        }
+
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 15px 15px; text-align: left; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
-        th { background: #f8fafc; color: var(--primary); font-weight: 700; white-space: nowrap; }
-        tr.clickable:hover { background: #f8fafc; cursor: pointer; }
-        .text-detail { font-size: 0.8rem; color: #64748b; line-height: 1.4; max-width: 300px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
+        th, td { 
+            padding: 15px 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #f1f5f9; 
+            font-size: 0.9rem; 
+        }
+
+        th { 
+            background: #f8fafc; 
+            color: var(--primary); 
+            font-weight: 700;
+            white-space: nowrap; 
+        }
+
+        tr.clickable:hover { 
+            background: #f8fafc; 
+            cursor: pointer; 
+        }
+
+        .text-detail { 
+            font-size: 0.8rem; 
+            color: #64748b; 
+            line-height: 1.4; 
+            max-width: 300px; 
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         /* 狀態標籤 */
-        .inline-select { padding: 6px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; border: 1px solid #cbd5e1; cursor: pointer; }
+        .inline-select { 
+            padding: 6px 10px; 
+            border-radius: 8px; 
+            font-size: 0.85rem; 
+            font-weight: bold; 
+            border: 1px solid #cbd5e1; 
+            cursor: pointer;
+        }
+        
         .status-todo { background: #fff5f5 !important; color: #c53030; border-color: #feb2b2; }
         .status-booked { background: #fffaf0 !important; color: #975a16; border-color: #fbd38d; }
         .status-done { background: #f0fff4 !important; color: #276749; border-color: #9ae6b4; }
         
         /* 利潤卡片 */
-        .profit-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 15px; box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3); }
+        .profit-card { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            color: white; 
+            padding: 20px; 
+            border-radius: 16px; 
+            margin-bottom: 20px; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            text-align: center; 
+            gap: 15px; 
+            box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3);
+        }
+        
         .profit-card div span { display: block; font-size: 0.8rem; opacity: 0.9; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
         .profit-card div b { font-size: 1.4rem; font-weight: 800; }
 
         /* 住宿滿版區塊 */
-        #hm-fields { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #eff6ff; padding: 20px; border-radius: 12px; border: 1px solid #bfdbfe; margin-top: 10px; }
-        .notice-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; grid-column: span 2; }
+        #hm-fields { 
+            grid-column: span 2; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            background: #eff6ff; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 1px solid #bfdbfe; 
+            margin-top: 10px; 
+        }
+
+        .notice-box { 
+            background: #fff5f5; 
+            border: 1px solid #feb2b2; 
+            color: #c53030; 
+            padding: 12px; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            grid-column: span 2; 
+        }
 
         /* Modal 彈窗 */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; backdrop-filter: blur(3px); }
-        .modal-content { background:white; width:95%; max-width:800px; margin:40px auto; padding:30px; border-radius: 20px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .modal-content { 
+            background:white; 
+            width:95%; 
+            max-width:800px; 
+            margin:40px auto; 
+            padding:30px; 
+            border-radius: 20px; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            position: relative; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
         .close-btn { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.2s; }
         .close-btn:hover { color: #333; }
 
@@ -61,17 +217,31 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group.full { grid-column: span 2; }
         .form-group label { display:block; margin-bottom:6px; font-weight:600; color: #475569; font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea { width:100%; padding: 10px 12px; border:1px solid #e2e8f0; border-radius:8px; font-size: 0.95rem; transition: 0.2s; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .form-group input, .form-group select, .form-group textarea { 
+            width:100%; 
+            padding: 10px 12px; 
+            border:1px solid #e2e8f0; 
+            border-radius:8px; 
+            font-size: 0.95rem; 
+            transition: 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
         .compact-checkbox { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: #475569; }
         .compact-checkbox input { width: 18px; height: 18px; margin: 0; cursor: pointer; }
 
         /* 按鈕 */
         .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; letter-spacing: 0.5px; }
-        .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: #5a67d8; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #5a67d8; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-mini { padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; }
+        
         .alert-low { background: #fed7d7; color: #c53030; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; }
     </style>
 </head>
@@ -106,7 +276,7 @@
 
         <section id="students-section" class="content-section active">
             <div class="action-bar">
-                <button class="btn btn-primary" onclick="openModal('student-modal')">+ 新增學生檔案</button>
+                <button class="btn btn-primary" onclick="openNewEntry('student-modal', 'student-form', 's-id')">+ 新增學生檔案</button>
                 <div style="flex:1;"></div> 
             </div>
             <div class="table-container" id="student-list-table"></div>
@@ -114,7 +284,7 @@
 
         <section id="interactions-section" class="content-section">
             <div class="action-bar">
-                <button class="btn btn-primary" onclick="openModal('interaction-modal')">+ 新增互動紀錄</button>
+                <button class="btn btn-primary" onclick="openNewEntry('interaction-modal', 'interaction-form', null)">+ 新增互動紀錄</button>
                 <select id="filter-int-student" onchange="renderInteractionTable()">
                     <option value="all">顯示全部學生</option>
                 </select>
@@ -124,7 +294,7 @@
 
         <section id="money-section" class="content-section">
             <div class="action-bar">
-                <button class="btn btn-primary" onclick="openModal('money-modal')">+ 新增學生帳目</button>
+                <button class="btn btn-primary" onclick="openNewEntry('money-modal', 'money-form', null)">+ 新增學生帳目</button>
                 <select id="filter-money-student" onchange="renderMoneyTable()">
                     <option value="all">顯示全部學生</option>
                 </select>
@@ -134,14 +304,23 @@
 
         <section id="holiday-section" class="content-section">
             <div class="action-bar">
-                <button class="btn btn-primary" onclick="openModal('holiday-modal')">+ 新增假期行程</button>
+                <button class="btn btn-primary" onclick="openNewEntry('holiday-modal', 'holiday-form', 'h-id')">+ 新增假期行程</button>
                 <input type="month" id="filter-h-month" onchange="renderHolidayTable()">
             </div>
             
             <div id="monthly-profit-card" class="profit-card">
-                <div><span>總成本 (Net)</span><b id="total-month-cost">£0.00</b></div>
-                <div><span>總營收 (Quote)</span><b id="total-month-quote">£0.00</b></div>
-                <div style="background: rgba(255,255,255,0.2); border-radius: 12px;"><span>預計利潤</span><b id="total-month-profit">£0.00</b></div>
+                <div>
+                    <span>總成本 (Net)</span>
+                    <b id="total-month-cost">£0.00</b>
+                </div>
+                <div>
+                    <span>總營收 (Quote)</span>
+                    <b id="total-month-quote">£0.00</b>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); border-radius: 12px;">
+                    <span>預計利潤</span>
+                    <b id="total-month-profit">£0.00</b>
+                </div>
             </div>
 
             <h4 style="margin: 0 0 15px 5px; color:#475569;">📅 近期行程 (待辦/預約)</h4>
@@ -342,7 +521,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase 設定
+        // Firebase Config
         const firebaseConfig = { 
             apiKey: "AIzaSyAKX54sBQ8xu9C6hn-Az7XOcmRCjkOOht4", 
             authDomain: "studynest-database.firebaseapp.com", 
@@ -357,35 +536,30 @@
         let students = [], interactions = [], money = [], holidays = [];
 
         function startSync() {
-            // 學生資料
             onSnapshot(collection(db, "students"), s => { 
                 students = s.docs.map(d => ({id:d.id, ...d.data()}));
                 updateDropdowns(); 
                 renderAll(); 
             });
 
-            // 互動資料 (更新後重新計算概況)
             onSnapshot(query(collection(db, "interactions"), orderBy("date", "desc")), s => { 
                 interactions = s.docs.map(d => ({id:d.id, ...d.data()})); 
                 renderInteractionTable();
-                renderSummary(); // 修正：資料到位後立即刷新概況
+                renderSummary();
             });
             
-            // 零用錢資料 (更新後重新計算概況)
             onSnapshot(query(collection(db, "money"), orderBy("date", "desc")), s => { 
                 money = s.docs.map(d => ({id:d.id, ...d.data()})); 
                 renderMoneyTable(); 
-                renderSummary(); // 修正：資料到位後立即刷新概況
+                renderSummary();
             });
             
-            // 假期資料
             onSnapshot(query(collection(db, "holidays"), orderBy("datetime", "asc")), s => { 
                 holidays = s.docs.map(d => ({id:d.id, ...d.data()})); 
                 renderHolidayTable(); 
             });
         }
 
-        // 下拉選單更新 (不影響當前選擇)
         function updateDropdowns() {
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             
@@ -419,7 +593,6 @@
             renderSummary();
         }
 
-        // 互動紀錄表格
         window.renderInteractionTable = () => {
             const filterVal = document.getElementById('filter-int-student').value;
             const list = filterVal === 'all' ? interactions : interactions.filter(i => i.studentId === filterVal);
@@ -437,7 +610,6 @@
                 }).join('') + `</table></div>`;
         };
 
-        // 零用錢表格
         window.renderMoneyTable = () => {
             const filterVal = document.getElementById('filter-money-student').value;
             const list = filterVal === 'all' ? money : money.filter(m => m.studentId === filterVal);
@@ -457,7 +629,6 @@
                 }).join('') + `</table></div>`;
         };
 
-        // 假期表格
         window.renderHolidayTable = () => {
             const hMonth = document.getElementById('filter-h-month').value;
             let list = holidays;
@@ -535,6 +706,7 @@
             if(field === 'status' && value === '🟢 完成') {
                 const h = holidays.find(x => x.id === id);
                 const total = (h.transQuote||0) + ((h.stayQuote||0) * (parseInt(h.nights)||0));
+                
                 if(confirm(`行程已完成！\n是否從學生零用錢帳戶自動扣款 £${total.toFixed(2)}？`)) {
                     await addDoc(collection(db, "money"), { 
                         studentId: h.studentId, 
@@ -569,6 +741,18 @@
             }
         };
 
+        // 核心修正：打開新增視窗時，強制清空 ID 欄位，避免覆蓋舊資料
+        window.openNewEntry = (modalId, formId, idField) => {
+            document.getElementById(formId).reset();
+            if(idField) document.getElementById(idField).value = ''; 
+            
+            if(modalId === 'holiday-modal') toggleHm(false);
+            if(modalId === 'interaction-modal') document.getElementById('int-date').value = getToday();
+            if(modalId === 'money-modal') document.getElementById('money-date').value = getToday();
+            
+            openModal(modalId);
+        };
+
         window.editHoliday = (id) => {
             const h = holidays.find(x => x.id === id);
             openModal('holiday-modal');
@@ -593,6 +777,7 @@
         document.getElementById('holiday-form').onsubmit = async (e) => {
             e.preventDefault();
             const sid = document.getElementById('h-student-select').value;
+            
             const data = { 
                 studentId: sid, 
                 task: document.getElementById('h-task').value, 
@@ -614,28 +799,52 @@
                 stayQuote: parseFloat(document.getElementById('h-stay-quote').value || 0), 
                 payment: document.getElementById('h-payment').value 
             };
+
             const hid = document.getElementById('h-id').value;
-            if(hid) { await updateDoc(doc(db, "holidays", hid), data); } else { await addDoc(collection(db, "holidays"), data); }
-            closeModal('holiday-modal'); e.target.reset();
+            
+            if(hid) {
+                await updateDoc(doc(db, "holidays", hid), data);
+            } else {
+                await addDoc(collection(db, "holidays"), data);
+            }
+            
+            closeModal('holiday-modal'); 
+            e.target.reset();
         };
 
-        window.toggleSyncMoney = (show) => { document.getElementById('sync-money-fields').style.display = show ? 'grid' : 'none'; };
+        window.toggleSyncMoney = (show) => { 
+            document.getElementById('sync-money-fields').style.display = show ? 'grid' : 'none'; 
+        };
 
         document.getElementById('interaction-form').onsubmit = async (e) => {
             e.preventDefault();
             const sid = document.getElementById('int-student-select').value;
             const content = document.getElementById('int-content').value;
             const date = document.getElementById('int-date').value;
-            await addDoc(collection(db, "interactions"), { studentId: sid, date, type: document.getElementById('int-type').value, content });
+            
+            await addDoc(collection(db, "interactions"), { 
+                studentId: sid, 
+                date, 
+                type: document.getElementById('int-type').value, 
+                content 
+            });
+
             if(document.getElementById('int-sync-money').checked) {
                 const amount = parseFloat(document.getElementById('int-sync-amount').value || 0);
                 if(amount > 0) {
                     await addDoc(collection(db, "money"), { 
-                        studentId: sid, date, type: "支出", amount, cat: document.getElementById('int-sync-cat').value, detail: "(同步) " + content.substring(0, 30) 
+                        studentId: sid, 
+                        date, 
+                        type: "支出", 
+                        amount, 
+                        cat: document.getElementById('int-sync-cat').value, 
+                        detail: "(同步) " + content.substring(0, 30) 
                     });
                 }
             }
-            closeModal('interaction-modal'); e.target.reset(); toggleSyncMoney(false);
+            closeModal('interaction-modal'); 
+            e.target.reset(); 
+            toggleSyncMoney(false);
         };
 
         document.getElementById('money-form').onsubmit = async (e) => { 
@@ -648,15 +857,19 @@
                 cat: document.getElementById('money-cat').value, 
                 detail: document.getElementById('money-detail').value 
             }); 
-            closeModal('money-modal'); e.target.reset(); 
+            closeModal('money-modal'); 
+            e.target.reset(); 
         };
 
         window.showStudentDetail = (id) => {
             const s = students.find(x => x.id === id);
             if(!s) return;
+            
             document.getElementById('det-name').innerHTML = `<b>${s.name}</b> <small style="color:#666">(${s.engName||'-'})</small>`;
+            
             document.getElementById('det-edit-btn').onclick = () => editStudent(id);
             document.getElementById('det-download-btn').onclick = () => downloadPersonalFullReport(id);
+            
             document.getElementById('student-detail-body').innerHTML = `
                 <div style="background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:10px;">
                     <h4 style="color:var(--primary); margin-bottom:5px;">🏫 學校資訊</h4>
@@ -673,7 +886,14 @@
                     <p><strong>過敏/醫療:</strong> ${s.medical||'無'}</p>
                     <p><strong>其他備註:</strong> ${s.notes||'無'}</p>
                 </div>`;
-            document.getElementById('det-delete-btn').onclick = async () => { if(confirm(`⚠️ 警告：這將永久刪除 [${s.name}] 的所有資料！\n確定要執行嗎？`)) { await deleteDoc(doc(db, "students", id)); closeModal('student-detail-modal'); } };
+            
+            document.getElementById('det-delete-btn').onclick = async () => { 
+                if(confirm(`⚠️ 警告：這將永久刪除 [${s.name}] 的所有資料！\n確定要執行嗎？`)) { 
+                    await deleteDoc(doc(db, "students", id)); 
+                    closeModal('student-detail-modal'); 
+                } 
+            };
+            
             openModal('student-detail-modal');
         };
 
@@ -682,12 +902,17 @@
             closeModal('student-detail-modal');
             document.getElementById('student-modal-title').innerText = "編輯學生檔案";
             document.getElementById('s-id').value = s.id;
-            const fields = ['name','engName','school','grade','birthday','phone','address','fatherName','fatherPhone','motherName','motherPhone','hmName','hmPhone','hmEmail','medical','notes'];
+            
+            const fields = ['name','engName','school','grade','birthday','phone','address',
+                          'fatherName','fatherPhone','motherName','motherPhone',
+                          'hmName','hmPhone','hmEmail','medical','notes'];
+            
             fields.forEach(f => {
                 const elId = 's-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`);
                 const el = document.getElementById(elId);
                 if(el) el.value = s[f] || '';
             });
+            
             openModal('student-modal');
         };
 
@@ -695,47 +920,118 @@
             e.preventDefault();
             const sid = document.getElementById('s-id').value;
             const data = {};
-            const fields = ['name','engName','school','grade','birthday','phone','address','fatherName','fatherPhone','motherName','motherPhone','hmName','hmPhone','hmEmail','medical','notes'];
+            
+            const fields = ['name','engName','school','grade','birthday','phone','address',
+                          'fatherName','fatherPhone','motherName','motherPhone',
+                          'hmName','hmPhone','hmEmail','medical','notes'];
+            
             fields.forEach(f => {
                 const elId = 's-' + f.replace(/[A-Z]/g, l => `-${l.toLowerCase()}`);
                 data[f] = document.getElementById(elId).value;
             });
-            if(sid) { await updateDoc(doc(db, "students", sid), data); } else { await addDoc(collection(db, "students"), data); }
-            closeModal('student-modal'); e.target.reset();
+
+            if(sid) {
+                await updateDoc(doc(db, "students", sid), data);
+            } else {
+                await addDoc(collection(db, "students"), data);
+            }
+            
+            closeModal('student-modal'); 
+            e.target.reset();
         };
 
         window.downloadPersonalFullReport = (id) => {
             const s = students.find(x => x.id === id);
             const sInts = interactions.filter(i => i.studentId === id);
             const sMons = money.filter(m => m.studentId === id);
-            let rows = [[`${s.name} - 完整個人報告`], [`產生日期: ${getToday()}`], [], ["=== 💬 互動紀錄 ==="], ["日期", "類型", "內容"]];
+            
+            let rows = [
+                [`${s.name} - 完整個人報告`],
+                [`產生日期: ${getToday()}`],
+                [],
+                ["=== 💬 互動紀錄 ==="],
+                ["日期", "類型", "內容"]
+            ];
+            
             sInts.forEach(i => rows.push([i.date, i.type, i.content]));
+            
             rows.push([], ["=== 💰 零用錢帳目 ==="], ["日期", "金額", "分類", "備註"]);
+            
             sMons.forEach(m => rows.push([m.date, m.amount, m.cat, m.detail]));
+            
             let csv = "\uFEFF" + rows.map(r => r.map(c => `"${(c||'').toString().replace(/"/g,'""')}"`).join(",")).join("\n");
+            
             const link = document.createElement("a");
             link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-            link.download = `${s.name}_Full_Report.csv`; link.click();
+            link.download = `${s.name}_Full_Report.csv`; 
+            link.click();
         };
 
         function renderSummary() {
-            if(money.length === 0 && interactions.length === 0 && students.length > 0) return;
+            // 修正：無論有沒有錢，只要有學生就顯示概況表
             let h = `<table><tr><th>學生</th><th>目前餘額</th><th>本月互動</th></tr>`;
+            
             students.forEach(s => {
-                const bal = money.filter(m => m.studentId === s.id).reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
+                const bal = money.filter(m => m.studentId === s.id)
+                                 .reduce((acc, m) => acc + (m.type==='收入'?m.amount:-m.amount), 0);
+                
                 const thisMonth = getToday().substring(0,7);
                 const cnt = interactions.filter(i => i.studentId === s.id && i.date.startsWith(thisMonth)).length;
-                const balDisplay = bal < 300 ? `<span class="alert-low">£${bal.toFixed(2)}</span>` : `<span style="color:var(--success); font-weight:bold;">£${bal.toFixed(2)}</span>`;
-                h += `<tr><td><b>${s.name}</b></td><td>${balDisplay}</td><td>${cnt} 次</td></tr>`;
+                
+                const balDisplay = bal < 300 
+                    ? `<span class="alert-low">£${bal.toFixed(2)}</span>` 
+                    : `<span style="color:var(--success); font-weight:bold;">£${bal.toFixed(2)}</span>`;
+                
+                h += `<tr>
+                    <td><b>${s.name}</b></td>
+                    <td>${balDisplay}</td>
+                    <td>${cnt} 次</td>
+                </tr>`;
             });
             document.getElementById('summary-table').innerHTML = h + `</table>`;
         }
 
-        window.login = () => { if(document.getElementById('admin-password').value === '1234') { document.getElementById('login-screen').style.display='none'; document.getElementById('main-container').style.display='block'; startSync(); } else { alert("存取金鑰錯誤 (Access Key Error)"); } };
-        window.switchTab = tab => { document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); const clickedTab = event.target.closest('.tab'); if(clickedTab) clickedTab.classList.add('active'); document.getElementById(tab+'-section').classList.add('active'); };
-        window.openModal = id => { document.getElementById(id).style.display='block'; if(id === 'holiday-modal' && !document.getElementById('h-id').value) { document.getElementById('holiday-form').reset(); toggleHm(false); } if(id === 'interaction-modal') document.getElementById('int-date').value = getToday(); if(id === 'money-modal') document.getElementById('money-date').value = getToday(); };
+        window.login = () => { 
+            const pwd = document.getElementById('admin-password').value;
+            const userDisplay = document.getElementById('user-display');
+            
+            if(pwd === '1234') { 
+                document.getElementById('login-screen').style.display='none'; 
+                document.getElementById('main-container').style.display='block'; 
+                userDisplay.innerText = "Administrator Mode (Admin)"; 
+                startSync(); 
+            } 
+            else if(pwd === '8888') { 
+                document.getElementById('login-screen').style.display='none'; 
+                document.getElementById('main-container').style.display='block'; 
+                userDisplay.innerText = "Team Member Mode (Staff)"; 
+                startSync(); 
+            }
+            else { 
+                alert("存取金鑰錯誤 (Access Key Error)"); 
+            } 
+        };
+
+        window.switchTab = tab => { 
+            document.querySelectorAll('.tab, .content-section').forEach(el => el.classList.remove('active')); 
+            const clickedTab = event.target.closest('.tab');
+            if(clickedTab) clickedTab.classList.add('active');
+            document.getElementById(tab+'-section').classList.add('active'); 
+        };
+
+        window.openModal = id => { 
+            document.getElementById(id).style.display='block'; 
+            // openNewEntry 已處理大部分邏輯，這裡保留基礎開窗功能
+        };
+
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
-        window.deleteEntry = async (col, id) => { if(confirm('確定要刪除這筆紀錄嗎？此動作無法復原。')) { await deleteDoc(doc(db, col, id)); } };
+        
+        window.deleteEntry = async (col, id) => { 
+            if(confirm('確定要刪除這筆紀錄嗎？此動作無法復原。')) {
+                await deleteDoc(doc(db, col, id)); 
+            }
+        };
+
         window.onkeydown = e => { if(e.key==='Escape') document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); };
     </script>
 </body>
