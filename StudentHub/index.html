@@ -309,18 +309,9 @@
             </div>
             
             <div id="monthly-profit-card" class="profit-card">
-                <div>
-                    <span>總成本 (Net)</span>
-                    <b id="total-month-cost">£0.00</b>
-                </div>
-                <div>
-                    <span>總營收 (Quote)</span>
-                    <b id="total-month-quote">£0.00</b>
-                </div>
-                <div style="background: rgba(255,255,255,0.2); border-radius: 12px;">
-                    <span>預計利潤</span>
-                    <b id="total-month-profit">£0.00</b>
-                </div>
+                <div><span>總成本 (Net)</span><b id="total-month-cost">£0.00</b></div>
+                <div><span>總營收 (Quote)</span><b id="total-month-quote">£0.00</b></div>
+                <div style="background: rgba(255,255,255,0.2); border-radius: 12px;"><span>預計利潤</span><b id="total-month-profit">£0.00</b></div>
             </div>
 
             <h4 style="margin: 0 0 15px 5px; color:#475569;">📅 近期行程 (待辦/預約)</h4>
@@ -562,7 +553,6 @@
 
         function updateDropdowns() {
             const opts = students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            
             ['int-student-select', 'money-student-select', 'h-student-select'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.innerHTML = opts;
@@ -579,7 +569,6 @@
         const getToday = () => new Date().toISOString().split('T')[0];
 
         function renderAll() {
-            // 更新：學生列表新增宿管電話
             document.getElementById('student-list-table').innerHTML = `<table>
                 <tr><th>姓名</th><th>學校</th><th>學生電話</th><th>宿管/電話</th></tr>` + 
                 students.map(s => `
@@ -774,6 +763,7 @@
             toggleHm(h.useHm);
         };
 
+        // 假期表單提交邏輯 (已包含自動同步互動紀錄)
         document.getElementById('holiday-form').onsubmit = async (e) => {
             e.preventDefault();
             const sid = document.getElementById('h-student-select').value;
@@ -803,9 +793,21 @@
             const hid = document.getElementById('h-id').value;
             
             if(hid) {
+                // 如果是編輯，只更新假期
                 await updateDoc(doc(db, "holidays", hid), data);
             } else {
+                // 如果是新增，新增假期 + 自動新增互動紀錄
                 await addDoc(collection(db, "holidays"), data);
+                
+                // 【自動同步功能】
+                const interactionContent = `【行程安排】安排 ${data.task} 前往 ${data.location} (時間: ${data.datetime.replace('T', ' ')}). 司機: ${data.driverName||'未定'}`;
+                
+                await addDoc(collection(db, "interactions"), {
+                    studentId: sid,
+                    date: data.datetime.split('T')[0],
+                    type: "🤝 其他協助",
+                    content: interactionContent
+                });
             }
             
             closeModal('holiday-modal'); 
@@ -1021,7 +1023,6 @@
 
         window.openModal = id => { 
             document.getElementById(id).style.display='block'; 
-            // openNewEntry 已處理大部分邏輯，這裡保留基礎開窗功能
         };
 
         window.closeModal = id => { document.getElementById(id).style.display='none'; };
