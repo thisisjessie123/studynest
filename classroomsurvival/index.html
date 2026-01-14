@@ -1,134 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<title>StudyNest 生存版課程 - 第一小時</title>
-<style>
-  body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: auto; padding: 20px; background-color: #fdfdfd; }
-  h1, h2, h3 { color: #004080; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  table, th, td { border: 1px solid #ccc; }
-  th, td { padding: 8px; text-align: left; }
-  .chinese { background-color: #ffe6e6; }
-  .english { background-color: #e6f7ff; }
-  details { margin-bottom: 10px; }
-  summary { font-weight: bold; cursor: pointer; }
-  .exercise { background-color: #f2f2f2; padding: 10px; margin-bottom: 10px; border-left: 4px solid #004080; }
-  code { background-color: #eee; padding: 2px 4px; border-radius: 3px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Academic Compass | Interactive Survival Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --oxford-blue: #0A192F;
+            --stone: #F2F2F2;
+            --gold: #B89B72;
+            --slate: #4A5568;
+            --white: #FFFFFF;
+            --accent-red: #E53E3E;
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--oxford-blue); margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+        header { padding: 80px 40px; text-align: center; background: var(--stone); border-bottom: 1px solid #eee; }
+        .sub-header { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; color: var(--gold); letter-spacing: 2px; }
+        h1 { font-weight: 300; font-size: 3rem; margin: 10px 0; text-transform: uppercase; }
+
+        /* Map Navigation */
+        .map-section { max-width: 1100px; margin: -30px auto 60px; padding: 0 20px; }
+        .map-grid { display: flex; box-shadow: 0 20px 50px rgba(0,0,0,0.1); cursor: pointer; border-radius: 4px; overflow: hidden; }
+        .nav-card { flex: 1; padding: 35px 20px; background: white; text-align: center; border-right: 1px solid #eee; transition: 0.3s; }
+        .nav-card:last-child { border-right: none; }
+        .nav-card.active { background: var(--oxford-blue); color: white; }
+        .nav-card span { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; display: block; opacity: 0.6; margin-bottom: 8px; }
+        .nav-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin: 0; }
+
+        /* Content Areas */
+        .content-display { display: none; padding: 40px; border: 1px solid #eee; border-top: none; background: white; animation: slideUp 0.5s ease; }
+        .content-display.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .row { display: grid; grid-template-columns: 1fr 1.5fr; padding: 25px 0; border-bottom: 1px solid #f0f0f0; gap: 30px; }
+        .row:last-child { border-bottom: none; }
+        .scene { font-size: 0.75rem; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+        .bad { color: var(--slate); font-size: 0.9rem; text-decoration: line-through; opacity: 0.5; }
+        .good { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; font-weight: 600; color: var(--oxford-blue); line-height: 1.4; }
+
+        /* Lesson Plan Section */
+        .lesson-plan { background: #fafafa; padding: 60px 20px; text-align: center; }
+        .plan-container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: left; }
+        .plan-item { padding: 20px; background: white; border: 1px solid #eee; border-radius: 4px; }
+        .plan-item h4 { margin: 0 0 10px; font-size: 0.9rem; color: var(--gold); }
+        .plan-item p { font-size: 0.85rem; margin: 0; color: var(--slate); line-height: 1.6; }
+
+        .footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #999; }
+
+        @media (max-width: 768px) { .map-grid { flex-direction: column; } .plan-container { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 
-<h1>StudyNest 生存版課程</h1>
-<h2>第一小時｜Block A – Classroom Life-savers</h2>
+<header>
+    <div class="sub-header">Independent Academic Accelerator System</div>
+    <h1>The Academic Compass</h1>
+    <p style="color:var(--slate)">Session 01: Classroom Survival Map Sample</p>
+</header>
 
-<p><strong>課程目標：</strong>降低學生開口焦慮、學會判斷課堂情境並套用句型、理解中式 vs 英式表達差異。</p>
+<section class="map-section">
+    <div class="map-grid">
+        <div class="nav-card active" onclick="showTab('input', this)">
+            <span>Survival Area 01</span>
+            <h3>Input Problem</h3>
+        </div>
+        <div class="nav-card" onclick="showTab('processing', this)">
+            <span>Survival Area 02</span>
+            <h3>Processing</h3>
+        </div>
+        <div class="nav-card" onclick="showTab('output', this)">
+            <span>Survival Area 03</span>
+            <h3>Output Problem</h3>
+        </div>
+        <div class="nav-card" onclick="showTab('extra', this)">
+            <span>Survival Area 04</span>
+            <h3>Extra Interacts</h3>
+        </div>
+    </div>
 
-<h3>逐時教學流程</h3>
-<table>
-  <tr><th>時間</th><th>活動</th><th>教學目標</th><th>學生活動</th></tr>
-  <tr>
-    <td>0–5 min</td>
-    <td>暖場 & 心理建立</td>
-    <td>建立安全環境，降低焦慮</td>
-    <td>分享最怕的課堂情境</td>
-  </tr>
-  <tr>
-    <td>5–10 min</td>
-    <td>情境快速掃描</td>
-    <td>認識三大課堂問題：Input / Processing / Output</td>
-    <td>判斷自己最怕哪一類</td>
-  </tr>
-  <tr>
-    <td>10–20 min</td>
-    <td>Sentence Survival Map 介紹</td>
-    <td>用分類思維理解句型選擇</td>
-    <td>選出自己遇到的困境</td>
-  </tr>
-  <tr>
-    <td>20–35 min</td>
-    <td>句型示範 + 中式 vs 英式對比</td>
-    <td>理解地道表達，改寫中式句型</td>
-    <td>朗讀 & 練習改寫</td>
-  </tr>
-  <tr>
-    <td>35–50 min</td>
-    <td>角色扮演練習</td>
-    <td>實際使用句型，增強心理安全感</td>
-    <td>模擬老師、同學，使用句型回答</td>
-  </tr>
-  <tr>
-    <td>50–60 min</td>
-    <td>總結 & 反思</td>
-    <td>回顧今日最實用句型</td>
-    <td>分享、老師補充</td>
-  </tr>
-</table>
+    <div id="input" class="content-display active">
+        <div class="row">
+            <div><span class="scene">老師講新單字或概念</span><span class="bad">"What does this mean?"</span></div>
+            <div class="good">"Sorry, I’m not familiar with the term [XXX]. Could you explain it briefly?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">老師給作業指令太快</span><span class="bad">"I don’t understand."</span></div>
+            <div class="good">"Sorry, could you repeat the instructions, please?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">聽不清楚老師說的時間/日期</span><span class="bad">"When is it due?"</span></div>
+            <div class="good">"I’m sorry, I didn’t catch the deadline. Could you confirm it again?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">老師問問題，但語速很快</span><span class="bad">"I don’t know."</span></div>
+            <div class="good">"Could you please repeat the question more slowly?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">不確定老師的要求是什麼</span><span class="bad">"Huh? I don’t get it."</span></div>
+            <div class="good">"I’m not sure I understand the requirement. Could you explain with an example?"</div>
+        </div>
+    </div>
 
-<h3>Sentence Survival Map – 擴充版</h3>
-<table>
-  <tr>
-    <th>情境類別</th><th>中式說法</th><th>英式安全說法</th>
-  </tr>
-  <tr>
-    <td>Input Problem (聽不懂/不明白)</td>
-    <td class="chinese">What does this mean?<br>I don’t understand.<br>When is it due?</td>
-    <td class="english">Sorry, I’m not familiar with [XXX]. Could you explain it briefly?<br>Sorry, could you repeat the instructions, please?<br>I didn’t catch the deadline. Could you confirm it again?</td>
-  </tr>
-  <tr>
-    <td>Processing Problem (需要時間思考)</td>
-    <td class="chinese">Wait a minute.<br>I don’t know what to say.<br>I need to check my notes.</td>
-    <td class="english">Let me think for a second.<br>I’d like a moment to gather my thoughts.<br>Could I refer to my notes before I answer?</td>
-  </tr>
-  <tr>
-    <td>Output Problem (不知如何回答)</td>
-    <td class="chinese">I can’t do this.<br>I don’t know an example.<br>I have nothing to say.</td>
-    <td class="english">I’m having some difficulties with this task. Could I clarify a few points?<br>I’m not sure of an example right now. Could I provide one after reviewing my notes?<br>I’d like to share my idea, but I need a moment to organize it.</td>
-  </tr>
-</table>
+    <div id="processing" class="content-display">
+        <div class="row">
+            <div><span class="scene">討論課被點名，要思考回答</span><span class="bad">"Wait a minute."</span></div>
+            <div class="good">"That’s an interesting point. Let me think for a second..."</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">老師要求發表意見</span><span class="bad">"I don’t know what to say."</span></div>
+            <div class="good">"I’d like a moment to gather my thoughts before answering."</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">想先整理筆記再回答</span><span class="bad">"I need to check my notes."</span></div>
+            <div class="good">"Could I refer to my notes before I answer?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">小組討論卡住</span><span class="bad">"I’m stuck."</span></div>
+            <div class="good">"I’m not sure yet. Could I discuss this with my group first?"</div>
+        </div>
+    </div>
 
-<h3>互動練習示例</h3>
+    <div id="output" class="content-display">
+        <div class="row">
+            <div><span class="scene">老師要求舉例</span><span class="bad">"I don’t know an example."</span></div>
+            <div class="good">"I’m not sure of an example right now. Could I provide one after reviewing my notes?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">作業 / 報告討論卡住</span><span class="bad">"I can’t do this."</span></div>
+            <div class="good">"I’m having some difficulties with this task. Could I clarify a few points?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">老師要求解釋理由</span><span class="bad">"Because I don’t know."</span></div>
+            <div class="good">"I’m not certain. Could I explain my reasoning after checking?"</div>
+        </div>
+    </div>
 
-<details>
-  <summary>Input Problem 練習：聽不懂新單字</summary>
-  <div class="exercise">
-    <p>學生先說中式句型：</p>
-    <code>What does this mean?</code>
-    <p>老師示範英式安全句型：</p>
-    <code>Sorry, I’m not familiar with [XXX]. Could you explain it briefly?</code>
-    <p>學生再練習一次，用英式句型回答。</p>
-  </div>
-</details>
+    <div id="extra" class="content-display">
+        <div class="row">
+            <div><span class="scene">被點名回答前忘記要說什麼</span><span class="bad">"Uh… I forgot."</span></div>
+            <div class="good">"That’s a good question. Could I answer after a brief pause?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">要對同學觀點評論，但沒聽清</span><span class="bad">"I don’t understand what they said."</span></div>
+            <div class="good">"I’m not entirely sure I understood. Could I ask them to clarify first?"</div>
+        </div>
+        <div class="row">
+            <div><span class="scene">問不熟悉的學術詞彙</span><span class="bad">"I don’t know this word."</span></div>
+            <div class="good">"Sorry, I’m unfamiliar with this term. Could you explain it briefly?"</div>
+        </div>
+    </div>
+</section>
 
-<details>
-  <summary>Processing Problem 練習：需要時間思考</summary>
-  <div class="exercise">
-    <p>學生先說中式句型：</p>
-    <code>Wait a minute.</code>
-    <p>老師示範英式安全句型：</p>
-    <code>Let me think for a second.</code>
-    <p>學生再練習一次，用英式句型回答。</p>
-  </div>
-</details>
+<section class="lesson-plan">
+    <h2 style="font-weight:300; margin-bottom:40px;">60-Min Workshop Architecture</h2>
+    <div class="plan-container">
+        <div class="plan-item"><h4>0-10' Induction</h4><p>暖場分享：定位個人課堂焦慮點（Input/Processing/Output）。</p></div>
+        <div class="plan-item"><h4>10-35' Mapping</h4><p>生存地圖導航：實戰演練中式說法 vs 英式安全說法的邏輯差異。</p></div>
+        <div class="plan-item"><h4>35-50' Roleplay</h4><p>小組模擬：老師快語速指令、突然襲擊式點名等真實情境演練。</p></div>
+        <div class="plan-item"><h4>50-60' Review</h4><p>產出個人 Survival Cheat Sheet：選出今天對你最實用的 3 個武器。</p></div>
+    </div>
+</section>
 
-<details>
-  <summary>Output Problem 練習：不確定回答</summary>
-  <div class="exercise">
-    <p>學生先說中式句型：</p>
-    <code>I don’t know what to say.</code>
-    <p>老師示範英式安全句型：</p>
-    <code>I’m not entirely sure. Could I answer after checking my notes?</code>
-    <p>學生再練習一次，用英式句型回答。</p>
-  </div>
-</details>
+<div class="footer">
+    &copy; 2026 Academic Compass Methodology. For Partner Presentation Only.
+</div>
 
-<h3>教學提示</h3>
-<ul>
-  <li>慢速 + 重複：每個句型至少示範兩次。</li>
-  <li>心理安全：鼓勵錯誤，及時給正向回饋。</li>
-  <li>中式 vs 英式提醒：學生理解差異比單純背句型更重要。</li>
-  <li>線上課可用螢幕共享、白板、互動按鈕加強練習。</li>
-</ul>
+<script>
+    function showTab(tabId, el) {
+        document.querySelectorAll('.content-display').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-card').forEach(c => c.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        el.classList.add('active');
+    }
+</script>
 
 </body>
 </html>
