@@ -665,7 +665,7 @@
 <p><strong>i) Limitation of Liability:</strong> Except for death or personal injury caused by StudyNest's negligence, or for fraudulent misrepresentation, StudyNest's total liability under or in connection with this Agreement, whether in contract, tort (including negligence), or otherwise, shall be limited to the amount of fees paid by the Parents under this Agreement. Under no circumstances shall StudyNest be liable for any indirect, incidental, consequential, special, or punitive damages, including but not limited to loss of profit, loss of data, or loss of opportunity.<br/><span class="chinese-text">除非因英伦学居过失导致死亡或人身伤害，或有欺诈行为，否则英伦学居基于本协议所承担的全部责任（包含合约、侵权行为等）不超过家长依本协议所支付费用总额。英伦学居不承担任何间接、附带、衍生、特殊或惩罚性损害赔偿，包括但不限于利润损失、资料损失或商机损失。</span></p>
 <p><strong>j) Governing Law and Dispute Resolution:</strong> This Agreement shall be governed by and construed in accordance with the laws of England and Wales. Any dispute, controversy, or claim arising out of or in connection with this Agreement, including its validity, breach, termination, or invalidity, shall be finally resolved by arbitration administered by the London Court of International Arbitration (LCIA) under its Rules. The seat of arbitration shall be London, England. The language of the arbitration shall be English. The arbitration award shall be final and binding on both parties.<br/><span class="chinese-text">本协议适用英格兰及威尔斯法律。因本协议引起或与本协议相关之任何争议，包括其有效性、违约、终止或无效，双方同意提交由伦敦国际仲裁院（LCIA）依其规则最终仲裁。仲裁地点为英国伦敦，仲裁语言为英文，仲裁裁决为最终且具有约束力。</span></p>
 </div>
-<h2>Agreement Effectiveness and Confirmation 协议生效</h2>
+<h2 data-pdf-break="true">Agreement Effectiveness and Confirmation 协议生效</h2>
 <p>This Agreement shall be deemed legally effective upon being signed by both parties and upon receipt in full of the applicable fees by StudyNest Education Limited.</p>
 <p class="chinese-text">本协议应由双方签署，并于英伦学居（StudyNest Education Limited）收到全部应付服务费用后正式生效。</p>
 
@@ -1012,13 +1012,13 @@
 <input id="declaration7" required="" type="checkbox"/>
 <label for="declaration7">I / We agree to abide by all obligations set out in this Agreement and undertake not to make false claims or defamatory remarks against StudyNest, its staff, host families, or agents that are unrelated to the actual care of the student.<br/><span class="chinese-text">本人/我们同意遵守本协议所载之所有义务，并承诺不对英伦学居、其工作人员、寄宿家庭或代理人作出与实际照顾学生无关之虚假指控或毁损名誉的行为。</span></label>
 </div>
-<div style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;" data-pdf-break="true">
+<div style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;">
 <h4 style="color: #2d3748;">Declaration 声明:</h4>
 <p>I declare that the information provided above is true and accurate to the best of my knowledge. I understand that providing false information may affect my child's admission or enrolment. I authorize StudyNest Education and the school to use this information to ensure proper care for my child.</p>
 <p class="chinese-text">本人声明上述资料均属真实且正确。明白如有虚假资料，可能影响孩子入学资格。授权英伦学居及学校使用本信息以保障孩子健康与安全。</p>
 </div>
 
-<div class="signature-section">
+<div class="signature-section" data-pdf-break="true">
 <h4>家长／监护人签名（父亲 Father）</h4>
 <canvas class="signature-pad" id="fatherSignature"></canvas>
 <div class="signature-controls">
@@ -1458,6 +1458,28 @@ class ContractPDFGenerator {
                 format: 'a4'
             });
             
+            // 偵測文件最底部的空白區域（例如容器底部padding），避免因此多產生一頁空白頁
+            function findContentBottom(sourceCanvas) {
+                const ctx = sourceCanvas.getContext('2d');
+                const w = sourceCanvas.width;
+                const h = sourceCanvas.height;
+                const maxScanPx = Math.min(h, Math.round(h * 0.08)); // 最多往上掃描文件高度的8%
+                const stepX = Math.max(1, Math.floor(w / 150)); // 每行取約150個取樣點
+                for (let y = h - 1; y >= h - maxScanPx; y--) {
+                    const rowData = ctx.getImageData(0, y, w, 1).data;
+                    for (let xi = 0; xi < w; xi += stepX) {
+                        const idx = xi * 4;
+                        const r = rowData[idx], g = rowData[idx + 1], b = rowData[idx + 2];
+                        // 非接近純白的像素視為內容
+                        if (!(r > 245 && g > 245 && b > 245)) {
+                            return Math.min(h, y + 20); // 找到內容底部，保留一點邊距
+                        }
+                    }
+                }
+                return h - maxScanPx; // 掃描範圍內都是空白，整段裁掉
+            }
+            const contentBottom = findContentBottom(canvas);
+
             // 計算圖片尺寸以適應A4
             const imgWidth = 210; // A4寬度 (mm)
             const pxPerMm = canvas.width / imgWidth; // canvas像素與mm的比例（用於決定PDF頁面尺寸）
@@ -1470,10 +1492,10 @@ class ContractPDFGenerator {
             // 將強制分頁點換算成canvas像素座標，並加上文件開頭(0)與結尾(canvas.height)
             const forcedBreaksPx = breakMarkerOffsets
                 .map(offset => Math.round(offset * captureScale))
-                .filter(px => px > 0 && px < canvas.height)
+                .filter(px => px > 0 && px < contentBottom)
                 .sort((a, b) => a - b);
 
-            const sectionBoundaries = [0, ...forcedBreaksPx, canvas.height];
+            const sectionBoundaries = [0, ...forcedBreaksPx, contentBottom];
 
             // 建立離屏canvas，用來裁切每一頁的圖片區塊
             const sliceCanvas = document.createElement('canvas');
