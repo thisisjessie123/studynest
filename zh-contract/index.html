@@ -845,7 +845,7 @@
 </tr>
 </tbody>
 </table>
-<div class="fees-highlight">
+<div class="fees-highlight" data-pdf-break="true">
 <h3 style="color: white !important; font-size: 1.5em; margin-bottom: 15px; font-weight: 700;">Fees and Charges 费用与收费</h3>
 <p><strong>Core Guardianship Plan 核心监护方案：£1,200 per year 每年（£400 x 3學期）</strong></p>
 <p><strong>Comprehensive Guardianship Plan 全面监护方案：£3,000 per year 每年（£1,000 x 3學期）</strong></p>
@@ -943,7 +943,7 @@
 <td><textarea class="input-field" id="additionalInfo" placeholder="请提供任何其他重要的健康资讯，包括心理健康状况、特殊需求、紧急联络人资讯等..." rows="3"></textarea></td>
 </tr>
 </table>
-<h4>Vaccination Record 疫苗接种纪录</h4>
+<h4 data-pdf-break="true">Vaccination Record 疫苗接种纪录</h4>
 <p>Please provide date for each vaccine your child has received. <span class="chinese-text">请提供孩子已接种疫苗的日期。。</span></p>
 <table class="parties-table">
 <tr>
@@ -1012,7 +1012,7 @@
 <input id="declaration7" required="" type="checkbox"/>
 <label for="declaration7">I / We agree to abide by all obligations set out in this Agreement and undertake not to make false claims or defamatory remarks against StudyNest, its staff, host families, or agents that are unrelated to the actual care of the student.<br/><span class="chinese-text">本人/我们同意遵守本协议所载之所有义务，并承诺不对英伦学居、其工作人员、寄宿家庭或代理人作出与实际照顾学生无关之虚假指控或毁损名誉的行为。</span></label>
 </div>
-<div style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;">
+<div style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid #ed8936;" data-pdf-break="true">
 <h4 style="color: #2d3748;">Declaration 声明:</h4>
 <p>I declare that the information provided above is true and accurate to the best of my knowledge. I understand that providing false information may affect my child's admission or enrolment. I authorize StudyNest Education and the school to use this information to ensure proper care for my child.</p>
 <p class="chinese-text">本人声明上述资料均属真实且正确。明白如有虚假资料，可能影响孩子入学资格。授权英伦学居及学校使用本信息以保障孩子健康与安全。</p>
@@ -1460,12 +1460,16 @@ class ContractPDFGenerator {
             
             // 計算圖片尺寸以適應A4
             const imgWidth = 210; // A4寬度 (mm)
-            const pxPerMm = canvas.width / imgWidth; // canvas像素與mm的比例
-            const maxPageHeightPx = 297 * pxPerMm; // 單頁最大高度（像素），A4高度297mm
+            const pxPerMm = canvas.width / imgWidth; // canvas像素與mm的比例（用於決定PDF頁面尺寸）
+            const maxPageHeightPx = 297 * pxPerMm; // 單頁最大高度（canvas像素），A4高度297mm
+
+            // html2canvas的擷取比例（scale），用來把「強制分頁點」的CSS像素座標
+            // 換算成canvas像素座標。注意：這與pxPerMm是不同的比例，不可混用。
+            const captureScale = canvas.width / contractContainer.offsetWidth;
 
             // 將強制分頁點換算成canvas像素座標，並加上文件開頭(0)與結尾(canvas.height)
             const forcedBreaksPx = breakMarkerOffsets
-                .map(offset => Math.round(offset * pxPerMm))
+                .map(offset => Math.round(offset * captureScale))
                 .filter(px => px > 0 && px < canvas.height)
                 .sort((a, b) => a - b);
 
