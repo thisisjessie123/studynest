@@ -6,8 +6,10 @@
 <title>StudyNest Education 监护服务合约</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Dancing+Script:wght@400;500;600;700&display=swap"/>
 <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
         
         * {
             margin: 0;
@@ -1425,7 +1427,16 @@ class ContractPDFGenerator {
             `;
             document.body.appendChild(loadingDiv);
             
-            // 等待一點時間讓UI更新
+            // 等待字型完全載入完成，確保「量測標題位置」與「html2canvas截圖」
+            // 使用完全相同的字型狀態，避免因中英文字型寬度不同造成分頁位置誤判
+            if (document.fonts && document.fonts.ready) {
+                try {
+                    await document.fonts.ready;
+                } catch (e) {
+                    // 若字型載入失敗，仍繼續執行（會使用瀏覽器預設字型）
+                }
+            }
+            // 額外等待一點時間讓UI更新、版面穩定
             await new Promise(resolve => setTimeout(resolve, 500));
             
             // 使用html2canvas捕獲整個合約內容
@@ -1447,7 +1458,18 @@ class ContractPDFGenerator {
                 width: contractContainer.offsetWidth,
                 height: contractContainer.offsetHeight,
                 scrollX: 0,
-                scrollY: 0
+                scrollY: 0,
+                onclone: async function(clonedDoc) {
+                    // 確保html2canvas內部複製的文件也套用了相同的字型，
+                    // 避免它在截圖時使用備用字型導致與量測位置不一致
+                    if (clonedDoc.fonts && clonedDoc.fonts.ready) {
+                        try {
+                            await clonedDoc.fonts.ready;
+                        } catch (e) {
+                            // 忽略字型載入失敗，繼續截圖
+                        }
+                    }
+                }
             });
             
             // 創建PDF
